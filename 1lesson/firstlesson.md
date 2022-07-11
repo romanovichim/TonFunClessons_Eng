@@ -234,10 +234,11 @@ Roughly speaking, all functions in that volume have a numerical identifier, get 
 
 In order for the function to return the total stored in the contract, we need to take the data from the register, which we have already done:
 
-     int get_total() method_id {
-  	slice ds = get_data().begin_parse();
- 	 int total = ds~load_uint(64);
-  	return total;
+    int get_total() method_id {
+  		slice ds = get_data().begin_parse();
+ 	 	int total = ds~load_uint(64);
+		
+  		return total;
 	}
 	
 ## All code of our smart contract
