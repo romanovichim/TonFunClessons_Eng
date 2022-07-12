@@ -6,7 +6,7 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 | Number | Lesson | Considered concepts | Link | Status |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
 | 1 | Simple FunC Smart Contract | Types, exceptions, functions, contract deployment, GET requests in testnet | [LINK](./1lesson/firstlesson.md)  | ✅  |
-| 2 | FunC tests for the first smart contract  |   |   | ❌  |
+| 2 | FunC tests for the first smart contract  | FunC test logic, test structure, tuples  | [LINK](./2lesson/secondlesson.md) | ✅  |
 | 3 | Messages, let's write a proxy contract |   |   | ❌  |
 | 4 | Testing messages |   |   | ❌ |
 | 5 | Flags and data storage in a contract |   |  |  ❌   |
