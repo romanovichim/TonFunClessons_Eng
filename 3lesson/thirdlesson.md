@@ -7,7 +7,7 @@ In this tutorial, we will write a proxy (sends all messages to its owner) smart 
 
 To complete this tutorial, you need to install the [toncli] command line interface (https://github.com/disintar/toncli/blob/master/INSTALLATION.md).
 
-And also be able to create/deploy a project using toncli, you can learn how to do it in the [first lesson](https://github.com/romanovichim/TonFunClessons_ru/blob/main/1lesson/firstlesson.md).
+And also be able to create/deploy a project using toncli, you can learn how to do it in the [first lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/1lesson/firstlesson.md).
 
 ## Smart contract
 

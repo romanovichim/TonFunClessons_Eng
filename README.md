@@ -9,7 +9,7 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 | 2 | FunC tests for the first smart contract  | FunC test logic, test structure, tuples  | [LINK](./2lesson/secondlesson.md) | ✅  |
 | 3 | Messages, let's write a proxy contract |  Messages, message modes, primitives, cell references | [LINK](./3lesson/thirdlesson.md) | ✅  |
 | 4 | Testing messages | Addresses, TL-B, register c5 and output actions |  [LINK](./4lesson/forthlesson.md) | ✅ |
-| 5 | Flags and data storage in a contract |   |  |  ❌   |
+| 5 | Flags and data storage in a contract | Op - for identification of operations, Computational fees, primitive data storage in the contract  | [LINK](./5lesson/fifthlesson.md) |  ✅  |
 | 6 | Testing flags and data storage in the contract |   |  | ❌ |
 | 7 | HashMap storage  |   |  | ❌  |
 | 8 | Testing HashMap storage  |   |   | ❌  |

@@ -12,7 +12,7 @@ To complete this tutorial, you need to install the [toncli] command line interfa
 For our proxy smart contract, we will write the following tests:
 
 - test_same_addr() tests that when sending a message to the contract from the owner, the forwarding should not be carried out
-- test_example_data() tests the remaining conditions [of the third lesson](https://github.com/romanovichim/TonFunClessons_ru/blob/main/3lesson/thirdlesson.md)
+- test_example_data() tests the remaining conditions [of the third lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/3lesson/thirdlesson.md)
 
 ## FunC test structure under toncli
 
