@@ -304,7 +304,7 @@ Now consider the message:
 
 `<b b>` - create Builder cells, more details in paragraph [5.2](https://ton-blockchain.github.io/docs/fiftbase.pdf)
 
-`11 32 u` - put 32-bit unsigned integer 11
+`10 32 u` - put 32-bit unsigned integer 10
 
 ` // number` - single line comment
 
