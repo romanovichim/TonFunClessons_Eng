@@ -473,20 +473,20 @@ Now let's remove obsolete data by setting get_c7_now(now) to 1001. We do it like
 	}
 
 
-		[int, tuple, cell, tuple, int] get_stored_value_after_remove2_data() method_id(16) {
-			int function_selector = 127977;
+	[int, tuple, cell, tuple, int] get_stored_value_after_remove2_data() method_id(16) {
+		int function_selector = 127977;
 
-			int key = 787788;
+		int key = 787788;
 
-			tuple stack = unsafe_tuple([key]);
+		tuple stack = unsafe_tuple([key]);
 
-			return [function_selector, stack, get_prev_c4(), get_c7(), null()];
-		}
+		return [function_selector, stack, get_prev_c4(), get_c7(), null()];
+	}
 
 
-		_ get_stored_value_after_remove2(int exit_code, cell data, tuple stack, cell actions, int gas) method_id(17) {
-			throw_if(100, exit_code == 0);
-		}
+	_ get_stored_value_after_remove2(int exit_code, cell data, tuple stack, cell actions, int gas) method_id(17) {
+		throw_if(100, exit_code == 0);
+	}
 
 ## Test another key
 
