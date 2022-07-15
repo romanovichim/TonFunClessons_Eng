@@ -11,8 +11,8 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 | 4 | Testing messages | Addresses, TL-B, register c5 and output actions |  [LINK](./4lesson/forthlesson.md) | ✅ |
 | 5 | Flags and data storage in a contract | Op - for identification of operations, Computational fees, primitive data storage in the contract  | [LINK](./5lesson/fifthlesson.md) |  ✅  |
 | 6 | Testing flags and data storage in the contract |  Various tests for flag messages and data storage in register c4  | [LINK](./6lesson/sixthlesson.md) |  ✅ |
-| 7 | HashMap storage  |   |  | ❌  |
-| 8 | Testing HashMap storage  |   |   | ❌  |
+| 7 | HashMap storage  | Working with Dictionaries (hashmap): storage, deletion, search  | [LINK](./7lesson/seventhlesson.md) | ✅  |
+| 8 | Testing HashMap storage  | Testing HashMap(dictionaries), special toncli functions for testing, register c7  | [LINK](./8lesson/eighthlesson.md)  | ✅  |
 | 9 | Analyzing the Jetton Standard(Fungible Token)  |   |   | ❌  |
 | 10 | Analyzing the NFT Standard (Non-Fungible Token)  |   |   | ❌  |
 
