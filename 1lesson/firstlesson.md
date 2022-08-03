@@ -60,7 +60,7 @@ Second, `recv_internal()` this function is executed when inside TON itself, for 
 
 `recv_internal()` fits our conditions.
 
-In the `code.fc` file we write:
+In the `code.func` file we write:
 
      () recv_internal(slice in_msg_body) impure {
      ;; here will be the code
