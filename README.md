@@ -1,10 +1,11 @@
 # Lessons on developing smart contracts on FunC for The Open Network(TON
 
-Lessons on developing smart contracts on FunC for The Open Network(TON). The lessons are located in the appropriate folders in .md format, and a code is attached to each lesson. The lessons are first done in Russian [here](https://github.com/romanovichim/TonFunClessons_ru/), and then I gradually translate them into English, if you want to help - the donation addresses are below.
+Lessons on developing smart contracts on FunC for The Open Network(TON). The lessons are located in the appropriate folders in .md format, and a code is attached to each lesson. Our community - [here](https://t.me/ton_learn). The lessons are first done in Russian [here](https://github.com/romanovichim/TonFunClessons_ru/), and then I gradually translate them into English, if you want to help - the donation addresses are below.
 
 ## Roadmap
 | Number | Lesson | Considered concepts | Link | Status |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
+|| **Round 1**   ||||
 | 1 | Simple FunC Smart Contract | Types, exceptions, functions, contract deployment, GET requests in testnet | [LINK](./1lesson/firstlesson.md)  | ✅  |
 | 2 | FunC tests for the first smart contract  | FunC test logic, test structure, tuples  | [LINK](./2lesson/secondlesson.md) | ✅  |
 | 3 | Messages, let's write a proxy contract |  Messages, message modes, primitives, cell references | [LINK](./3lesson/thirdlesson.md) | ✅  |
@@ -15,7 +16,17 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 | 8 | Testing HashMap storage  | Testing HashMap(dictionaries), special toncli functions for testing, register c7  | [LINK](./8lesson/eighthlesson.md)  | ✅  |
 | 9 | Analyzing the Jetton Standard(Fungible Token)  | Tokens, standards, Jetton standard, StateInit, workchains  | [LINK](./9lesson/ninthlesson.md)  | ✅  |
 | 10 | Analyzing the NFT Standard (Non-Fungible Token)  |  NFT, standard NFT, collections and individual NFTs | [LINK](./10lesson/tenthlesson.md)  | ✅  |
-
+|| **  Round 2**   |||||
+| 11 | Introduction to the development of smart contracts in TON | | | ❌  |
+| 12 | New Toncli tests| | | ❌  |
+| 13 | TON and API Services - Exploring the NFT Collection with Python | | | ❌  |
+| 14 | Analyzing the TON DNS contract | | | ❌  |
+| 15 | Article about TON DNS | | | ❌  |
+| 16 | Analyzing the DAO contract | | | ❌  |
+| 17 | Article about Governance | | | ❌  |
+| 18 | Buy me a coffee | | | ❌  |
+| 19 | Secret content for [channel](https://t.me/ton_learn) in the amount of 10 pieces) | | | ❌  |
+| 20 | Events to attract developers to the TON ecosystem | | | ❌  |
 
 ## Questions and discussion of lessons (Chat in two languages - Russian and English)
 
