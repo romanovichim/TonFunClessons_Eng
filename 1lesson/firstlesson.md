@@ -265,7 +265,7 @@ In order for the function to return the total stored in the contract, we need to
 	
 ## Deploy the contract to the testnet
 
-For deployment to the test network, we will use the command line interface [toncli] (https://github.com/disintar/toncli/)
+For deployment to the test network, we will use the command line interface [toncli](https://github.com/disintar/toncli/)
 
 `toncli deploy -n testnet`
 
