@@ -113,7 +113,7 @@ The TVM virtual machine is stack-based, so it is good practice to store data in 
 
 To store permanent data, register c4 is assigned, the data type is Cell.
 
-More details about the registers can be found [c4] (https://ton-blockchain.github.io/docs/tvm.pdf) in paragraph 1.3
+More details about the registers can be found [c4](https://ton-blockchain.github.io/docs/tvm.pdf) in paragraph 1.3
 
 ##### Take data from c4
 
