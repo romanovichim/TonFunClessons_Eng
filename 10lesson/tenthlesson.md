@@ -17,7 +17,7 @@ As for Jetton, the NFT standard has a master contract - a collection contract an
 
 > The NFT standard also explains why exactly this NFT implementation scheme was chosen, with so many contracts, the item is Rationale and the next one.
 
-There are extensions in TON for the [NFT standard] (https://github.com/ton-blockchain/TIPs/issues/62) (as of 07/29/2022, some of them are in Drafts):
+There are extensions in TON for the [NFT standard](https://github.com/ton-blockchain/TIPs/issues/62) (as of 07/29/2022, some of them are in Drafts):
 - [NFTRoyalty](https://github.com/ton-blockchain/TIPs/issues/66) - about how to get royalty information and provide universal support for royalty payments across all NFT marketplaces and ecosystem members.
 - [NFTBounceable](https://github.com/ton-blockchain/TIPs/issues/67) - a way to rollback NFT transfers if the recipient dismissed the notification. (For example, if the NFT was sent to the wrong address and the recipient's smart contract does not know how to interact with the NFT.)
 - [NFTEditable](https://github.com/ton-blockchain/TIPs/issues/68) - about NFT bulk changes
@@ -29,7 +29,7 @@ The standard describes two key smart contracts for NFTs:
 - collection smart contract
 - smart contract for a separate NFT
 
-> In [examples] (https://github.com/ton-blockchain/token-contract/tree/main/nft) there is also a smart contract that implements the sale and some kind of marketplace, but in this lesson we will not analyze these contracts , let's focus on the NFT standard.
+> In [examples](https://github.com/ton-blockchain/token-contract/tree/main/nft) there is also a smart contract that implements the sale and some kind of marketplace, but in this lesson we will not analyze these contracts , let's focus on the NFT standard.
 
 Collection smart contract should implement:
 - deployment (deploy) of smart contracts of NFT elements of this collection. (in the example that we will analyze, there will be both a single NFT deployment and a mass NFT deployment)
@@ -56,7 +56,7 @@ A smart contract for a separate NFT must implement:
 
 Before parsing the code, I will note that in general the "mechanics" are repeated, so the further into the analysis, the more top-level the analysis will be.
 
-We will parse files from the [repository] (https://github.com/ton-blockchain/token-contract/tree/main/nft) in the following order:
+We will parse files from the [repository](https://github.com/ton-blockchain/token-contract/tree/main/nft) in the following order:
 
 - nft-collection.fc
 - nft-item.fc
@@ -71,7 +71,7 @@ The collection contract starts with two helper functions, for loading and unload
  
 - `owner_address` - address of the owner of the collection, if there is no owner, then the zero address
 - `next_item_index` is the number of currently deployed NFT items in the collection*.
-- `content` - content of the collection in the format corresponding to the [token] standard (https://github.com/ton-blockchain/TIPs/issues/64).
+- `content` - content of the collection in the format corresponding to the [token](https://github.com/ton-blockchain/TIPs/issues/64) standard .
 - `nft_item_code` - code of a separate NFT, will be used to "reproduce" the address of the smart contract.
 - `royalty_params` - royalty parameters
 
@@ -867,7 +867,7 @@ At the end there is an exception, i.e. if the contract does not take some action
 	
 #### Get-method get_nft_data()
 
-A smart contract for a separate NFT according to the [standard] (https://github.com/ton-blockchain/TIPs/issues/62) must have one mandatory Get method.
+A smart contract for a separate NFT according to the [standard](https://github.com/ton-blockchain/TIPs/issues/62) must have one mandatory Get method.
 
 This method simply returns data about this individual NFT, namely, unloads data from `c4`:
 

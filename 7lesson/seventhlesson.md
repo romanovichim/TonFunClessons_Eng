@@ -1,11 +1,11 @@
 # Lesson 7 Hashmap or Dictionary
 ## Introduction
 
-In this lesson, we will write a smart contract that can perform various operations with a Hashmap - a dictionary, in the test network The Open Network in the FUNC language, deploy it to the test network using [toncli] (https://github.com/disintar/ toncli), and we will test it in the next lesson.
+In this lesson, we will write a smart contract that can perform various operations with a Hashmap - a dictionary, in the test network The Open Network in the FUNC language, deploy it to the test network using [toncli](https://github.com/disintar/toncli), and we will test it in the next lesson.
 
 ## Requirements
 
-To complete this tutorial, you need to install the [toncli] command line interface (https://github.com/disintar/toncli/blob/master/INSTALLATION.md).
+To complete this tutorial, you need to install the [toncli](https://github.com/disintar/toncli/blob/master/INSTALLATION.md) command line interface .
 
 And also be able to create/deploy a project using toncli, you can learn how to do it in [the first lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/1lesson/firstlesson.md).
 

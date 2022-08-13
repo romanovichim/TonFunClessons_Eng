@@ -34,7 +34,7 @@ Since tokens are actually smart contracts, they, despite their effectiveness, ha
 
 ## What is the Jetton standard in TON
 
-The standard for a fungible token in TON is Jetton, the description of the standard is [here] (https://github.com/ton-blockchain/TIPs/issues/74). The Jetton standard token should consist of two types of smart contracts:
+The standard for a fungible token in TON is Jetton, the description of the standard is [here](https://github.com/ton-blockchain/TIPs/issues/74). The Jetton standard token should consist of two types of smart contracts:
 - master contract
 - contract wallet
 
@@ -110,7 +110,7 @@ And yes, when you send Jetton tokens to an address, you can request that the wal
 
 Before analyzing the code, I will note that in general the "mechanics" are repeated, so the further into the analysis, the more top-level the analysis will be.
 
-We will parse files from the [repository] (https://github.com/ton-blockchain/token-contract/tree/main/ft) in the following order:
+We will parse files from the [repository](https://github.com/ton-blockchain/token-contract/tree/main/ft) in the following order:
 
 - jetton-minter.fc
 - jetton-wallet.fc
@@ -154,7 +154,7 @@ In order to save data, we need to do three things:
 - from Builder create Cell (cell)
 - Write the resulting cell to the register
 
-We will do this again with the help of [FunC standard library functions] (https://ton.org/docs/#/func/stdlib).
+We will do this again with the help of [FunC standard library functions](https://ton.org/docs/#/func/stdlib).
 
 `begin_cell()` - create a Builder for the future cell `end_cell()` - create a Cell (cell) `set_data()` - write the cell to register c4
 
@@ -242,9 +242,9 @@ Next, you need to send a message to the smart contract:
 		.store_ref(state_init)
 		.store_ref(master_msg);
 
-It is well written about sending messages [here] (https://ton.org/docs/#/smart-contracts/messages), as well as in the third lesson. Using `store_ref` we send a message with information for the wallet contract.
+It is well written about sending messages [here](https://ton.org/docs/#/smart-contracts/messages), as well as in the third lesson. Using `store_ref` we send a message with information for the wallet contract.
 
-It remains only to send a message, for this we use `send_raw_message` from the [standard library] (https://ton.org/docs/#/func/stdlib?id=send_raw_message).
+It remains only to send a message, for this we use `send_raw_message` from the [standard library](https://ton.org/docs/#/func/stdlib?id=send_raw_message).
 
 We have already collected the msg variable, it remains to figure out `mode`. Each mode is described in [documentation](https://ton.org/docs/#/func/stdlib?id=send_raw_message). Let's look at an example to make it clearer.
 
@@ -582,7 +582,7 @@ We will collect the data cell itself using the `pack_jetton_wallet_data()` auxil
 
 ##### Function to send tokens (outgoing transfer)
 
-The function of sending tokens, checks the conditions in accordance with the [standard] (https://github.com/ton-blockchain/TIPs/issues/74) and sends the corresponding message.
+The function of sending tokens, checks the conditions in accordance with the [standard](https://github.com/ton-blockchain/TIPs/issues/74) and sends the corresponding message.
 
 	() send_tokens (slice in_msg_body, slice sender_address, int msg_value, int fwd_fee) impure {
 	}

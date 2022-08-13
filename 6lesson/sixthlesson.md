@@ -5,7 +5,7 @@ In this tutorial, we will write tests for the smart contract created in the fift
 
 ## Requirements
 
-To complete this tutorial, you need to install the [toncli] command line interface(https://github.com/disintar/toncli/blob/master/INSTALLATION.md) and complete [lesson 5](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/5lesson/fifthlesson.md) .
+To complete this tutorial, you need to install the [toncli](https://github.com/disintar/toncli/blob/master/INSTALLATION.md) command line interface and complete [lesson 5](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/5lesson/fifthlesson.md) .
 
 ## Task of the fifth lesson
 
@@ -47,7 +47,7 @@ The data function takes no arguments, but must return:
 
 > Gas measures the amount of computational effort required to perform certain operations on the network
 
-More about registers c4 and c7 [here] (https://ton-blockchain.github.io/docs/tvm.pdf) in 1.3.1
+More about registers c4 and c7 [here](https://ton-blockchain.github.io/docs/tvm.pdf) in 1.3.1
 
 ##### Test function
 
@@ -128,7 +128,7 @@ Let's collect the two necessary addresses, let it be 1 and 3:
 			.store_uint(3, 5)
 			.end_cell();
 
-We collect addresses in accordance with the [TL-B scheme] (https://github.com/tonblockchain/ton/blob/master/crypto/block/block.tlb) , and specifically to line 100, where address descriptions begin. For example `manager_address`:
+We collect addresses in accordance with the [TL-B scheme](https://github.com/tonblockchain/ton/blob/master/crypto/block/block.tlb) , and specifically to line 100, where address descriptions begin. For example `manager_address`:
 
 `.store_uint(1, 2)` - 0x01 external address;
 
@@ -480,7 +480,7 @@ Then we move on to the message. Outgoing messages are written to register c5. Le
 
 	slice all_actions = actions.begin_parse();
 
-Now let's remember how data is stored in c5 in accordance with [documentation] (https://ton.org/docs/#/smart-contracts/tvm_overview?id=result-of-tvm-execution).
+Now let's remember how data is stored in c5 in accordance with [documentation](https://ton.org/docs/#/smart-contracts/tvm_overview?id=result-of-tvm-execution).
 
 A list of two cell references is stored there, two cell references with the last action in the list and a cell reference with the previous action, respectively. (At the end of the tutorial, there will be code that shows how to parse `actions` in full, I hope this helps)
 

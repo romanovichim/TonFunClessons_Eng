@@ -5,7 +5,7 @@ In this tutorial, we will write tests for the smart contract created in the seve
 
 ## Requirements
 
-To complete this tutorial, you need to install the [toncli] command line interface (https://github.com/disintar/toncli/blob/master/INSTALLATION.md) and complete the previous tutorials.
+To complete this tutorial, you need to install the [toncli](https://github.com/disintar/toncli/blob/master/INSTALLATION.md) command line interface  and complete the previous tutorials.
 
 ## Tests for smart contract with Hashmap
 
@@ -41,7 +41,7 @@ The data function takes no arguments, but must return:
 
 > Gas measures the amount of computational effort required to perform certain operations on the network
 
-More about registers c4 and c7 [here] (https://ton-blockchain.github.io/docs/tvm.pdf) in 1.3.1
+More about registers c4 and c7 [here](https://ton-blockchain.github.io/docs/tvm.pdf) in 1.3.1
 
 ##### Test function
 
@@ -371,7 +371,7 @@ Since we are calling `recv_internal()` we are assigning the value 0, why 0? Fift
 - `recv_external` have id = -1
 - `run_ticktock` have id = -2
 
-Next, we collect the body of the message in accordance with the task [of the seventh lesson] (https://github.com/romanovichim/TonFunClessons_Eng/blob/main/7lesson/seventhlesson.md) with `op` = 2 .
+Next, we collect the body of the message in accordance with the task [of the seventh lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/7lesson/seventhlesson.md) with `op` = 2 .
 
 	   slice message_body = begin_cell()
 		 .store_uint(2, 32) ;; remove old

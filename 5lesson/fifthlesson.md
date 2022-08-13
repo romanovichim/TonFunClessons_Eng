@@ -1,17 +1,17 @@
 # Lesson 5 Remembering the Address and identifying the operation
 ## Introduction
 
-In this lesson, we will write a smart contract that can perform different operations depending on the flag in the test network of The Open Network in the FUNC language, deploy it to the test network using [toncli] (https://github.com/disintar/ toncli), and we will test it in the next lesson.
+In this lesson, we will write a smart contract that can perform different operations depending on the flag in the test network of The Open Network in the FUNC language, deploy it to the test network using [toncli](https://github.com/disintar/toncli), and we will test it in the next lesson.
 
 ## Requirements
 
-To complete this tutorial, you need to install the [toncli] command line interface (https://github.com/disintar/toncli/blob/master/INSTALLATION.md).
+To complete this tutorial, you need to install the [toncli](https://github.com/disintar/toncli/blob/master/INSTALLATION.md) command line interface .
 
 And also be able to create / deploy a project using toncli, you can learn this in [the first lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/1lesson/firstlesson.md).
 
 ## Op - to identify the operation
 
-Before considering what kind of smart contract we will do in this lesson, I suggest that you study [recommendations] (https://ton.org/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines) about the smart contract message body(`message body;`).
+Before considering what kind of smart contract we will do in this lesson, I suggest that you study [recommendations](https://ton.org/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines) about the smart contract message body(`message body;`).
 
 In order for us to create a semblance of a client-server architecture on smart contracts described in the recommendations, it is proposed to start each message (strictly speaking, the message body) with some `op` flag, which will identify what operation the smart contract should perform.
 
@@ -196,7 +196,7 @@ Now, using the `begin_parse` already familiar to us, we will convert the cell in
 
 We start "reading out" the cell with `load_uint`, a function from the [FunC standard library](https://ton.org/docs/#/func/stdlib) that loads an unsigned n-bit integer from a slice.
 
-In this lesson, we will not dwell on the flags in detail, but you can read more in paragraph [3.1.7] (https://ton-blockchain.github.io/docs/tblkch.pdf).
+In this lesson, we will not dwell on the flags in detail, but you can read more in paragraph [3.1.7](https://ton-blockchain.github.io/docs/tblkch.pdf).
 And finally, we take the address.
 
 As a result, we get the following function:
@@ -314,7 +314,7 @@ In accordance with the task with flag 2, we must send a message with a body cont
 			.store_slice(message_body)
 		  .end_cell();
 
-A complete analysis of messages in TON is in the [third lesson] (https://github.com/romanovichim/TonFunClessons_ru/blob/main/3lesson/thirdlesson.md).
+A complete analysis of messages in TON is in the [third lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/3lesson/thirdlesson.md).
 
 Sending a message in accordance with the conditions:
 
