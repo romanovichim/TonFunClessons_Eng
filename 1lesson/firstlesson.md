@@ -117,7 +117,7 @@ More details about the registers can be found [c4](https://ton-blockchain.github
 
 ##### Take data from c4
 
-In order to "get" data from c4, we need two functions from the [FunC standard library](https://ton.org/docs/#/func/stdlib) .
+In order to "get" data from c4, we need two functions from the FunC standard library.
 
 Namely:
 `get_data` - Gets a cell from the c4 register.
