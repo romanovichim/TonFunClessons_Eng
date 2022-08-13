@@ -50,7 +50,7 @@ And open the code.func file, on your screen you will see the wallet smart contra
 
 Smart contracts on the TON network have two reserved methods that can be accessed.
 
-First, `recv_external()` this function is executed when a request to the contract comes from the outside world, that is, not from TON, for example, when we form a message ourselves and send it via lite-client (About installing [lite-client](https:/ /ton.org/docs/#/compile?id=lite-client)).
+First, `recv_external()` this function is executed when a request to the contract comes from the outside world, that is, not from TON, for example, when we form a message ourselves and send it via lite-client (About installing [lite-client](https://ton.org/docs/#/compile?id=lite-client)).
 Second, `recv_internal()` this function is executed when inside TON itself, for example, when any contract refers to ours.
  
  > Light client (English lite-client) is a software that connects to full nodes to interact with the blockchain. They help users access and interact with the blockchain without the need to synchronize the entire blockchain.
