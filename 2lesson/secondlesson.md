@@ -5,7 +5,7 @@ In this tutorial, we will write tests for the smart contract created in the firs
 
 ## Requirements
 
-To complete this tutorial, you need to install the [toncli] command line interface(https://github.com/disintar/toncli/blob/master/INSTALLATION.md) and complete the [first lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/1lesson/firstlesson.md) .
+To complete this tutorial, you need to install the [toncli](https://github.com/disintar/toncli/blob/master/INSTALLATION.md) command line interface and complete the [first lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/1lesson/firstlesson.md) .
 
 ## Tests for the first smart contract
 
@@ -34,11 +34,11 @@ The data function takes no arguments, but must return:
 - c7 tuple - "temporary data" in the control register c7;
 - gas limit integer - gas limit (to understand the concept of gas, I advise you to first read about it in [Ethereum](https://ethereum.org/en/developers/docs/gas/));
 
-> In simple words, gas measures the amount of computational effort required to perform certain operations on the network. And you can read in detail [here] (https://ton.org/docs/#/smart-contracts/fees). Well, in full detail [here in Appendix A] (https://ton-blockchain.github.io/docs/tvm.pdf).
+> In simple words, gas measures the amount of computational effort required to perform certain operations on the network. And you can read in detail [here](https://ton.org/docs/#/smart-contracts/fees). Well, in full detail [here in Appendix A](https://ton-blockchain.github.io/docs/tvm.pdf).
 
 > Stack - a list of elements organized according to the LIFO principle (English last in - first out, "last in - first out"). The stack is well written in [wikipedia](https://ru.wikipedia.org/wiki/%D0%A1%D1%82%D0%B5%D0%BA).
 
-More about registers c4 and c7 [here] (https://ton-blockchain.github.io/docs/tvm.pdf) in 1.3.1
+More about registers c4 and c7 [here](https://ton-blockchain.github.io/docs/tvm.pdf) in 1.3.1
 
 ##### Test function
 
