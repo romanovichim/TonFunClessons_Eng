@@ -24,7 +24,7 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 | 15 | Article about TON DNS | | | ❌  |
 | 16 | Analyzing the DAO contract | | | ❌  |
 | 17 | Article about Governance | | | ❌  |
-| 18 | Buy me a coffee | | | ❌  |
+| 18 | Buy me a coffee Dapp | | | ❌  |
 | 19 | Secret content for [channel](https://t.me/ton_learn) in the amount of 10 pieces) | | | ❌  |
 | 20 | Events to attract developers to the TON ecosystem | | | ❌  |
 
