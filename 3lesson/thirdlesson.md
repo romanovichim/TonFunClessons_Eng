@@ -5,7 +5,7 @@ In this tutorial, we will write a proxy (sends all messages to its owner) smart 
 
 ## Requirements
 
-To complete this tutorial, you need to install the [toncli] command line interface (https://github.com/disintar/toncli/blob/master/INSTALLATION.md).
+To complete this tutorial, you need to install the [toncli](https://github.com/disintar/toncli/blob/master/INSTALLATION.md) command line interface .
 
 And also be able to create/deploy a project using toncli, you can learn how to do it in the [first lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/1lesson/firstlesson.md).
 
@@ -79,7 +79,7 @@ Now we need to "subtract" the resulting slice to the address. Using the `load_ui
 
 	var flags = cs~load_uint(4);
 
-In this lesson, we will not dwell on the flags in detail, but you can read more in paragraph [3.1.7] (https://ton-blockchain.github.io/docs/tblkch.pdf).
+In this lesson, we will not dwell on the flags in detail, but you can read more in paragraph [3.1.7](https://ton-blockchain.github.io/docs/tblkch.pdf).
 
 And finally, the address. Use `load_msg_addr()` - which loads from the slice the only prefix that is a valid MsgAddress.
 
@@ -88,7 +88,7 @@ And finally, the address. Use `load_msg_addr()` - which loads from the slice the
 
 ## Address of the recipient
 
-We will take the address from [c4] (https://ton-blockchain.github.io/docs/tvm.pdf) which we have already talked about in previous lessons.
+We will take the address from [c4](https://ton-blockchain.github.io/docs/tvm.pdf) which we have already talked about in previous lessons.
 
 We will use:
 `get_data` - Gets a cell from the c4 register.
