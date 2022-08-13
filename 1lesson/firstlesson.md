@@ -85,7 +85,7 @@ In our simple smart contract, we will use only four types:
 - Integer - signed 257-bit integer
 
 More about types in FunC:
-[briefly here](https://ton.org/docs/#/smart-contracts/)
+[briefly here](https://ton.org/docs/#/smart-contracts/) ,
 [detailed description here in section 2.1](https://ton-blockchain.github.io/docs/fiftbase.pdf)
 
 In simple terms, cell is a sealed cell, slice is when the cell can be read, and builder is when you assemble the cell.
