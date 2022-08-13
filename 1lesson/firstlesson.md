@@ -155,14 +155,14 @@ For summation, we will use the binary summation operation `+` and the assignment
 
 ##### Save the value
 
-In order to keep a constant value, we need to do three things:
+In order to keep a constant value, we need to do four things:
 
 - create a Builder for the future cell
 - write a value to it
 - from Builder create Cell (cell)
 - Write the resulting cell to the register
 
-We will do this again using the functions of the [FunC standard library] (https://ton.org/docs/#/func/stdlib)
+We will do this again using the functions of the [FunC standard library](https://ton.org/docs/#/func/stdlib)
 
 `set_data(begin_cell().store_uint(total, 64).end_cell());`
 
