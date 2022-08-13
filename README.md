@@ -16,7 +16,7 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 | 8 | Testing HashMap storage  | Testing HashMap(dictionaries), special toncli functions for testing, register c7  | [LINK](./8lesson/eighthlesson.md)  | ✅  |
 | 9 | Analyzing the Jetton Standard(Fungible Token)  | Tokens, standards, Jetton standard, StateInit, workchains  | [LINK](./9lesson/ninthlesson.md)  | ✅  |
 | 10 | Analyzing the NFT Standard (Non-Fungible Token)  |  NFT, standard NFT, collections and individual NFTs | [LINK](./10lesson/tenthlesson.md)  | ✅  |
-|| **  Round 2**   |||||
+|| **Round 2**   |||||
 | 11 | Introduction to the development of smart contracts in TON | | | ❌  |
 | 12 | New Toncli tests| | | ❌  |
 | 13 | TON and API Services - Exploring the NFT Collection with Python | | | ❌  |
