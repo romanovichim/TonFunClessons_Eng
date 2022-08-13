@@ -92,7 +92,7 @@ Since we are calling `recv_internal()` we are assigning the value 0, why 0? Fift
 
 In the message cell we write unsigned integer 10 32-bit.
 
-tuple stack = unsafe_tuple([message.begin_parse()]);
+`tuple stack = unsafe_tuple([message.begin_parse()]);`
 
 `tuple` is another FunC data type.
 Tuple - ordered set of arbitrary values of stack value types.
@@ -178,9 +178,9 @@ In the case of the get_total function, we don't need to pass any arguments, so w
 
 And in c4 we write 10, for verification.
 
-		cell data = begin_cell()            
-			.store_uint(10, 64)              
-			.end_cell();
+	cell data = begin_cell()            
+		.store_uint(10, 64)              
+		.end_cell();
 			
 
 ##### Test function
