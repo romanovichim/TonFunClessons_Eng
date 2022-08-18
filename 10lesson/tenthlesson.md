@@ -61,7 +61,7 @@ We will parse files from the [repository](https://github.com/ton-blockchain/toke
 - nft-collection.fc
 - nft-item.fc
 
-##nft-collection.fc
+## nft-collection.fc
 
 The collection contract starts with two helper functions, for loading and unloading data.
 
