@@ -19,14 +19,8 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 || **Round 2**   |||||
 | 11 | Introduction to the development of smart contracts in TON | | | ❌  |
 | 12 | New Toncli tests| | | ❌  |
-| 13 | TON and API Services - Exploring the NFT Collection with Python | | | ❌  |
-| 14 | Analyzing the TON DNS contract | | | ❌  |
-| 15 | Article about TON DNS | | | ❌  |
-| 16 | Analyzing the DAO contract | | | ❌  |
-| 17 | Article about Governance | | | ❌  |
-| 18 | Buy me a coffee Dapp | | | ❌  |
-| 19 | Secret content for [channel](https://t.me/ton_learn) in the amount of 10 pieces) | | | ❌  |
-| 20 | Events to attract developers to the TON ecosystem | | | ❌  |
+| 13 | Learn FunC in 15 minutes | | | ❌  |
+
 
 ## Questions and discussion of lessons (Chat in two languages - Russian and English)
 
