@@ -18,7 +18,7 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 | 10 | Analyzing the NFT Standard (Non-Fungible Token)  |  NFT, standard NFT, collections and individual NFTs | [LINK](./10lesson/tenthlesson.md)  | ✅  |
 || **Round 2**   |||||
 | 11 | Introduction to the development of smart contracts in TON | | | ❌  |
-| 12 | New Toncli tests| | | ❌  |
+| 12 | New Toncli tests| New FunC test logic, test structure | [LINK](./11lesson/11lesson.md) | ❌  |
 | 13 | Learn FunC in 15 minutes | | | ❌  |
 
 
