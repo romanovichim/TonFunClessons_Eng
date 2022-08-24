@@ -7,6 +7,10 @@ In this tutorial, we will write tests for the smart contract created in the firs
 
 To complete this tutorial, you need to install the [toncli](https://github.com/disintar/toncli/blob/master/INSTALLATION.md) command line interface and complete the [first lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/1lesson/firstlesson.md) .
 
+## Important
+
+Written below describes the old version of the tests. New toncli tests, currently available for dev version of func/fift, instruction [here](https://github.com/disintar/toncli/blob/master/docs/advanced/func_tests_new.md), lesson on new tests [ here](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/11lesson/11lesson.md). The release of new tests does not mean that the lessons on the old ones are meaningless - they convey the logic well, so success in passing the lesson. Also note that old tests can be used with the `--old` flag when using `toncli run_tests`
+
 ## Tests for the first smart contract
 
 For our first smart contract, we will write the following tests:
@@ -261,6 +265,8 @@ In order for toncli to "understand" where the tests are located, you need to add
 Now we run the tests with the command:
 
 `toncli run_tests`
+
+> If you are using the dev version of func, then you need to add the `--old` flag, get `toncli run_tests --old`
 
 It should turn out the following:
 

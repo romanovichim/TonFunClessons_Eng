@@ -7,6 +7,10 @@ In this tutorial, we will write tests for the smart contract created in the fift
 
 To complete this tutorial, you need to install the [toncli](https://github.com/disintar/toncli/blob/master/INSTALLATION.md) command line interface and complete [lesson 5](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/5lesson/fifthlesson.md) .
 
+## Important
+
+Written below describes the old version of the tests. New toncli tests, currently available for dev version of func/fift, instruction [here](https://github.com/disintar/toncli/blob/master/docs/advanced/func_tests_new.md), lesson on new tests [ here](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/11lesson/11lesson.md). The release of new tests does not mean that the lessons on the old ones are meaningless - they convey the logic well, so success in passing the lesson. Also note that old tests can be used with the `--old` flag when using `toncli run_tests`
+
 ## Task of the fifth lesson
 
 For convenience, I recall here what we did in the fifth lesson. The smart contract will remember the address set by the manager and communicate it to anyone who requests it, in particular the following functionality**:
