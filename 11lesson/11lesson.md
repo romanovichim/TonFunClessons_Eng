@@ -6,7 +6,7 @@ New tests have appeared in toncli, in this tutorial we will write tests for a sm
 
 ## Requirements
 
-To complete this tutorial, you need to install the [toncli] command line interface(https://github.com/disintar/toncli/blob/master/INSTALLATION.md) and complete the [first lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/1lesson/firstlesson.md) and [second lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/2lesson/secondlesson.md).
+To complete this tutorial, you need to install the [toncli](https://github.com/disintar/toncli/blob/master/INSTALLATION.md) command line interface and complete the [first lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/1lesson/firstlesson.md) and [second lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/2lesson/secondlesson.md).
 
 > This lesson has been written on 08/23/2022 at the moment new tests are available in the dev version of func/fift. How to install the dev version is described in [instructions for new tests](https://github.com/disintar/toncli/blob/master/docs/advanced/func_tests_new.md).
 
@@ -65,7 +65,7 @@ Let's call our test function `__test_example()`, it will return the amount of ga
 
 Since we will be writing a lot of tests in our lesson, we will often need to zero out the `c4` register, so we will create a helper function that will write `c4` to zero. (It won't have `__test` in its name).
 
-We will do this using the functions of the [FunC standard library] (https://ton.org/docs/#/func/stdlib)
+We will do this using the functions of the [FunC standard library](https://ton.org/docs/#/func/stdlib)
 
 `set_data(begin_cell().store_uint(total, 64).end_cell());`
 
@@ -236,7 +236,7 @@ We get the values, namely the number and the cell `[int res, cell c] = stack;`, 
 
 	}
 	
-Let's convert the cell to a slice using `begin_parse`. And now by subtracting the values, we check the values. We will subtract using `load_uint` - a function from the [FunC standard library] (https://ton.org/docs/#/func/stdlib) it loads an unsigned n-bit integer from a slice.
+Let's convert the cell to a slice using `begin_parse`. And now by subtracting the values, we check the values. We will subtract using `load_uint` - a function from the [FunC standard library](https://ton.org/docs/#/func/stdlib) it loads an unsigned n-bit integer from a slice.
 
 	int __test_not_integer_return_types() {
 	  var (int gas_used, stack) = invoke_method(build_test_cell, [100, 500]);
@@ -342,4 +342,4 @@ Thanks to such mechanics, it is possible to implement a complex chain of tests.
 
 ## Conclusion
 
-New tests in `toncli` greatly simplify the testing of smart contracts in the TON network, which will allow you to quickly and most importantly develop applications for the TON network with high quality. Lessons and articles about the technical component of the TON network, I write [here] (https://t.me/ton_learn), I will be glad for your subscription.
+New tests in `toncli` greatly simplify the testing of smart contracts in the TON network, which will allow you to quickly and most importantly develop applications for the TON network with high quality. Lessons and articles about the technical component of the TON network, I write [here](https://t.me/ton_learn), I will be glad for your subscription.
