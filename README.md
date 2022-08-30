@@ -19,7 +19,7 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 || **Round 2**   |||||
 | 11 | Introduction to the development of smart contracts in TON | | | ❌  |
 | 12 | New Toncli tests| New FunC test logic, test structure | [LINK](./11lesson/11lesson.md) | ✅  |
-| 13 | Learn FunC in 15 minutes | | | ❌  |
+| 13 | Learn FunC in 15 minutes | Inspired by learnxinyminutes | [LINK](./13lesson/15min.md) | ✅  |
 
 
 ## Questions and discussion of lessons (Chat in two languages - Russian and English)
