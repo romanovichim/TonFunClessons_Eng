@@ -1,10 +1,8 @@
 # Introduction
 
-High-level language FunC is used to program smart contracts on TON blockchain . 
+FunC language is used to program smart contracts on TON blockchain. Contract logic is executed in TVM - stack-based TON Virtual Machine.
 
-Contract logic in TON is executed in TVM - stack-based TON Virtual Machines.
-
-# Part 1 First Smart Contract - Data Types, "Storage", functions
+# Part 1 Basic syntax, first Smart Contract - Data Types, Storage, Functions
 
 	;; Single line comment
 
@@ -13,17 +11,18 @@ Contract logic in TON is executed in TVM - stack-based TON Virtual Machines.
 	-}
 	
 	(int) sum(int a, int b) { ;; This is function which get two integer parameters and return integer result
-	  return a + b; ;; All integers are signed and 257 bit long. Overflow throws exception
+	  return a + b;  ;; All integers are signed and 257 bit long. Overflow throws exception
+	  ;; expressions must end with a semicolon
 	}
 	
-	() func(int i, cell c, slice s, builder b, tuple t, cont c) {
+	() f(int i, cell c, slice s, builder b, tuple t, cont c) {
 	  ;; FunC has 7 atomic types: 
 	  ;; int - 257 bit signed integers,
 	  ;; cell - basic for TON opaque data structure whic contains up to 1023 bits and up to 4 references to other cells
 	  ;; slice and builder - special objects to read from and write to cells
 	  ;; another flavor of cell which contains ready to execute TVM byte-code
 	  ;; tuple is an ordered collection of up to 255 components, having arbitrary value types, possibly distinct
-	  ;; Finally tensor type (A,B, ...) is an ordered collection ready for mass assigning
+	  ;; Finally tensor type (A,B, ...) is an ordered collection ready for mass assigning like: (int, int) a = (3, 5);
 	  ;; Special case of tensor type is the unit type ().
 	  ;; It represents that a function doesn't return any value, or has no arguments.
 	}
@@ -45,20 +44,20 @@ Contract logic in TON is executed in TVM - stack-based TON Virtual Machines.
 	  ;; into a builder, and then the builder can be finalized to a new cell.
 	  ;; recv_internal gets slice with incoming message data as argument
 
-	  ;; As everything else permanent storage data stored as cell.
+	  ;; As everything else in TON permanent storage data stored as cell.
 	  ;; It can be retrieved via get_data() method
-	  ;; begin_parse - converts a cell into a slice
+	  ;; begin_parse - converts a cell with data into readable a slice
 
 	  slice ds = get_data().begin_parse(); ;; `.` is a syntax sugar: a.b() is equivalent to b(a)
 
-	  ;; load_uint function is from the FunC standard library it loads an unsigned n-bit integer from a slice.
-	  int total = ds~load_uint(64); ;; `~` is a "modifying" method.
-	  ;; Essentially it is a syntax sugar: `r = a~b(x)` is equivalent to (a,r) = b(a,x)
+	  ;; load_uint is function from the FunC standard library; it loads an unsigned n-bit integer from a slice
+	  int total = ds~load_uint(64); ;; `~` is a "modifying" method:
+	  ;; essentially it is a syntax sugar: `r = a~b(x)` is equivalent to (a,r) = b(a,x)
 	  
 	  ;; Now lets read incoming value from message body slice
 	  int n = in_msg_body~load_uint(32);
 
-	  total += n; ;; integers support usual +-*/ operations 
+	  total += n; ;; integers support usual +-*/ operations as well as (+-*/)= syntax sugar
 
 	  ;; In order to keep a store integer value, we need to do four things:
 	  ;; create a Builder for the future cell - begin_cell()
@@ -74,10 +73,11 @@ Contract logic in TON is executed in TVM - stack-based TON Virtual Machines.
 	;; FunC program is essentially a list of function declarations/definitions and global variable declarations.
 
 	;; Any function in FunC matches the following pattern:
-	;; [<forall declarator>] <return_type <function_name(<comma_separated_function_args>) <specifiers>
+	;; [<forall declarator>] <return_type> <function_name>(<comma_separated_function_args>) <specifiers>
 
 
-	;; impure specifier indicates that function call should not be optimized (wheter it's result is used or not)
+	;; Specifiers:
+	;; The impure specifier indicates that function call should not be optimized (wheter it's result is used or not)
 	;; it is important for methods that changes the smart contract data or send messages
 
 	;; The method_id specifier allows you to call a GET function by name
@@ -91,26 +91,27 @@ Contract logic in TON is executed in TVM - stack-based TON Virtual Machines.
 	  ;; Note that (int) and int is the same, thus brackets in function declaration and in return statement are omitted.
 	  return total;
 	}
+	;; Now any observer can read get_total value via lite-client or explorer
 
 # Part 2 Messages
 
-The actor model is a mathematical model of concurrent computation and is at the heart of TON smart contracts. In it, each smart contract can receive one message, change its own state or send one or several messages per unit time. As a result, the entire blockchain, as well as a given contract, can scale up to host an unlimited amount of users and transactions.
+The actor model is a model of concurrent computation and is at the heart of TON smart contracts. Each smart contract can process one message at a time, change its own state or send one or several messages. Processing of the message occurs in one transaction, that is can not be interrupted. Messages to one contract processed consequently one by one. As a result, the execution of each transaction is local, can be parallelized at the blockchain level, which allows for on-demand throughput horizontal scaling and hosting an unlimited number of users and transactions.
 
-	;; For normal message-triggered transactions, before passing control to recv_internal TVM puts the following
+	;; For normal internal message-triggered transactions, before passing control to recv_internal TVM puts the following
 	;; elements on stack.
 	;;;; Smart contract balance (in nanoTons)
 	;;;; Incoming message balance (in nanotones)
 	;;;; Cell with incoming message
 	;;;; Incoming message body, slice type
-	;; In turn recv_internal may use only required number of fields (like 1 in example above)
+	;; In turn recv_internal may use only required number of fields (like 1 in example above or 4 like below)
 	
 	;; Lets dive into message sending
 
 	() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
 	  ;; 
 	  ;; Every message has a strict layout, thus by parsing it we can get sender address
-	  ;; first we need to take some tech flags and then take adress using function
-	  ;; from FunC standard library - load_msg_addr()
+	  ;; first we need to read some tech flags and then take adress using load_msg_addr
+	  ;; function from FunC standard library - ()
 	  var cs = in_msg_full.begin_parse();
 	  var flags = cs~load_uint(4);
 	  slice sender_address = cs~load_msg_addr();
@@ -122,7 +123,7 @@ The actor model is a mathematical model of concurrent computation and is at the 
 		.store_slice(addr)   ;; destination address
 		.store_coins(amount) ;; attached value
 		.store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1) ;; more tech flags :)
-		.store_slice(in_msg_body) ;; just put incoming message as response here
+		.store_slice(in_msg_body) ;; just put some payload here
 	  .end_cell();
 
 	  ;; to send messages, use send_raw_message from the standard library.
@@ -135,9 +136,10 @@ The actor model is a mathematical model of concurrent computation and is at the 
 	  ;; Exceptions can be thrown by conditional primitives throw_if and throw_unless and by unconditional throw
 	  ;; by default it will automatically cause bounce message with 64 mode
 
-	  throw(101)
-	  throw_if(102,10==10)
-	  throw_unless(103,10!=10)	
+
+	  throw_if(102,10==10);
+	  throw_unless(103,10!=10);
+	  throw(101);
 	}
 
 # Part 3 Flow control: Conditional Statements and Loops; Dictionaries
