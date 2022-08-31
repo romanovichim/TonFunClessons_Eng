@@ -2,7 +2,7 @@
 
 High-level language FunC is used to program smart contracts on TON blockchain . 
 
-TON network consists of TVMs (TON Virtual Machines). FunC programs are compiled into Fift assembler code, which generates corresponding bytecode for the TVM.
+Contract logic in TON is executed in TVM - stack-based TON Virtual Machines.
 
 # Part 1 First Smart Contract - Data Types, "Storage", functions
 
@@ -11,116 +11,136 @@ TON network consists of TVMs (TON Virtual Machines). FunC programs are compiled 
 	{- This is a multi-line comment
 		{- this is a comment in the comment -}
 	-}
+	
+	(int) sum(int a, int b) { ;; This is function which get two integer parameters and return integer result
+	  return a + b; ;; All integers are signed and 257 bit long. Overflow throws exception
+	}
+	
+	() func(int i, cell c, slice s, builder b, tuple t, cont c) {
+	  ;; FunC has 7 atomic types: 
+	  ;; int - 257 bit signed integers,
+	  ;; cell - basic for TON opaque data structure whic contains up to 1023 bits and up to 4 references to other cells
+	  ;; slice and builder - special objects to read from and write to cells
+	  ;; another flavor of cell which contains ready to execute TVM byte-code
+	  ;; tuple is an ordered collection of up to 255 components, having arbitrary value types, possibly distinct
+	  ;; Finally tensor type (A,B, ...) is an ordered collection ready for mass assigning
+	  ;; Special case of tensor type is the unit type ().
+	  ;; It represents that a function doesn't return any value, or has no arguments.
+	}
+	
+	;; During execution contract has read access to local context: it's storage, balance, time, network config etc
+	;; Contract may change it's storage, code and also may send messages to other contracts
 
-	;; Let's write a smart contract that stores the data in its "storage" and returns the data using Get functions.
+	;; Let's write a counter smart contract that gets a number from incoming message,
+	;; adds to already stored number and stores result in "storage"
 
-	;; Smart contracts on the TON network have two reserved methods that can be accessed.
-	;; recv_internal() is executed when inside TON itself, for example, when any contract refers to ours
-	;; recv_external() is executed when a request to the contract comes from the outside world, that is, not from TON
+	;; For handling special events smart contracts have reserved methods:
+	;; recv_internal() handles internal message from other smart-contract
+	;; recv_external() handles external message from the outside world (e.g. from user)
 
-	;; impure is a keyword that indicates that the function changes the smart contract data.
+	() recv_internal(slice in_msg_body) {
+	  ;; Cells play a role of memory in stack-based TVM. Cell can be transformed to a slice,
+	  ;; and then the data bits and references to other cells from the cell can be obtained
+	  ;; by loading them from the slice. Data bits and references to other cells can be stored
+	  ;; into a builder, and then the builder can be finalized to a new cell.
+	  ;; recv_internal gets slice with incoming message data as argument
 
-	() recv_internal(slice in_msg_body) impure {
+	  ;; As everything else permanent storage data stored as cell.
+	  ;; It can be retrieved via get_data() method
+	  ;; begin_parse - converts a cell into a slice
 
-	  ;; FunC has the following built-in types:
+	  slice ds = get_data().begin_parse(); ;; `.` is a syntax sugar: a.b() is equivalent to b(a)
 
-	  ;; cell is the type of TVM cells. 
-	  ;; slice is the type of cell slices.
-	  ;; builder is the type of cell builders.
-
-	  ;;Cells play a role of memory in stack-based TVM. Cell can be transformed to a slice, and then the data bits and references to other cells from the cell can be obtained by loading them from the slice. Data bits and references to other cells can be stored into a builder, and then the builder can be finalized to a new cell.
-
-	  ;; int is the type of 257-bit signed integers. 
 	  ;; load_uint function is from the FunC standard library it loads an unsigned n-bit integer from a slice.
-
+	  int total = ds~load_uint(64); ;; `~` is a "modifying" method.
+	  ;; Essentially it is a syntax sugar: `r = a~b(x)` is equivalent to (a,r) = b(a,x)
+	  
+	  ;; Now lets read incoming value from message body slice
 	  int n = in_msg_body~load_uint(32);
 
-	  ;; To store permanent data, in TVM register c4 is assigned, the data type is Cell.
-	  ;; In order to "get" data from c4, we need two functions from the FunC standard library.
-	  ;; Namely: get_data - Gets a cell from the c4 register. begin_parse - converts a cell into a slice
+	  total += n; ;; integers support usual +-*/ operations 
 
-	  slice ds = get_data().begin_parse();
-
-	  int total = ds~load_uint(64);
-
-	  ;; For summation, we will use the binary summation operation + and the assignment =
-
-	  total += n;
-
-	  ;; In order to keep a constant value, we need to do four things:
+	  ;; In order to keep a store integer value, we need to do four things:
 	  ;; create a Builder for the future cell - begin_cell()
-	  ;; write a value to  total - store_uint()
-	  ;; from Builder create Cell - end_cell()
-	  ;; write the resulting cell to the register - set_data()
+	  ;; write a value to  total - store_uint(value, bit_size)
+	  ;; create Cell from Builder - end_cell()
+	  ;; write the resulting cell to permanent storage - set_data()
 
 	  set_data(begin_cell().store_uint(total, 64).end_cell());
 	}
 
+
+
 	;; FunC program is essentially a list of function declarations/definitions and global variable declarations.
 
 	;; Any function in FunC matches the following pattern:
-	;; [<forall declarator>] <return_type <function_name(<comma_separated_function_args>)<specifiers>
+	;; [<forall declarator>] <return_type <function_name(<comma_separated_function_args>) <specifiers>
 
-	;; The method_id specification allows you to call a GET function by name
+
+	;; impure specifier indicates that function call should not be optimized (wheter it's result is used or not)
+	;; it is important for methods that changes the smart contract data or send messages
+
+	;; The method_id specifier allows you to call a GET function by name
+	
+	;; For instance we can create get method for contract above to allow outside viewer to read counter
 
 	int get_total() method_id {
-	  ;; Below we get data from c4 with the functions we already know
-
 	  slice ds = get_data().begin_parse();
 	  int total = ds~load_uint(64);
 
-	  ;; Return type can be any atomic or composite typ
+	  ;; Note that (int) and int is the same, thus brackets in function declaration and in return statement are omitted.
 	  return total;
 	}
 
-# Part 2 Messages and Conditional Statements
+# Part 2 Messages
 
 The actor model is a mathematical model of concurrent computation and is at the heart of TON smart contracts. In it, each smart contract can receive one message, change its own state or send one or several messages per unit time. As a result, the entire blockchain, as well as a given contract, can scale up to host an unlimited amount of users and transactions.
 
-	;; Each transaction consists of up to 5 phases(stages).
-	;; For smart contracts we are intrested in Compute phase. And to be more specific, what is "on the stack" during initialization.
-	;; For normal message-triggered transactions, the initial state of the stack looks like this:
+	;; For normal message-triggered transactions, before passing control to recv_internal TVM puts the following
+	;; elements on stack.
 	;;;; Smart contract balance (in nanoTons)
 	;;;; Incoming message balance (in nanotones)
 	;;;; Cell with incoming message
 	;;;; Incoming message body, slice type
-	;;;; Function selector (for recv_internal it is 0)
-
-	;; As a result, we get the following code:
+	;; In turn recv_internal may use only required number of fields (like 1 in example above)
+	
+	;; Lets dive into message sending
 
 	() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
-	  ;; from in_msg_full we can take sender address
-	  ;; first we need to take some tech flags and then take adress using function from FunC standard library - load_msg_addr()
+	  ;; 
+	  ;; Every message has a strict layout, thus by parsing it we can get sender address
+	  ;; first we need to take some tech flags and then take adress using function
+	  ;; from FunC standard library - load_msg_addr()
 	  var cs = in_msg_full.begin_parse();
 	  var flags = cs~load_uint(4);
 	  slice sender_address = cs~load_msg_addr();
 
-	  ;; if we want to send a message, we first need to collect the message
+	  ;; if we want to send a message, we first need to construct it
 	  ;; message serialization in most cases may be reduced to
 	  var msg = begin_cell()
-		.store_uint(0x18, 6)
-		.store_slice(addr)
-		.store_coins(amount)
-		.store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
-		.store_slice(message_body)
+		.store_uint(0x18, 6) ;; tech flags
+		.store_slice(addr)   ;; destination address
+		.store_coins(amount) ;; attached value
+		.store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1) ;; more tech flags :)
+		.store_slice(in_msg_body) ;; just put incoming message as response here
 	  .end_cell();
 
 	  ;; to send messages, use send_raw_message from the standard library.
-	  ;; two arguments message and mode
+	  ;; it accepts two arguments message and mode
 	  send_raw_message(msg, 64);
 
 	  ;; mode parameter specify how to process the funds passed into the smart contract with the message and the smart contract funds
+	  ;; 64 means send everything from incoming message what's left after commission is deducted
 
-	 ;; Exceptions can be thrown by conditional primitives throw_if and throw_unless and by unconditional throw
+	  ;; Exceptions can be thrown by conditional primitives throw_if and throw_unless and by unconditional throw
+	  ;; by default it will automatically cause bounce message with 64 mode
 
 	  throw(101)
 	  throw_if(102,10==10)
-	  throw_unless(103,10!=10)
+	  throw_unless(103,10!=10)	
+	}
 
-	
-}
-
-# Part 3 Dictionaries and Loops and Conditional Statements
+# Part 3 Flow control: Conditional Statements and Loops; Dictionaries
 
 	;; FunC of course supports if statements
 
@@ -139,13 +159,13 @@ The actor model is a mathematical model of concurrent computation and is at the 
 		if (op == 1) {
 			;; smth here
 		} else {
-		if (op == 2) {
-			;; smth here
-		} else {
-			;; smth here
+			if (op == 2) {
+				;; smth here
+			} else {
+				;; smth here
+			}
 		}
-		}
-		}
+	}
 
 	;; Loops
 	;; FunC supports repeat, while and do { ... } until loops. for loop is not supported.
@@ -184,6 +204,32 @@ The actor model is a mathematical model of concurrent computation and is at the 
 	} until (~ f);
 
 	;; udict_get_next? - Calculates the minimum key k in the dictionary dict that is greater than some given value and returns k, the associated value, and a flag indicating success. If the dictionary is empty, returns (null, null, 0).
+	
+
+# Part 4 Functions
+	;; Most useful functions are slice reader and builder writer primitives, storage handlers and sending messages
+
+	;; slice begin_parse(cell c) - Converts a cell into a slice
+	;; (slice, int) load_int(slice s, int len) - Loads a signed len-bit integer from a slice.
+	;; (slice, int) load_uint(slice s, int len) - Loads a unsigned len-bit integer from a slice.
+	;; (slice, slice) load_bits(slice s, int len) - Loads the first 0 ≤ len ≤ 1023 bits from slice into a separate slice.
+	;; (slice, cell) load_ref(slice s) - Loads the reference cell from the slice.
+
+	;; builder begin_cell() - Creates a new empty builder.
+	;; cell end_cell(builder b) - Converts a builder into an ordinary cell.
+	;; builder store_int(builder b, int x, int len) - Stores a signed len-bit integer x into b for 0 ≤ len ≤ 257.
+	;; builder store_uint(builder b, int x, int len) - Stores an unsigned len-bit integer x into b for 0 ≤ len ≤ 256.
+	;; builder store_slice(builder b, slice s) - Stores slice s into builder b.
+	;; builder store_ref(builder b, cell c) - Stores a reference to cell c into builder b.
+
+	;; cell get_data() - Returns the persistent contract storage cell. 
+	;; () set_data(cell c) - Sets cell c as persistent contract data.
+	
+	;; () send_raw_message(cell msg, int mode) - put message msg into sending queue with mode. Note, that message will be sent after successfull execution of whole transaction
+	
+	;; Detailed descriptions of all standard functions can be found in docs https://ton.org/docs/#/func/stdlib
+
+	
   
 # Further Reading
 
