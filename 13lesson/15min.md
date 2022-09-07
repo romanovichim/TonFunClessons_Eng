@@ -15,12 +15,12 @@ The FunC language is used to program smart contracts on the TON blockchain. Cont
 	  ;; expressions must end with a semicolon
 	}
 	
-	() f(int i, cell c, slice s, builder b, tuple t, cont c) {
+	() f(int i, cell c, slice s, builder b, cont c, tuple t) {
 	  ;; FunC has 7 atomic types: 
 	  ;; int - 257 bit signed integers,
 	  ;; cell - basic for TON opaque data structure which contains up to 1023 bits and up to 4 references to other cells,
 	  ;; slice and builder - special objects to read from and write to cells,
-	  ;; another flavor of cell which contains ready to execute TVM byte-code
+	  ;; continuation - another flavor of cell which contains ready to execute TVM byte-code
 	  ;; tuple is an ordered collection of up to 255 components, having arbitrary value types, possibly distinct.
 	  ;; Finally tensor type (A,B, ...) is an ordered collection ready for mass assigning like: (int, int) a = (3, 5);
 	  ;; Special case of tensor type is the unit type ().
@@ -122,7 +122,7 @@ The actor model is a model of concurrent computation and is at the heart of TON 
 		.store_uint(0x18, 6) ;; tech flags
 		.store_slice(addr)   ;; destination address
 		.store_coins(amount) ;; attached value
-		.store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1) ;; more tech flags :)
+		.store_uint(0, 107) ;; more tech flags :)
 		.store_slice(in_msg_body) ;; just put some payload here
 	  .end_cell();
 
@@ -136,10 +136,10 @@ The actor model is a model of concurrent computation and is at the heart of TON 
 	  ;; Exceptions can be thrown by conditional primitives throw_if and throw_unless and by unconditional throw
 	  ;; by default it will automatically cause bounce message with 64 mode
 
-
-	  throw_if(102, 10==10);
-	  throw_unless(103, 10!=10);
-	  throw(101);
+	  var some  = 7;
+	  throw_if(102, some == 10);    ;; Throw exception with code 102 conditionally
+	  throw_unless(103, some != 10);    ;; Throw exception with code 103 conditionally
+	  throw(101);    ;; Throw exception with code 101 unconditionally
 	}
 
 # Part 3 Flow control: Conditional Statements and Loops; Dictionaries
@@ -148,25 +148,25 @@ The actor model is a model of concurrent computation and is at the heart of TON 
 
 	;;;; usual if-else
 	if (flag) {
-		;;do_something();
+	  ;;do_something();
 	}
 	else {
-		;;do_alternative();
+	  ;;do_alternative();
 	}
 
 	;; If statements are often used as operation identifier for smart contract, for example:
 
 	() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
-		int op = in_msg_body~load_int(32);
-		if (op == 1) {
-			;; smth here
-		} else {
-			if (op == 2) {
-				;; smth here
-			} else {
-				;; smth here
-			}
-		}
+	  int op = in_msg_body~load_int(32);
+	  if (op == 1) {
+	    ;; smth here
+	  } else {
+	    if (op == 2) {
+	      ;; smth here
+	    } else {
+	      ;; smth here
+	    }
+	  }
 	}
 
 	;; Loops
@@ -175,21 +175,21 @@ The actor model is a model of concurrent computation and is at the heart of TON 
 	;; repeat
 	int x = 1;
 	repeat(10) {
-		x *= 2;
+	  x *= 2;
 	}
 	;; x = 1024
 
 	;; while
 	int x = 2;
 	while (x < 100) {
-		x = x * x;
+	  x = x * x;
 	}
 	;; x = 256
 
 	;; until loops
 	int x = 0;
 	do {
-		x += 3;
+	  x += 3;
 	} until (x % 17 == 0);
 	;; x = 51
 
@@ -201,7 +201,7 @@ The actor model is a model of concurrent computation and is at the heart of TON 
 
 	int key = -1;
 	do {
-		(key, slice cs, int f) = dic.udict_get_next?(256, key);
+	  (key, slice cs, int f) = dic.udict_get_next?(256, key);
 
 	} until (~ f);
 
