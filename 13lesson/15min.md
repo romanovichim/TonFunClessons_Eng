@@ -1,8 +1,8 @@
 # Introduction
 
-FunC language is used to program smart contracts on TON blockchain. Contract logic is executed in TVM - stack-based TON Virtual Machine.
+The FunC language is used to program smart contracts on the TON blockchain. Contract logic is executed in TVM - stack-based TON Virtual Machine.
 
-# Part 1 Basic syntax, first Smart Contract - Data Types, Storage, Functions
+# Part 1 Basic syntax, the first Smart Contract - Data Types, Storage, Functions
 
 	;; Single line comment
 
@@ -18,16 +18,16 @@ FunC language is used to program smart contracts on TON blockchain. Contract log
 	() f(int i, cell c, slice s, builder b, tuple t, cont c) {
 	  ;; FunC has 7 atomic types: 
 	  ;; int - 257 bit signed integers,
-	  ;; cell - basic for TON opaque data structure whic contains up to 1023 bits and up to 4 references to other cells
-	  ;; slice and builder - special objects to read from and write to cells
+	  ;; cell - basic for TON opaque data structure which contains up to 1023 bits and up to 4 references to other cells,
+	  ;; slice and builder - special objects to read from and write to cells,
 	  ;; another flavor of cell which contains ready to execute TVM byte-code
-	  ;; tuple is an ordered collection of up to 255 components, having arbitrary value types, possibly distinct
+	  ;; tuple is an ordered collection of up to 255 components, having arbitrary value types, possibly distinct.
 	  ;; Finally tensor type (A,B, ...) is an ordered collection ready for mass assigning like: (int, int) a = (3, 5);
 	  ;; Special case of tensor type is the unit type ().
 	  ;; It represents that a function doesn't return any value, or has no arguments.
 	}
 	
-	;; During execution contract has read access to local context: it's storage, balance, time, network config etc
+	;; During execution contract has read access to local context: it's storage, balance, time, network config etc.
 	;; Contract may change it's storage, code and also may send messages to other contracts
 
 	;; Let's write a counter smart contract that gets a number from incoming message,
@@ -35,7 +35,7 @@ FunC language is used to program smart contracts on TON blockchain. Contract log
 
 	;; For handling special events smart contracts have reserved methods:
 	;; recv_internal() handles internal message from other smart-contract
-	;; recv_external() handles external message from the outside world (e.g. from user)
+	;; recv_external() handles external message from the outside world (e.g. from a user)
 
 	() recv_internal(slice in_msg_body) {
 	  ;; Cells play a role of memory in stack-based TVM. Cell can be transformed to a slice,
@@ -100,7 +100,7 @@ The actor model is a model of concurrent computation and is at the heart of TON 
 	;; For normal internal message-triggered transactions, before passing control to recv_internal TVM puts the following
 	;; elements on stack.
 	;;;; Smart contract balance (in nanoTons)
-	;;;; Incoming message balance (in nanotones)
+	;;;; Incoming message balance (in nanoTons)
 	;;;; Cell with incoming message
 	;;;; Incoming message body, slice type
 	;; In turn recv_internal may use only required number of fields (like 1 in example above or 4 like below)
@@ -137,8 +137,8 @@ The actor model is a model of concurrent computation and is at the heart of TON 
 	  ;; by default it will automatically cause bounce message with 64 mode
 
 
-	  throw_if(102,10==10);
-	  throw_unless(103,10!=10);
+	  throw_if(102, 10==10);
+	  throw_unless(103, 10!=10);
 	  throw(101);
 	}
 
