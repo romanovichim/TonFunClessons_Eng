@@ -1,9 +1,10 @@
 # Lesson 1: Simple FunC Smart Contract
+
 ## Introduction
 
-In this tutorial, we will write your first smart contract on The Open Network testnet in FunC language and deploy* it to the testnet using [toncli](https://github.com/disintar/toncli), and test it with the message in Fift language.
+In this tutorial, we will write your first smart contract on The Open Network testnet in FunC language and deploy\* it to the testnet using [toncli](https://github.com/disintar/toncli), and test it with the message in Fift language.
 
-> *Deploy is the process of transferring to the network (in this case, a smart contract to the blockchain)
+> \*Deploy is the process of transferring to the network (in this case, a smart contract to the blockchain)
 
 ## Requirements
 
@@ -12,9 +13,10 @@ To complete this tutorial, you need to install the [toncli](https://github.com/d
 ## Smart contract
 
 The smart contract that we will create should have the following functionality:
-- store in its data an integer *total* - a 64-bit unsigned number;
-- when receiving an internal incoming message, the contract must take an unsigned 32-bit integer from the message body, add it to *total* and store it in the contract data;
-- The smart contract must provide a *get total* method that allows you to return the value of *total*
+
+- store in its data an integer _total_ - a 64-bit unsigned number;
+- when receiving an internal incoming message, the contract must take an unsigned 32-bit integer from the message body, add it to _total_ and store it in the contract data;
+- The smart contract must provide a _get total_ method that allows you to return the value of _total_
 - If the body of the incoming message is less than 32 bits, then the contract must throw an exception
 
 ## Create a project with toncli
@@ -25,6 +27,7 @@ Run the following commands in the console:
      cd wallet
 
 Toncli has created a simple wallet project, you can see 4 folders in it:
+
 - build;
 - func;
 - fift;
@@ -52,19 +55,19 @@ Smart contracts on the TON network have two reserved methods that can be accesse
 
 First, `recv_external()` this function is executed when a request to the contract comes from the outside world, that is, not from TON, for example, when we form a message ourselves and send it via lite-client (About installing [lite-client](https://ton.org/docs/#/compile?id=lite-client)).
 Second, `recv_internal()` this function is executed when inside TON itself, for example, when any contract refers to ours.
- 
- > Light client (English lite-client) is a software that connects to full nodes to interact with the blockchain. They help users access and interact with the blockchain without the need to synchronize the entire blockchain.
- 
+
+> Light client (English lite-client) is a software that connects to full nodes to interact with the blockchain. They help users access and interact with the blockchain without the need to synchronize the entire blockchain.
+
 `recv_internal()` fits our conditions.
 
-In the `code.fc` file we write:
+In the `code.func` file we write:
 
      () recv_internal(slice in_msg_body) impure {
      ;; here will be the code
      }
- 
-  > FunC has single-line comments, which start with `;;` (double `;`).
-  
+
+> FunC has single-line comments, which start with `;;` (double `;`).
+
 We pass the in_msg_body slice to the function and use the impure keyword
 
 `impure` is a keyword that indicates that the function changes the smart contract data.
@@ -98,7 +101,7 @@ To convert the resulting slice to Integer, add the following code:
 The `recv_internal()` function now looks like this:
 
      () recv_internal(slice in_msg_body) impure {
-		int n = in_msg_body~load_uint(32);
+    	int n = in_msg_body~load_uint(32);
      }
 
 `load_uint` function is from the [FunC standard library](https://ton.org/docs/#/func/stdlib) it loads an unsigned n-bit integer from a slice.
@@ -107,7 +110,7 @@ The `recv_internal()` function now looks like this:
 
 To add the resulting variable to `total` and store the value in the smart contract, let's look at how the persistent data/storage functionality is implemented in TON.
 
->Note: Do not confuse with TON Storage, the storage in the previous sentence is a convenient analogy.
+> Note: Do not confuse with TON Storage, the storage in the previous sentence is a convenient analogy.
 
 The TVM virtual machine is stack-based, so it is good practice to store data in a contract using a specific register, rather than storing the data "on top" of the stack.
 
@@ -134,10 +137,10 @@ And also we will transform this slice into Integer 64-bit for summation in accor
 Now our function will look like this:
 
     () recv_internal(slice in_msg_body) impure {
-		int n = in_msg_body~load_uint(32);
+    	int n = in_msg_body~load_uint(32);
 
-		slice ds = get_data().begin_parse();
-		int total = ds~load_uint(64);
+    	slice ds = get_data().begin_parse();
+    	int total = ds~load_uint(64);
     }
 
 ##### Sum up
@@ -145,12 +148,12 @@ Now our function will look like this:
 For summation, we will use the binary summation operation `+` and the assignment `=`
 
     () recv_internal(slice in_msg_body) impure {
-		int n = in_msg_body~load_uint(32);
+    	int n = in_msg_body~load_uint(32);
 
-		slice ds = get_data().begin_parse();
-		int total = ds~load_uint(64);
+    	slice ds = get_data().begin_parse();
+    	int total = ds~load_uint(64);
 
-		total += n;
+    	total += n;
     }
 
 ##### Save the value
@@ -174,16 +177,16 @@ We will do this again using the functions of the [FunC standard library](https:/
 Outcome:
 
     () recv_internal(slice in_msg_body) impure {
-		int n = in_msg_body~load_uint(32);
+    	int n = in_msg_body~load_uint(32);
 
-		slice ds = get_data().begin_parse();
-		int total = ds~load_uint(64);
+    	slice ds = get_data().begin_parse();
+    	int total = ds~load_uint(64);
 
-		total += n;
+    	total += n;
 
-		set_data(begin_cell().store_uint(total, 64).end_cell());
+    	set_data(begin_cell().store_uint(total, 64).end_cell());
     }
-	
+
 ## Throw exceptions
 
 All that's left to do in our internal function is to add an exception call if the received variable is not 32-bit.
@@ -201,18 +204,18 @@ By the way, in the TON TVM virtual machine, there are standard exception codes, 
 Insert at the beginning of the function:
 
     () recv_internal(slice in_msg_body) impure {
-		throw_if(35,in_msg_body.slice_bits() < 32);
+    	throw_if(35,in_msg_body.slice_bits() < 32);
 
-		int n = in_msg_body~load_uint(32);
+    	int n = in_msg_body~load_uint(32);
 
-		slice ds = get_data().begin_parse();
-		int total = ds~load_uint(64);
+    	slice ds = get_data().begin_parse();
+    	int total = ds~load_uint(64);
 
-		total += n;
+    	total += n;
 
-		set_data(begin_cell().store_uint(total, 64).end_cell());
+    	set_data(begin_cell().store_uint(total, 64).end_cell());
     }
-	
+
 ## Write a Get function
 
 Any function in FunC matches the following pattern:
@@ -220,10 +223,11 @@ Any function in FunC matches the following pattern:
 `[<forall declarator>] <return_type><function_name(<comma_separated_function_args>) <specifiers>`
 
 Let's write a get_total() function that returns an Integer and has a method_id specification (more on that later)
- 
+
     int get_total() method_id {
-  	;; здесь будет код
-	}
+
+;; здесь будет код
+}
 
 ##### Method_id
 
@@ -235,34 +239,34 @@ Roughly speaking, all functions in that volume have a numerical identifier, get 
 In order for the function to return the total stored in the contract, we need to take the data from the register, which we have already done:
 
     int get_total() method_id {
-  		slice ds = get_data().begin_parse();
- 	 	int total = ds~load_uint(64);
-		
-  		return total;
-	}
-	
+
+slice ds = get_data().begin_parse();
+int total = ds~load_uint(64);
+return total;
+}
+
 ## All code of our smart contract
 
     () recv_internal(slice in_msg_body) impure {
-		throw_if(35,in_msg_body.slice_bits() < 32);
+    	throw_if(35,in_msg_body.slice_bits() < 32);
 
-		int n = in_msg_body~load_uint(32);
+    	int n = in_msg_body~load_uint(32);
 
-		slice ds = get_data().begin_parse();
-		int total = ds~load_uint(64);
+    	slice ds = get_data().begin_parse();
+    	int total = ds~load_uint(64);
 
-		total += n;
+    	total += n;
 
-		set_data(begin_cell().store_uint(total, 64).end_cell());
+    	set_data(begin_cell().store_uint(total, 64).end_cell());
     }
-	 
+
     int get_total() method_id {
-  		slice ds = get_data().begin_parse();
- 	 	int total = ds~load_uint(64);
-		
-  		return total;
-	}
-	
+
+slice ds = get_data().begin_parse();
+int total = ds~load_uint(64);
+return total;
+}
+
 ## Deploy the contract to the testnet
 
 For deployment to the test network, we will use the command line interface [toncli](https://github.com/disintar/toncli/)
@@ -272,7 +276,17 @@ For deployment to the test network, we will use the command line interface [tonc
 ##### What to do if it says that there is not enough TON?
 
 You need to get them from the test faucet, the bot for this is @testgiver_ton_bot
-You can see the wallet address directly in the console, after the deploy command, toncli will display it to the right of the INFO line: Found existing deploy-wallet
+You can see the wallet address directly in the console, after the deploy command, toncli will display it to the right of the INFO line: Found existing deploy-wallet,
+address should be look like
+
+```
+INFO: 🚀 You want to [36minteract[0m with your contracts [32m['contract'][0m in [32mtestnet[0m - that's great!
+INFO: 🦘 Found existing deploy-wallet [[32mkQD-KrNlGAOHemTqnYXEygjaDeG7JmQfeplM9ig5YDrg1q4l[0m] (B alance: 0💎, Is inited: False) in \AppData\Local\toncli\toncli
+ERROR: 🧓 Deployer contract is not inited yet, please send some TON there and then I can deploy project
+
+and the address is :
+kQD-KrNlGAOHemTqnYXEygjaDeG7JmQfeplM9ig5YDrg1q4l
+```
 
 To check if TON came to your wallet on the test network, you can use this explorer: https://testnet.tonscan.org/
 
@@ -290,13 +304,12 @@ Let's write a small Fift script that will send a 32-bit message to our contract.
 ##### Message script
 
 To do this, create a `try.fif` file in the fift folder and write the following code in it:
- 
+
     "Asm.fif" include
-	
-	<b
-		11 32 u, // number
-	b>
-	
+
+    <b
+    	11 32 u, // number
+    b>
 
 `"Asm.fif" include` - needed to compile message into bytecode
 
@@ -306,7 +319,7 @@ Now consider the message:
 
 `10 32 u` - put 32-bit unsigned integer 10
 
-` // number` - single line comment
+`// number` - single line comment
 
 ##### Deploy the resulting message
 
