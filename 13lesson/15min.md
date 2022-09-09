@@ -237,6 +237,7 @@ The actor model is a model of concurrent computation and is at the heart of TON 
 
 	{- 
 		I am really into the TON ecosystem, so I wrote lessons on developing smart contracts: https://github.com/romanovichim/TonFunClessons_Eng
+		Also I have a channel where I write about the technical side of TON: https://t.me/ton_learn
 		
 		 TON Documentation: https://ton.org/docs/#/
 		 FunC Documentation: https://ton.org/docs/#/func/overview
