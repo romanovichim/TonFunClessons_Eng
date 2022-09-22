@@ -6,9 +6,9 @@ In the tondev chat, questions often arise about interacting with TON using popul
 
 The tasks are:
 - in this lesson we will make a blank with a wallet, which we will use later, and also figure out how to deploy and interact with the contract from the first lesson
-- in the next lesson we will deploy the NFT collection, and also pull the Get-methods
+- in the next lesson we will deploy the NFT collection, and also call the Get-methods
 
-To work with TON scripts, we will use the GO library [tonutils-go](https://github.com/xssnick/tonutils-go). This library has an excellent balance between high-level and low-level, so it allows you to write simple scripts, but at the same time does not deprive us of various possibilities for working with the TON blockchain.
+To work with TON with scripts, we will use the GO library [tonutils-go](https://github.com/xssnick/tonutils-go). This library has an excellent balance between high-level and low-level, so it allows you to write simple scripts, but at the same time does not deprive us of various possibilities for working with the TON blockchain.
 
 Even if you are not familiar with GO, I am sure that this lesson and scripts will be clear to you, but just in case, at the very end of the lesson there are links to materials that will allow you to quickly get used to GO.
 
