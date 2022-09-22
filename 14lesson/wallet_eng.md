@@ -46,7 +46,7 @@ We get the lightserver api.
 
 ### Seed phrase
 
-To generate a wallet, we need a public / private key pair (we will receive them using the Seed phrase) and the [InitialAccountWallet] structure (https://github.com/ton-blockchain/ton/blob/master/tl/generate/scheme/tonlib_api .tl#L60) corresponding to one of the available wallet versions.
+To generate a wallet, we need a public / private key pair (we will receive them using the Seed phrase) and the [InitialAccountWallet](https://github.com/ton-blockchain/ton/blob/master/tl/generate/scheme/tonlib_api.tl#L60) structure corresponding to one of the available wallet versions.
 
 > Seed phrase - a sequence of words used to generate keys.
 
@@ -72,7 +72,7 @@ You can read more about different wallet versions [here](https://github.com/tonc
 
 ### "Activate" wallet
 
-According to [documentation](https://ton.org/docs/#/payment-processing/overview?id=deploying-wallet), Toncoin must be sent to the received address. The testnet has a bot https://t.me/testgiver_ton_bot for this. On the mainnet, I will attach the official [page] (https://ton.org/buy-toncoin).
+According to [documentation](https://ton.org/docs/#/payment-processing/overview?id=deploying-wallet), Toncoin must be sent to the received address. The testnet has a bot https://t.me/testgiver_ton_bot for this. On the mainnet, I will attach the official [page](https://ton.org/buy-toncoin).
 
 ### Get the balance
 
@@ -440,7 +440,7 @@ https://go.dev/
 
 ### Hello world on GO
 
-https://gobyexample.com/hello world
+https://gobyexample.com/hello-world
 
 ### Syntax in 15 minutes
 
