@@ -155,7 +155,7 @@ The code:
 		])]);
 	}
 
-So in this smart contract, we need to manipulate the time in the smart contract, we will do this by changing the data in the `c7` register. To understand what tuple format we should "put" into `c7`, let's refer to the documentation, namely [TON description paragraph 4.4.10] (https://ton-blockchain.github.io/docs/tblkch.pdf).
+So in this smart contract, we need to manipulate the time in the smart contract, we will do this by changing the data in the `c7` register. To understand what tuple format we should "put" into `c7`, let's refer to the documentation, namely [TON description paragraph 4.4.10](https://ton-blockchain.github.io/docs/tblkch.pdf).
 
 We will not dwell on each parameter in detail; I tried to convey the essence briefly with comments in the code.
 

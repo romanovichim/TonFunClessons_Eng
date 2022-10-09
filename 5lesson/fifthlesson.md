@@ -68,15 +68,15 @@ As a result, we get the following code:
 Inside the method, we will take `op` , `query_id`, and the sender address `sender_address` from the function arguments, and then, using conditional operators, we will build logic around `op`.
 
 	() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
-	 ;; возьмем  op , query_id, и адрес отправителя sender_address
+	 ;; take op , query_id, and sender address sender_address
 
 	  if (op == 1) {
-		;; здесь будем сохранять адрес полученный от менеджера
+		;; here we will save the address received from the manager
 	  } else {
 		if (op == 2) {
-		  ;; отправка сообщения
+		  ;; sending a message
 		} else {
-		   ;; здесь будет исключение
+		   ;; there will be an exception
 		}
 	  }
 	}

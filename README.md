@@ -22,7 +22,7 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 | 13 | Learn FunC in 15 minutes | Inspired by learnxinyminutes | [LINK](./13lesson/15min.md) | ✅  |
 || **GO series**   |||||
 | 14 | Create a wallet and deploy a smart contract | Working with TON using GO, creating a wallet, hexBOC contract form, sending messages, calling the GET method | [LINK](./14lesson/wallet_eng.md) | ✅  |
-| 15 | NFT collection creation | | | ❌  |
+| 15 | NFT collection creation | We get information about the NFT collection and an individual element, Deploy the collection and element to the network | [LINK](./15lesson/NFTCollectionDeploy_eng.md) | ✅  |
 
 ## Questions and discussion of lessons (Chat in two languages - Russian and English)
 
