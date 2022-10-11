@@ -43,3 +43,7 @@ ERC-20 USDC: 0x996d0b3438bC0dD77C2A87c632B02686669c1AF0
 Donations will go to:
   - translations of current lessons from Russian into English
   - creating new lessons
+  
+## LICENSE
+
+CC BY-NC-ND 4.0 https://creativecommons.org/licenses/by-nc-nd/4.0/
