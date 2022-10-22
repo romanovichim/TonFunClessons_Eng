@@ -81,10 +81,10 @@ Also using conditional operators we build logic around `op` .
 		int query_id = in_msg_body~load_uint(64);
 		
 		if (op == 1) {
-		;; здесь будем добавлять новые значения
+		;; add the new values
     	}
 		if (op == 2) {
-		;; здесь удалять
+		;; remove all the outdated values
     	}
 	 }
 
@@ -95,10 +95,10 @@ According to the task, all other internal messages should throw an error, so let
 		int query_id = in_msg_body~load_uint(64);
 		
 		if (op == 1) {
-		;; здесь будем добавлять новые значения
+		;; add the new values
     	}
 		if (op == 2) {
-		;; здесь удалять
+		;; remove all the outdated values
     	}
 		throw (1001);
 	 }
@@ -137,15 +137,15 @@ The overall skeleton of the contract is as follows:
 		slice ds = data.begin_parse();
 		cell dic = ds.slice_bits() == 0 ? new_dict() : data;
 		if (op == 1) {
-		;; здесь будем добавлять новые значения
+		;; add the new values
     	}
 		if (op == 2) {
-		;; здесь удалять
+		;; remove all the outdated values
     	}
 		throw (1001);
 	 }
 	 
-#op = 1
+# op = 1
 
 With `op` equal to one, we add the value to the hashmap. Accordingly, according to the assignment, we need:
   - get the key from the body of the message
@@ -193,7 +193,7 @@ Everything is simple here, the `return` operator will help us.
 		return ();
 	}
 
-#op = 2
+# op = 2
 
 Here our task is to remove all obsolete records from our data (with `valid_until` < `now())`. In order to "pass" through the hashmap we will use a loop. FunC has three [loops](https://ton.org/docs/#/func/statements?id=loops): `repeat`,`until`,`while`.
 
@@ -236,7 +236,7 @@ Now, using the conditional operator, we will check the condition `valid_until` <
 			if (f) {
 				int valid_until = cs~load_uint(64);
 				if (valid_until < now()) {
-						;; здесь будем удалять
+						;; remove all the outdated values
 				}
 			}
 		} until (~ f);

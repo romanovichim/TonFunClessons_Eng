@@ -5,7 +5,7 @@ In this lesson, we will write a smart contract that can perform different operat
 
 ## Requirements
 
-To complete this tutorial, you need to install the [toncli](https://github.com/disintar/toncli/blob/master/INSTALLATION.md) command line interface .
+To complete this tutorial, you need to install the [toncli](https://github.com/disintar/toncli/blob/master/INSTALLATION.md) command line interface.
 
 And also be able to create / deploy a project using toncli, you can learn this in [the first lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/1lesson/firstlesson.md).
 
@@ -13,7 +13,7 @@ And also be able to create / deploy a project using toncli, you can learn this i
 
 Before considering what kind of smart contract we will do in this lesson, I suggest that you study [recommendations](https://ton.org/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines) about the smart contract message body(`message body;`).
 
-In order for us to create a semblance of a client-server architecture on smart contracts described in the recommendations, it is proposed to start each message (strictly speaking, the message body) with some `op` flag, which will identify what operation the smart contract should perform.
+For us to create a semblance of a client-server architecture on smart contracts described in the recommendations, it is proposed to start each message (strictly speaking, the message body) with some `op` flag, which will identify what operation the smart contract should perform.
 
 In this tutorial, we will make a smart contract that performs different actions depending on the `op`.
 
@@ -48,12 +48,12 @@ According to the documentation of the [TON virtual machine - TVM](https://ton-bl
 
 Each transaction consists of up to 5 stages. Read more [here](https://ton.org/docs/#/smart-contracts/tvm_overview?id=transactions-and-phases).
 
-We are interested in **Compute phase**. And to be more specific, what is "on the stack" during initialization. For normal message-triggered transactions, the initial state of the stack looks like this:
+We are interested in the **Compute phase**. And to be more specific, what is "on the stack" during initialization? For normal message-triggered transactions, the initial state of the stack looks like this:
 
 5 elements:
 - Smart contract balance (in nanoTons)
 - Incoming message balance (in nanotones)
-- Cell with incoming message
+- Cell with the incoming message
 - Incoming message body, slice type
 - Function selector (for recv_internal it is 0)
 
@@ -62,28 +62,28 @@ As a result, we get the following code:
     () recv_internal(int balance, int msg_value, cell in_msg_full, slice in_msg_body)  {
 
     }
-	
+
 ##### Inside a method
 
-Inside the method, we will take `op` , `query_id`, and the sender address `sender_address` from the function arguments, and then, using conditional operators, we will build logic around `op`.
+Inside the method, we will take `op`, `query_id`, and the sender address `sender_address` from the function arguments, and then, using conditional operators, we will build logic around `op`.
 
 	() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
-	 ;; take op , query_id, and sender address sender_address
+	 ;; take op , query_id, and  sender_address
 
 	  if (op == 1) {
-		;; here we will save the address received from the manager
+		;; save the address received from the manager 
 	  } else {
 		if (op == 2) {
-		  ;; sending a message
+		  ;; save the message
 		} else {
-		   ;; there will be an exception
+		   ;; throw an exception
 		}
 	  }
 	}
 	
 ## Secondary functions
 
-Let's think about what functionality can be carried out in a function?
+Let's think about what functionality can be carried out in a function.
 
 - comparison of addresses, so that when op is equal to 1, check that the request came from the Manager.
 - unloading and loading the address of the manager and the address that we store in the contract in register c4.
@@ -103,7 +103,7 @@ You can see the list of possible primitives from page 77 in [TVM](https://ton-bl
 
 We will store addresses in slices, but based on the task, we have to store two addresses, the Manager's address, for verification, and the address that the Manager will send for storage. Therefore, the slices will be returned in a tuple.
 
-In order to "get" data from c4, we need two functions from the [FunC standard library](https://ton.org/docs/#/func/stdlib) .
+To "get" data from c4, we need two functions from the [FunC standard library](https://ton.org/docs/#/func/stdlib).
 
 Namely:
 `get_data` - Gets a cell from the c4 register.
@@ -124,22 +124,22 @@ As a result, we get the following function:
 	  return (ds~load_msg_addr(), ds~load_msg_addr());
 	}
 	
-#####Inline
+##### Inline
 
-In previous lessons, we have already used the `inline` specifier, which actually substitutes the code at each place where the function is called. In this lesson, we will consider why this is necessary from a practical point of view.
+In previous lessons, we have already used the `inline` specifier, which substitutes the code at each place where the function is called. In this lesson, we will consider why this is necessary from a practical point of view.
 
 As we know from [documentation](https://ton.org/docs/#/smart-contracts/fees) the transaction fee consists of:
 
- - storage_fees - commission for a place in the blockchain.
+ - storage_fees - commission for a space in the blockchain.
  - in_fwd_fees - commission for importing messages (this is the case when we process `external` messages).
  - computation_fees - fees for executing TVM instructions.
  - action_fees - commission associated with processing the list of actions (for example, sending messages).
- - out_fwd_fees - fee for importing outgoing messages.
+ - out_fwd_fees - fees for importing outgoing messages.
  
  More details [here](https://ton-blockchain.github.io/docs/tvm.pdf).
  The `inline` specifier itself saves **computation_fee**.
  
-By default, when you have a funC function, it gets its own identifier stored in a separate id->function dictionary, and when you call it somewhere in the program, it looks up the function in the dictionary and then jumps to it.
+By default, when you have a funC function, it gets its identifier stored in a separate id->function dictionary, and when you call it somewhere in the program, it looks up the function in the dictionary and then jumps to it.
 
 The `inline` specifier puts the body of the function directly into the code of the parent function.
 
@@ -155,15 +155,15 @@ Of course, in addition to unloading, you need a download. Let's make a function 
 
 Note that the function has [specifier](https://ton.org/docs/#/func/functions?id=specifiers) `impure`. And we must specify the `impure` specifier if the function can modify the contract store. Otherwise, the FunC compiler may remove this function call.
 
-In order to "save" data from c4, we need functions from the [FunC standard library](https://ton.org/docs/#/func/stdlib) .
+In order to "save" data from c4, we need functions from the [FunC standard library](https://ton.org/docs/#/func/stdlib).
 
 Namely:
 
-`begin_cell()` - will create a Builder for the future cell
+`begin_cell()` - create a Builder for the future cell
 `store_slice()` - store Slice(slice) in Builder
 `end_cell()` - create a Cell (cell)
 
-`set_data()` - writes the cell to register c4
+`set_data()` - write the cell to register c4
 
 Assembling the cell:
 
@@ -179,7 +179,7 @@ As a result, we get the following function:
 
 ##### Parse the sender's address from the incoming message
 
-Let's declare a function with which we can get the sender's address from the message cell. The function will return a slice, since we will take the address itself using `load_msg_addr()` - which loads the only prefix from the slice that is a valid MsgAddress and returns it to the slice.
+Let's declare a function with which we can get the sender's address from the message cell. The function will return a slice since we will take the address itself using `load_msg_addr()` - which loads the only prefix from the slice that is a valid MsgAddress and returns it to the slice.
 
 	slice parse_sender_address (cell in_msg_full) inline {
 	
@@ -231,28 +231,28 @@ At the moment we have ready auxiliary functions and the body of the main functio
 	}
 
 		() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
-		 ;; возьмем  op , query_id, и адрес отправителя sender_address
+		 ;; take op , query_id, and sender_address
 
 		  if (op == 1) {
-			;; здесь будем сохранять адрес полученный от менеджера
+			;; save the address received from the manager 
 		  } else {
 			if (op == 2) {
-			  ;; отправка сообщения
+			  ;; send the message
 			} else {
-			   ;; здесь будет исключение
+			   ;; throw an exception
 			}
 		  }
 		}
 		
 It remains only to fill `recv_internal()`.
 
-##Filling the external method
+## Filling the external method
 
 ##### Take op , query_id, and sender_address
 
-Subtract op , query_id from the body of the message, respectively. According to [recommendations](https://ton.org/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines) these are 32 and 64 bit values.
+Subtract op, query_id from the body of the message, respectively. According to [recommendations](https://ton.org/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines) these are 32 and 64 bit values.
 
-And also using the `parse_sender_address()` function, which we wrote above, we will take the sender address.	
+And also using the `parse_sender_address()` function, which we wrote above, we will take the sender address.
 
 		() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
 		int op = in_msg_body~load_int(32);
@@ -260,19 +260,19 @@ And also using the `parse_sender_address()` function, which we wrote above, we w
 		var sender_address = parse_sender_address(in_msg_full);
 		   
 		  if (op == 1) {
-			;; здесь будем сохранять адрес полученный от менеджера
+			;; save the address received from the manager 
 		  } else {
 			if (op == 2) {
-			  ;; отправка сообщения
+			  ;; send the message
 			} else {
-			   ;; здесь будет исключение
+			   ;; throw an exception
 			}
 		  }
 		}
 
 ##### Flag op == 1
 
-In accordance with the task with flag 1, we must receive the manager's addresses and the saved address, check that the sender's address is equal to the manager's address (only the manager can change the address) and save the new address that is stored in the message body.
+Per the task with flag 1, we must receive the manager's addresses and the saved address, check that the sender's address is equal to the manager's address (only the manager can change the address) and save the new address that is stored in the message body.
 
 Load the manager address `manager_address` and the saved address `memorized_address)` from c4 using the `load_data()` function written earlier.
 
@@ -293,7 +293,7 @@ Take the address using the already familiar `load_msg_addr()` and save the addre
 	
 ##### Flag op == 2
 
-In accordance with the task with flag 2, we must send a message with a body containing:
+Per the task with flag 2, we must send a message with a body containing:
   - `op` is equal to 3
   - same `query_id`
   - Manager's address
@@ -304,7 +304,7 @@ In accordance with the task with flag 2, we must send a message with a body cont
  
 (slice manager_address, slice memorized_address) = load_data();
  
- The full message structure can be found [here - message layout](https://ton.org/docs/#/smart-contracts/messages?id=message-layout). But usually we don't need to control each field, so we can use the short form from [example](https://ton.org/docs/#/smart-contracts/messages?id=sending-messages):
+ The full message structure can be found [here - message layout](https://ton.org/docs/#/smart-contracts/messages?id=message-layout). But usually, we don't need to control each field, so we can use the short form from [example](https://ton.org/docs/#/smart-contracts/messages?id=sending-messages):
  
 		 var msg = begin_cell()
 			.store_uint(0x18, 6)
@@ -330,14 +330,14 @@ Sending a message in accordance with the conditions:
               .store_slice(memorized_address)
             .end_cell();
       send_raw_message(msg, 64);
-	  
+
 ##### Exception
 
 Here everyone just uses the usual `throw` from the [Built-in FunC modules](https://ton.org/docs/#/func/builtins?id=throwing-exceptions).
 
 throw(3);
 
-##Full smart contract code
+## Full smart contract code
 
 	int equal_slices (slice a, slice b) asm "SDEQ";
 

@@ -136,7 +136,7 @@ Further, everything is standard for the data function:
 
 Except for one thing c7 tuple - "temporary data" in c7 control register, before we didn't care what was in c7 and we just used `get_c7()`. i.e. just the current state of c7. But in this tutorial, we will have to work with c7 data and therefore we will have to write a helper function for tests.
 
-##Help function
+## Help function
 
 The code:
 
