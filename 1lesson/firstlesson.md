@@ -30,7 +30,7 @@ Toncli has created a simple wallet project, you can see 4 folders in it:
 - fift;
 - test;
 
-At this stage, we are interested in the func and fift folders, in which we will write code in FunС and Fift, respectively.
+At this stage, we are interested in the func and fift folders, in which we will write code in FunC and Fift, respectively.
 
 ##### What is FunC and Fift
 
@@ -222,7 +222,7 @@ Any function in FunC matches the following pattern:
 Let's write a get_total() function that returns an Integer and has a method_id specification (more on that later)
  
     int get_total() method_id {
-  	;; здесь будет код
+  	;; the code goes here
 	}
 
 ##### Method_id

@@ -356,7 +356,7 @@ Mass deployment is just an NFT deployment in a loop, the loop will go through a 
 
 I also consider it important to note that the "one-time" mass deployment in TON is limited. In [TVM](https://ton.org/docs/#/smart-contracts/tvm_overview?id=tvm-is-stack-machine), the number of output actions in a single transaction must be `<=255`.
 
-> Let me remind you that FunС has three [loops](https://ton.org/docs/#/func/statements?id=loops): `repeat`,`until`,`while`
+> Let me remind you that FunC has three [loops](https://ton.org/docs/#/func/statements?id=loops): `repeat`,`until`,`while`
 
 Let's create a counter `counter`, which we will use in the loop, and also upload a link to the NFT list.
 
@@ -528,7 +528,7 @@ Full function code:
 
 ## nft-item.fc
 
-The smart contract of a separate NFT begins with auxiliary functions for working with the `с4` register, let's look at what will be stored in the "storage" of the smart contract of a separate NFT.
+The smart contract of a separate NFT begins with auxiliary functions for working with the `c4` register, let's look at what will be stored in the "storage" of the smart contract of a separate NFT.
 
 - `index` - the index of this particular NFT
 - `collection_address` - smart contract address of the collection to which this NFT belongs.
@@ -558,7 +558,7 @@ But with unloading data and `c4` everything will be more complicated than in pre
 
 In addition to the data from `c4`, we will also pass the value 0 and -1, depending on whether the NFT is fully initialized and ready for interaction.
 We will get the value as follows:
-- first unload index, collection_address from `с4`
+- first unload index, collection_address from `c4`
 - and then check the number of bits in the remaining `owner_address` and `cell content` using the `slice_bits()` function
 
 	(int, int, slice, slice, cell) load_data() {
