@@ -145,7 +145,7 @@ The overall skeleton of the contract is as follows:
 		throw (1001);
 	 }
 	 
-#op = 1
+# op = 1
 
 With `op` equal to one, we add the value to the hashmap. Accordingly, according to the assignment, we need:
   - get the key from the body of the message
@@ -193,7 +193,7 @@ Everything is simple here, the `return` operator will help us.
 		return ();
 	}
 
-#op = 2
+# op = 2
 
 Here our task is to remove all obsolete records from our data (with `valid_until` < `now())`. In order to "pass" through the hashmap we will use a loop. FunC has three [loops](https://ton.org/docs/#/func/statements?id=loops): `repeat`,`until`,`while`.
 

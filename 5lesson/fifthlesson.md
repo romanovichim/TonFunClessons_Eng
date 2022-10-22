@@ -246,7 +246,7 @@ At the moment we have ready auxiliary functions and the body of the main functio
 		
 It remains only to fill `recv_internal()`.
 
-##Filling the external method
+## Filling the external method
 
 ##### Take op , query_id, and sender_address
 

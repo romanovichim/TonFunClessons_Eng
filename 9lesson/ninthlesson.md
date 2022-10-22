@@ -1097,7 +1097,7 @@ There is an exception at the end, i.e. if the contract does not take some action
 	  throw(0xffff);
 	}
 
-####Get method
+#### Get method
 
 According to the [Jetton](https://github.com/ton-blockchain/TIPs/issues/74) standard, a wallet smart contract must implement a Get method that returns:
 
