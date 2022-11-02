@@ -5,7 +5,7 @@ ICO - Initial Coin Offering (initial placement of tokens) - issuance by any proj
 ### Why ICO is needed
 Conducting an ICO by a project allows you to provide it with funding, which is necessary for development, development and scaling. Usually, when conducting an ICO, it is assumed that the tokens will cost more over time. I note that "decent" projects, in their roadmaps, lay down various mechanics that do not allow the price of the token to fall sharply, provoking an even sharper price drop further.
 
-If you are curious to understand how profitable ICOs are, then you can see the statistics on the ROI of ICO projects [here] (https://icodrops.com/ico-stats/).
+If you are curious to understand how profitable ICOs are, then you can see the statistics on the ROI of ICO projects [here](https://icodrops.com/ico-stats/).
 
 > Filter by USD ROI to see top projects.
 
@@ -15,7 +15,7 @@ Speaking about ICO, one cannot ignore the risks, in fact, when buying tokens, yo
 
 ## Overview of smart contracts
 
-In this tutorial, we will use the smart contract from the examples provided in the Jetton standard, namely the master contract `jetton-minter-ICO.fc` [from here](https://github.com/ton-blockchain/token- contract/tree/main/ft).
+In this tutorial, we will use the smart contract from the examples provided in the Jetton standard, namely the master contract `jetton-minter-ICO.fc` [from here](https://github.com/ton-blockchain/token-contract/tree/main/ft).
 
 The essential difference between the master contract from the ninth lesson, which we analyzed in detail, is the presence of mechanics in this ICO smart contract, due to the following code in `recv_internal()`:
 
@@ -231,7 +231,7 @@ In the `tonutils-go` library, you can deploy a smart contract in the form of hex
 
 ##### Building jetton-minter-ICO and jetton-wallet code
 
-We will take the func code from [examples] (https://github.com/ton-blockchain/token-contract/tree/main/ft), we need `jetton-minter-ICO.fc` and `jetton-minter.fc `, as well as auxiliary ones:
+We will take the func code from [examples](https://github.com/ton-blockchain/token-contract/tree/main/ft), we need `jetton-minter-ICO.fc` and `jetton-minter.fc `, as well as auxiliary ones:
 - `jetton-utils.fc`
 - `op-codes.fc`
 - `params.fc`
