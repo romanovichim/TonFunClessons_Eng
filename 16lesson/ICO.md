@@ -261,7 +261,7 @@ I will not dwell on fift in detail, this is beyond the scope of this lesson, I w
 - boc+>B - serializes to boc format
 - cr - displays the value in a string
 
-> You can run the script either using the familiar toncli, namely `toncli fift run` , or as described [here](https://ton.org/docs/#/compile?id=fift).
+> You can run the script either using the familiar toncli, namely `toncli fift run` , or as described [here](https://ton-blockchain.github.io/docs/#/compile?id=fift).
 
 An example script is in the `print-hex.fif` file.
 

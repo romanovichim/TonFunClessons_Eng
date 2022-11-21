@@ -154,7 +154,7 @@ In order to save data, we need to do three things:
 - from Builder create Cell (cell)
 - Write the resulting cell to the register
 
-We will do this again with the help of [FunC standard library functions](https://ton.org/docs/#/func/stdlib).
+We will do this again with the help of [FunC standard library functions](https://ton-blockchain.github.io/docs/#/func/stdlib).
 
 `begin_cell()` - create a Builder for the future cell `end_cell()` - create a Cell (cell) `set_data()` - write the cell to register c4
 
@@ -188,7 +188,7 @@ It measures parameters:
 
 And here the next question arises, we have some address, but this is not the address of the wallet of the token, how then to get the address of the smart contract of the wallet with tokens (tokens)?
 
-There is a little trick here. If we study [documentation](https://ton.org/docs/#/howto/step-by-step?id=_3-compiling-a-new-smart-contract) how a smart contract is compiled.
+There is a little trick here. If we study [documentation](https://ton-blockchain.github.io/docs/#/howto/step-by-step?id=_3-compiling-a-new-smart-contract) how a smart contract is compiled.
 
 We see the following:
 
@@ -242,11 +242,11 @@ Next, you need to send a message to the smart contract:
 		.store_ref(state_init)
 		.store_ref(master_msg);
 
-It is well written about sending messages [here](https://ton.org/docs/#/smart-contracts/messages), as well as in the third lesson. Using `store_ref` we send a message with information for the wallet contract.
+It is well written about sending messages [here](https://ton-blockchain.github.io/docs/#/smart-contracts/messages), as well as in the third lesson. Using `store_ref` we send a message with information for the wallet contract.
 
-It remains only to send a message, for this we use `send_raw_message` from the [standard library](https://ton.org/docs/#/func/stdlib?id=send_raw_message).
+It remains only to send a message, for this we use `send_raw_message` from the [standard library](https://ton-blockchain.github.io/docs/#/func/stdlib?id=send_raw_message).
 
-We have already collected the msg variable, it remains to figure out `mode`. Each mode is described in [documentation](https://ton.org/docs/#/func/stdlib?id=send_raw_message). Let's look at an example to make it clearer.
+We have already collected the msg variable, it remains to figure out `mode`. Each mode is described in [documentation](https://ton-blockchain.github.io/docs/#/func/stdlib?id=send_raw_message). Let's look at an example to make it clearer.
 
 Let there be 100 coins on the balance of the smart contract, and we receive an internal message with 60 coins and send a message with 10, the total fee is 3.
 
@@ -830,7 +830,7 @@ Further, if we create a transfer notification message:
 	  
 > It's important to note that we've decremented `msg_value` again, we'll need this later to know if we need to send a surplus message.
 
-Now it's time for `msg_value`, from which we persistently deducted various payments (you can read more about them [here](https://ton.org/docs/#/smart-contracts/fees))
+Now it's time for `msg_value`, from which we persistently deducted various payments (you can read more about them [here](https://ton-blockchain.github.io/docs/#/smart-contracts/fees))
 
 We check that the address is not null and that there is something left of `msg_value` and send a message about the surplus, with this surplus, respectively.
 
@@ -995,7 +995,7 @@ In order for our wallet to receive messages, we will use the external method `re
 
 According to the documentation of the [TON virtual machine - TVM](https://ton-blockchain.github.io/docs/tvm.pdf), when an event occurs on an account in one of the TON chains, it triggers a transaction.
 
-Each transaction consists of up to 5 stages. Read more [here](https://ton.org/docs/#/smart-contracts/tvm_overview?id=transactions-and-phases).
+Each transaction consists of up to 5 stages. Read more [here](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_overview?id=transactions-and-phases).
 
 We are interested in **Compute phase**. And to be more specific, what is "on the stack" during initialization. For normal message-triggered transactions, the initial state of the stack looks like this:
 

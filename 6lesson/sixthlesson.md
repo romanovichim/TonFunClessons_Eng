@@ -63,7 +63,7 @@ The test function must take the following arguments:
 - c5 cell - to check outgoing messages
 - gas - the gas that was used
 
-[TVM return codes](https://ton.org/docs/#/smart-contracts/tvm_exit_codes)
+[TVM return codes](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_exit_codes)
 
 ## Test saving addresses with op = 1
 
@@ -157,7 +157,7 @@ It looks like this:
 
 	slice message_body = begin_cell().store_uint(1, 32).store_uint(12345, 64).store_slice(stored_address.begin_parse()).end_cell().begin_parse();
 
-Now it remains to collect the message itself, but how to send a message to the address of the smart contract. To do this, we will use `addr_none`, since, in accordance with the [SENDRAWMSG documentation](https://ton.org/docs/#/func/stdlib?id=send_raw_message), the current address of the smart contract will be automatically substituted for it. We get:
+Now it remains to collect the message itself, but how to send a message to the address of the smart contract. To do this, we will use `addr_none`, since, in accordance with the [SENDRAWMSG documentation](https://ton-blockchain.github.io/docs/#/func/stdlib?id=send_raw_message), the current address of the smart contract will be automatically substituted for it. We get:
 
     cell message = begin_cell()
             .store_uint(0x6, 4)
@@ -484,7 +484,7 @@ Then we move on to the message. Outgoing messages are written to register c5. Le
 
 	slice all_actions = actions.begin_parse();
 
-Now let's remember how data is stored in c5 in accordance with [documentation](https://ton.org/docs/#/smart-contracts/tvm_overview?id=result-of-tvm-execution).
+Now let's remember how data is stored in c5 in accordance with [documentation](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_overview?id=result-of-tvm-execution).
 
 A list of two cell references is stored there, two cell references with the last action in the list and a cell reference with the previous action, respectively. (At the end of the tutorial, there will be code that shows how to parse `actions` in full, I hope this helps)
 
@@ -503,7 +503,7 @@ After loading the sender's address from the message with `load_msg_addr()` - whi
 
 	throw_if(104, ~ equal_slices(sender_address.begin_parse(), send_to_address));
 
-Using `load_grams()` and `load_uint()` from the [standard library](https://ton.org/docs/#/func/stdlib?id=load_grams) check if the number of Ton in the message is not equal to 0 and other service fields that can be viewed in the [message schema](https://ton.org/docs/#/smart-contracts/messages) by reading them from the message.
+Using `load_grams()` and `load_uint()` from the [standard library](https://ton-blockchain.github.io/docs/#/func/stdlib?id=load_grams) check if the number of Ton in the message is not equal to 0 and other service fields that can be viewed in the [message schema](https://ton-blockchain.github.io/docs/#/smart-contracts/messages) by reading them from the message.
 
 	throw_if(105, msg~load_grams() != 0);
     throw_if(106, msg~load_uint(1 + 4 + 4 + 64 + 32 + 1 + 1) != 0);

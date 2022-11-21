@@ -65,7 +65,7 @@ Let's call our test function `__test_example()`, it will return the amount of ga
 
 Since we will be writing a lot of tests in our lesson, we will often need to zero out the `c4` register, so we will create a helper function that will write `c4` to zero. (It won't have `__test` in its name).
 
-We will do this using the functions of the [FunC standard library](https://ton.org/docs/#/func/stdlib)
+We will do this using the functions of the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib)
 
 `set_data(begin_cell().store_uint(total, 64).end_cell());`
 
@@ -236,7 +236,7 @@ We get the values, namely the number and the cell `[int res, cell c] = stack;`, 
 
 	}
 	
-Let's convert the cell to a slice using `begin_parse`. And now by subtracting the values, we check the values. We will subtract using `load_uint` - a function from the [FunC standard library](https://ton.org/docs/#/func/stdlib) it loads an unsigned n-bit integer from a slice.
+Let's convert the cell to a slice using `begin_parse`. And now by subtracting the values, we check the values. We will subtract using `load_uint` - a function from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib) it loads an unsigned n-bit integer from a slice.
 
 	int __test_not_integer_return_types() {
 	  var (int gas_used, stack) = invoke_method(build_test_cell, [100, 500]);

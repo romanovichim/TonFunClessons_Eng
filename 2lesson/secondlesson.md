@@ -38,7 +38,7 @@ The data function takes no arguments, but must return:
 - c7 tuple - "temporary data" in the control register c7;
 - gas limit integer - gas limit (to understand the concept of gas, I advise you to first read about it in [Ethereum](https://ethereum.org/en/developers/docs/gas/));
 
-> In simple words, gas measures the amount of computational effort required to perform certain operations on the network. And you can read in detail [here](https://ton.org/docs/#/smart-contracts/fees). Well, in full detail [here in Appendix A](https://ton-blockchain.github.io/docs/tvm.pdf).
+> In simple words, gas measures the amount of computational effort required to perform certain operations on the network. And you can read in detail [here](https://ton-blockchain.github.io/docs/#/smart-contracts/fees). Well, in full detail [here in Appendix A](https://ton-blockchain.github.io/docs/tvm.pdf).
 
 > Stack - a list of elements organized according to the LIFO principle (English last in - first out, "last in - first out"). The stack is well written in [wikipedia](https://ru.wikipedia.org/wiki/%D0%A1%D1%82%D0%B5%D0%BA).
 
@@ -54,7 +54,7 @@ The test function must take the following arguments:
 - c5 cell - to check outgoing messages
 - gas - the gas that was used
 
-[TVM return codes](https://ton.org/docs/#/smart-contracts/tvm_exit_codes)
+[TVM return codes](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_exit_codes)
 
 ## Test the recv_internal() call
 
@@ -206,7 +206,7 @@ Let's check the return code.
 		int counter = first(stack); 
 		throw_if(104, counter != 10); 
 		
-In our test, it is important for us that the value 10 that we passed was "on top" of the stack, so we subtract using the first function of the standard library [stdlib.fc](https://ton.org/docs/#/func/stdlib?id= first) which returns the first value of the tuple.
+In our test, it is important for us that the value 10 that we passed was "on top" of the stack, so we subtract using the first function of the standard library [stdlib.fc](https://ton-blockchain.github.io/docs/#/func/stdlib?id= first) which returns the first value of the tuple.
 
 ## Test the exception
 

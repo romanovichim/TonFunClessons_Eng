@@ -33,7 +33,7 @@ The data function takes no arguments, but must return:
 - c7 tuple - "temporary data" in the control register c7;
 - gas limit integer - gas limit (to understand the concept of gas, I advise you to first read about it in [Ethereum](https://ethereum.org/en/developers/docs/gas/));
 
-> In simple words, gas measures the amount of computational effort required to perform certain operations on the network. And you can read in detail [here](https://ton.org/docs/#/smart-contracts/fees). Well, in full detail [here in Appendix A](https://ton-blockchain.github.io/docs/tvm.pdf).
+> In simple words, gas measures the amount of computational effort required to perform certain operations on the network. And you can read in detail [here](https://ton-blockchain.github.io/docs/#/smart-contracts/fees). Well, in full detail [here in Appendix A](https://ton-blockchain.github.io/docs/tvm.pdf).
 
 > Stack - a list of elements organized according to the LIFO principle (English last in - first out, "last in - first out"). The stack is well written in [wikipedia](https://ru.wikipedia.org/wiki/%D0%A1%D1%82%D0%B5%D0%BA).
 
@@ -49,7 +49,7 @@ The test function must take the following arguments:
 - c5 cell - to check outgoing messages
 - gas - the gas that was used
 
-[TVM return codes](https://ton.org/docs/#/smart-contracts/tvm_exit_codes)
+[TVM return codes](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_exit_codes)
 
 ## Let's start writing tests
 
@@ -217,12 +217,12 @@ Outgoing messages are written to the c5 register, so we unload a 32-bit value fr
 
 ![github tone](./img/send_action.PNG)
 
-Before moving on, we need to understand how data is stored in c5 from [documentation](https://ton.org/docs/#/smart-contracts/tvm_overview?id=result-of-tvm-execution). C5 stores two cell references with the last action in the list and a cell reference with the previous action, respectively.
+Before moving on, we need to understand how data is stored in c5 from [documentation](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_overview?id=result-of-tvm-execution). C5 stores two cell references with the last action in the list and a cell reference with the previous action, respectively.
 More details on how to get data from actions completely will be described in the code below in the task. Now the main thing is that we will unload the first link from c5 and immediately check that it is not empty so that we can then take the cell with the message.
 
 	throw_if(102, ~ slice_empty?(actions~load_ref().begin_parse()));
 
-We check with `slice_empty?` from the [FunC standard library](https://ton.org/docs/#/func/stdlib?id=slice_empty).
+We check with `slice_empty?` from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib?id=slice_empty).
 
 We need to take a slice of messages from the "actions" cell, take a reference to the cell with the message using `load_ref()` and convert it to a slice using `begin_parse()`.
 
@@ -243,7 +243,7 @@ And, accordingly, we will check their non-match using the previously declared `e
     throw_if(105, msg~load_grams() != 0);
     throw_if(106, msg~load_uint(1 + 4 + 4 + 64 + 32 + 1 + 1) != 0);
 
-Using `load_grams()` and `load_uint()` from the [standard library](https://ton.org/docs/#/func/stdlib?id=load_grams) check if the number of Ton in the message is not equal to 0 and other service fields that can be viewed in the [message schema](https://ton.org/docs/#/smart-contracts/messages) by reading them from the message.
+Using `load_grams()` and `load_uint()` from the [standard library](https://ton-blockchain.github.io/docs/#/func/stdlib?id=load_grams) check if the number of Ton in the message is not equal to 0 and other service fields that can be viewed in the [message schema](https://ton-blockchain.github.io/docs/#/smart-contracts/messages) by reading them from the message.
 
 	slice sender_address = msg~load_msg_addr();
 	slice expected_sender_address = begin_cell().store_uint(1, 2).store_uint(5,9).store_uint(8, 5).end_cell().begin_parse();
@@ -319,7 +319,7 @@ Again, we check the return code, the function will throw an exception if the ret
 
 `throw_if(102, ~ slice_empty?(actions.begin_parse()));`
 
-Since the proxy contract should not send a message, we simply check that the slice is empty using `slice_empty?`, more about the function [here](https://ton.org/docs/#/func/stdlib?id=slice_empty ) .
+Since the proxy contract should not send a message, we simply check that the slice is empty using `slice_empty?`, more about the function [here](https://ton-blockchain.github.io/docs/#/func/stdlib?id=slice_empty ) .
 
 ## Exercise
 

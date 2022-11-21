@@ -11,7 +11,7 @@ And also be able to create/deploy a project using toncli, you can learn how to d
 
 ## Hashmap or dictionaries (dictionaries)
 
-Hashmap is a data structure represented by a tree. Hashmap - maps keys to values ​​of arbitrary type, so that quick lookup and modification is possible. More details in [clause 3.3](https://ton-blockchain.github.io/docs/tvm.pdf). In FunC, hashmaps are [represented by a cell](https://ton.org/docs/#/func/stdlib?id=dictionaries-primitives).
+Hashmap is a data structure represented by a tree. Hashmap - maps keys to values ​​of arbitrary type, so that quick lookup and modification is possible. More details in [clause 3.3](https://ton-blockchain.github.io/docs/tvm.pdf). In FunC, hashmaps are [represented by a cell](https://ton-blockchain.github.io/docs/#/func/stdlib?id=dictionaries-primitives).
 
 ## Smart contract
 
@@ -46,7 +46,7 @@ In order for our proxy to receive messages, we will use the external method `rec
 ##### External method arguments
 According to the documentation of the [TON virtual machine - TVM](https://ton-blockchain.github.io/docs/tvm.pdf), when an event occurs on an account in one of the TON chains, it triggers a transaction.
 
-Each transaction consists of up to 5 stages. Read more [here](https://ton.org/docs/#/smart-contracts/tvm_overview?id=transactions-and-phases).
+Each transaction consists of up to 5 stages. Read more [here](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_overview?id=transactions-and-phases).
 
 We are interested in **Compute phase**. And to be more specific, what is "on the stack" during initialization. For normal message-triggered transactions, the initial state of the stack looks like this:
 
@@ -103,7 +103,7 @@ According to the task, all other internal messages should throw an error, so let
 		throw (1001);
 	 }
 
-Now we need to take the data from the `c4` register. In order to "get" the data from c4, we need two functions from the [FunC standard library](https://ton.org/docs/#/func/stdlib) .
+Now we need to take the data from the `c4` register. In order to "get" the data from c4, we need two functions from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib) .
 
 Namely:
 `get_data` - Gets a cell from the c4 register.
@@ -155,7 +155,7 @@ With `op` equal to one, we add the value to the hashmap. Accordingly, according 
 
 ##### Get the key
 
-Here everything is as before, using the `load_uint` function from the [FunC standard library](https://ton.org/docs/#/func/stdlib) it loads an unsigned n-bit integer from a slice.
+Here everything is as before, using the `load_uint` function from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib) it loads an unsigned n-bit integer from a slice.
 
 		if (op == 1) {
 			int key = in_msg_body~load_uint(256);
@@ -195,7 +195,7 @@ Everything is simple here, the `return` operator will help us.
 
 #op = 2
 
-Here our task is to remove all obsolete records from our data (with `valid_until` < `now())`. In order to "pass" through the hashmap we will use a loop. FunC has three [loops](https://ton.org/docs/#/func/statements?id=loops): `repeat`,`until`,`while`.
+Here our task is to remove all obsolete records from our data (with `valid_until` < `now())`. In order to "pass" through the hashmap we will use a loop. FunC has three [loops](https://ton-blockchain.github.io/docs/#/func/statements?id=loops): `repeat`,`until`,`while`.
 
 Since we have already subtracted `op` and `query_id`, check here that there is nothing in slice in_msg_body with `end_parse()`
 
@@ -213,7 +213,7 @@ For our case, let's use a loop: `until`.
 		} until ();
 	}
 	
-In order to check the `valid_until` < `now())` condition at each step, we need to get some minimum key of our hashmap. To do this, the [FunC standard library](https://ton.org/docs/#/func/stdlib?id=dict_set) has a function `udict_get_next?`.
+In order to check the `valid_until` < `now())` condition at each step, we need to get some minimum key of our hashmap. To do this, the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib?id=dict_set) has a function `udict_get_next?`.
 
 `udict_get_next? ` - Calculates the minimum key k in the dictionary dict that is greater than some given value and returns k, the associated value, and a flag indicating success. If the dictionary is empty, returns (null, null, 0).
 

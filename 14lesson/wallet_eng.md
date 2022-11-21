@@ -72,7 +72,7 @@ You can read more about different wallet versions [here](https://github.com/tonc
 
 ### "Activate" wallet
 
-According to [documentation](https://ton.org/docs/#/payment-processing/overview?id=deploying-wallet), Toncoin must be sent to the received address. The testnet has a bot https://t.me/testgiver_ton_bot for this. On the mainnet, I will attach the official [page](https://ton.org/buy-toncoin).
+According to [documentation](https://ton-blockchain.github.io/docs/#/payment-processing/overview?id=deploying-wallet), Toncoin must be sent to the received address. The testnet has a bot https://t.me/testgiver_ton_bot for this. On the mainnet, I will attach the official [page](https://ton-blockchain.github.io/buy-toncoin).
 
 ### Get the balance
 
@@ -229,7 +229,7 @@ I will not dwell on fift in detail, this is beyond the scope of this lesson, I w
 - boc+>B - serializes to boc format
 - cr - displays the value in a string
 
-> You can run the script either using the familiar toncli, namely `toncli fift run` , or as described [here](https://ton.org/docs/#/compile?id=fift).
+> You can run the script either using the familiar toncli, namely `toncli fift run` , or as described [here](https://ton-blockchain.github.io/docs/#/compile?id=fift).
 
 An example script is in the `print-hex.fif` file.
 

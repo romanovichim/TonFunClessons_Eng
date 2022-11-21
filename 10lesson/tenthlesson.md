@@ -83,7 +83,7 @@ Let's write help functions `load_data()` and `save_data()` that will unload and 
 
 In this smart contract, we need to reproduce the address of the smart contract with a separate NFT of this owner at the address of the owner. To do this, we will use the same "trick" as in the Jetton examples.
 
-Let me remind you, if we study the [documentation](https://ton.org/docs/#/howto/step-by-step?id=_3-compiling-a-new-smart-contract) of how a smart contract is compiled .
+Let me remind you, if we study the [documentation](https://ton-blockchain.github.io/docs/#/howto/step-by-step?id=_3-compiling-a-new-smart-contract) of how a smart contract is compiled .
 
 We can see the following:
 
@@ -192,7 +192,7 @@ The external method of our collection smart contract should implement:
 
 According to the documentation of the [TON virtual machine - TVM](https://ton-blockchain.github.io/docs/tvm.pdf), when an event occurs on an account in one of the TON chains, it triggers a transaction.
 
-Each transaction consists of up to 5 stages. Read more [here](https://ton.org/docs/#/smart-contracts/tvm_overview?id=transactions-and-phases).
+Each transaction consists of up to 5 stages. Read more [here](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_overview?id=transactions-and-phases).
 
 We are interested in **Compute phase**. And to be more specific, what is "on the stack" during initialization. For normal message-triggered transactions, the initial state of the stack looks like this:
 
@@ -354,9 +354,9 @@ Mass deployment is just an NFT deployment in a loop, the loop will go through a 
 
 > In detail on working with dictionaries (Hashmaps) we stopped in the seventh lesson
 
-I also consider it important to note that the "one-time" mass deployment in TON is limited. In [TVM](https://ton.org/docs/#/smart-contracts/tvm_overview?id=tvm-is-stack-machine), the number of output actions in a single transaction must be `<=255`.
+I also consider it important to note that the "one-time" mass deployment in TON is limited. In [TVM](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_overview?id=tvm-is-stack-machine), the number of output actions in a single transaction must be `<=255`.
 
-> Let me remind you that FunС has three [loops](https://ton.org/docs/#/func/statements?id=loops): `repeat`,`until`,`while`
+> Let me remind you that FunС has three [loops](https://ton-blockchain.github.io/docs/#/func/statements?id=loops): `repeat`,`until`,`while`
 
 Let's create a counter `counter`, which we will use in the loop, and also upload a link to the NFT list.
 
@@ -582,7 +582,7 @@ According to the standard, both functionality involves sending messages, so let'
 - `slice to_address` - address where to send the message
 - `int amount` - amount of TON
 - `int op` - `op` code to identify the operation
-- `int query_id` - query_id used in all internal request-response messages. [More](https://ton.org/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines)
+- `int query_id` - query_id used in all internal request-response messages. [More](https://ton-blockchain.github.io/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines)
 - `builder payload` - some payload we want to send with the message
 - `int send_mode` - Message sending mode, more details about modes can be found in the third lesson
 
@@ -624,13 +624,13 @@ In order to effect an NFT ownership transfer, the key things to do are:
 
 So the function will take:
 
-`int my_balance` - Balance (after crediting the cost of the incoming message) of the smart contract (in nanoTons). According to [Compute phase](https://ton.org/docs/#/smart-contracts/tvm_overview?id=initialization-of-tvm)
+`int my_balance` - Balance (after crediting the cost of the incoming message) of the smart contract (in nanoTons). According to [Compute phase](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_overview?id=initialization-of-tvm)
 `int index` - index of a single NFT collection
 `slice collection_address` - collection smart contract address
 `slice owner_address` - address of the owner
 `cell content` - cell with NFT content
 `slice sender_address` - address of the sender of the change of ownership message
-`int query_id` - query_id used in all internal request-response messages. [More](https://ton.org/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines)
+`int query_id` - query_id used in all internal request-response messages. [More](https://ton-blockchain.github.io/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines)
 `slice in_msg_body` - what will remain of the message body in `recv_internal()`, inside we need address addresses
 `int fwd_fees` - the transaction cost of the message sent to `recv_internal()`, here it will be used to estimate the TON value needed to perform the transfer operation
 
@@ -682,7 +682,7 @@ Since the example does not involve the use of a custom payload, we skip it and g
 		int forward_amount = in_msg_body~load_coins();
 	}
 
-Next comes the calculation of the Ton value, which will need to be sent back to the address for notification of a change in ownership. I will not stop here, so as not to drag out the lesson, but to make it easier to understand the code that will be below, I advise you to familiarize yourself with [Transaction fees] (https://ton.org/docs/#/smart-contracts/fees). Also note that we take into account when calculating that the address can be `addr_none`.
+Next comes the calculation of the Ton value, which will need to be sent back to the address for notification of a change in ownership. I will not stop here, so as not to drag out the lesson, but to make it easier to understand the code that will be below, I advise you to familiarize yourself with [Transaction fees] (https://ton-blockchain.github.io/docs/#/smart-contracts/fees). Also note that we take into account when calculating that the address can be `addr_none`.
 
     int rest_amount = my_balance - min_tons_for_storage();
     if (forward_amount) {
@@ -747,7 +747,7 @@ And of course we save the changes in the `c4` register. Outcome:
 
 According to the documentation of the [TON virtual machine - TVM](https://ton-blockchain.github.io/docs/tvm.pdf), when an event occurs on an account in one of the TON chains, it triggers a transaction.
 
-Each transaction consists of up to 5 stages. Read more [here](https://ton.org/docs/#/smart-contracts/tvm_overview?id=transactions-and-phases).
+Each transaction consists of up to 5 stages. Read more [here](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_overview?id=transactions-and-phases).
 
 We are interested in **Compute phase**. And to be more specific, what is "on the stack" during initialization. For normal message-triggered transactions, the initial state of the stack looks like this:
 
@@ -783,7 +783,7 @@ We get the flags and check that the message was not returned (here we mean bounc
         return ();
     }
 	
-Now we skip values that we don't need, what values can be found [here](https://ton.org/docs/#/smart-contracts/messages).
+Now we skip values that we don't need, what values can be found [here](https://ton-blockchain.github.io/docs/#/smart-contracts/messages).
 
     cs~load_msg_addr(); ;; skip dst
     cs~load_coins(); ;; skip value

@@ -36,7 +36,7 @@ At this stage, we are interested in the func and fift folders, in which we will 
 
 The FunC high-level language is used to program smart contracts on TON. FunC programs are compiled into Fift assembler code, which generates the corresponding bytecode for the TON Virtual Machine (TVM) (More about TVM [here](https://ton-blockchain.github.io/docs/tvm.pdf)). Further, this bytecode (actually a tree of cells, like any other data in the TON Blockchain) can be used to create a smart contract on the blockchain or can be run on a local instance of TVM (TON Virtual Machine).
 
-More information about FunC can be found [here](https://ton.org/docs/#/smart-contracts/)
+More information about FunC can be found [here](https://ton-blockchain.github.io/docs/#/smart-contracts/)
 
 ##### Let's prepare a file for our code
 
@@ -50,7 +50,7 @@ And open the code.func file, on your screen you will see the wallet smart contra
 
 Smart contracts on the TON network have two reserved methods that can be accessed.
 
-First, `recv_external()` this function is executed when a request to the contract comes from the outside world, that is, not from TON, for example, when we form a message ourselves and send it via lite-client (About installing [lite-client](https://ton.org/docs/#/compile?id=lite-client)).
+First, `recv_external()` this function is executed when a request to the contract comes from the outside world, that is, not from TON, for example, when we form a message ourselves and send it via lite-client (About installing [lite-client](https://ton-blockchain.github.io/docs/#/compile?id=lite-client)).
 Second, `recv_internal()` this function is executed when inside TON itself, for example, when any contract refers to ours.
  
  > Light client (English lite-client) is a software that connects to full nodes to interact with the blockchain. They help users access and interact with the blockchain without the need to synchronize the entire blockchain.
@@ -85,7 +85,7 @@ In our simple smart contract, we will use only four types:
 - Integer - signed 257-bit integer
 
 More about types in FunC:
-[briefly here](https://ton.org/docs/#/smart-contracts/) ,
+[briefly here](https://ton-blockchain.github.io/docs/#/smart-contracts/) ,
 [detailed description here in section 2.1](https://ton-blockchain.github.io/docs/fiftbase.pdf)
 
 In simple terms, cell is a sealed cell, slice is when the cell can be read, and builder is when you assemble the cell.
@@ -101,7 +101,7 @@ The `recv_internal()` function now looks like this:
 		int n = in_msg_body~load_uint(32);
      }
 
-`load_uint` function is from the [FunC standard library](https://ton.org/docs/#/func/stdlib) it loads an unsigned n-bit integer from a slice.
+`load_uint` function is from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib) it loads an unsigned n-bit integer from a slice.
 
 ## Persistent smart contract data
 
@@ -162,7 +162,7 @@ In order to keep a constant value, we need to do four things:
 - from Builder create Cell (cell)
 - Write the resulting cell to the register
 
-We will do this again using the functions of the [FunC standard library](https://ton.org/docs/#/func/stdlib)
+We will do this again using the functions of the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib)
 
 `set_data(begin_cell().store_uint(total, 64).end_cell());`
 
@@ -188,7 +188,7 @@ Outcome:
 
 All that's left to do in our internal function is to add an exception call if the received variable is not 32-bit.
 
-For this we will use [built-in](https://ton.org/docs/#/func/builtins) exceptions.
+For this we will use [built-in](https://ton-blockchain.github.io/docs/#/func/builtins) exceptions.
 
 Exceptions can be thrown by the conditional primitives `throw_if` and `throw_unless` and the unconditional `throw` .
 
@@ -196,7 +196,7 @@ Let's use `throw_if` and pass any error code. In order to take the bitness we us
 
 throw_if(35,in_msg_body.slice_bits() < 32);
 
-By the way, in the TON TVM virtual machine, there are standard exception codes, we will really need them in tests. You can view it [here](https://ton.org/docs/#/smart-contracts/tvm_exit_codes).
+By the way, in the TON TVM virtual machine, there are standard exception codes, we will really need them in tests. You can view it [here](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_exit_codes).
 
 Insert at the beginning of the function:
 

@@ -11,7 +11,7 @@ And also be able to create / deploy a project using toncli, you can learn this i
 
 ## Op - to identify the operation
 
-Before considering what kind of smart contract we will do in this lesson, I suggest that you study [recommendations](https://ton.org/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines) about the smart contract message body(`message body;`).
+Before considering what kind of smart contract we will do in this lesson, I suggest that you study [recommendations](https://ton-blockchain.github.io/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines) about the smart contract message body(`message body;`).
 
 In order for us to create a semblance of a client-server architecture on smart contracts described in the recommendations, it is proposed to start each message (strictly speaking, the message body) with some `op` flag, which will identify what operation the smart contract should perform.
 
@@ -46,7 +46,7 @@ In order for our proxy to receive messages, we will use the external method `rec
 
 According to the documentation of the [TON virtual machine - TVM](https://ton-blockchain.github.io/docs/tvm.pdf), when an event occurs on an account in one of the TON chains, it triggers a transaction.
 
-Each transaction consists of up to 5 stages. Read more [here](https://ton.org/docs/#/smart-contracts/tvm_overview?id=transactions-and-phases).
+Each transaction consists of up to 5 stages. Read more [here](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_overview?id=transactions-and-phases).
 
 We are interested in **Compute phase**. And to be more specific, what is "on the stack" during initialization. For normal message-triggered transactions, the initial state of the stack looks like this:
 
@@ -103,7 +103,7 @@ You can see the list of possible primitives from page 77 in [TVM](https://ton-bl
 
 We will store addresses in slices, but based on the task, we have to store two addresses, the Manager's address, for verification, and the address that the Manager will send for storage. Therefore, the slices will be returned in a tuple.
 
-In order to "get" data from c4, we need two functions from the [FunC standard library](https://ton.org/docs/#/func/stdlib) .
+In order to "get" data from c4, we need two functions from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib) .
 
 Namely:
 `get_data` - Gets a cell from the c4 register.
@@ -128,7 +128,7 @@ As a result, we get the following function:
 
 In previous lessons, we have already used the `inline` specifier, which actually substitutes the code at each place where the function is called. In this lesson, we will consider why this is necessary from a practical point of view.
 
-As we know from [documentation](https://ton.org/docs/#/smart-contracts/fees) the transaction fee consists of:
+As we know from [documentation](https://ton-blockchain.github.io/docs/#/smart-contracts/fees) the transaction fee consists of:
 
  - storage_fees - commission for a place in the blockchain.
  - in_fwd_fees - commission for importing messages (this is the case when we process `external` messages).
@@ -153,9 +153,9 @@ Of course, in addition to unloading, you need a download. Let's make a function 
 		 
 	}
 
-Note that the function has [specifier](https://ton.org/docs/#/func/functions?id=specifiers) `impure`. And we must specify the `impure` specifier if the function can modify the contract store. Otherwise, the FunC compiler may remove this function call.
+Note that the function has [specifier](https://ton-blockchain.github.io/docs/#/func/functions?id=specifiers) `impure`. And we must specify the `impure` specifier if the function can modify the contract store. Otherwise, the FunC compiler may remove this function call.
 
-In order to "save" data from c4, we need functions from the [FunC standard library](https://ton.org/docs/#/func/stdlib) .
+In order to "save" data from c4, we need functions from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib) .
 
 Namely:
 
@@ -194,7 +194,7 @@ Now, using the `begin_parse` already familiar to us, we will convert the cell in
 	  return sender_address;
 	}
 
-We start "reading out" the cell with `load_uint`, a function from the [FunC standard library](https://ton.org/docs/#/func/stdlib) that loads an unsigned n-bit integer from a slice.
+We start "reading out" the cell with `load_uint`, a function from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib) that loads an unsigned n-bit integer from a slice.
 
 In this lesson, we will not dwell on the flags in detail, but you can read more in paragraph [3.1.7](https://ton-blockchain.github.io/docs/tblkch.pdf).
 And finally, we take the address.
@@ -250,7 +250,7 @@ It remains only to fill `recv_internal()`.
 
 ##### Take op , query_id, and sender_address
 
-Subtract op , query_id from the body of the message, respectively. According to [recommendations](https://ton.org/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines) these are 32 and 64 bit values.
+Subtract op , query_id from the body of the message, respectively. According to [recommendations](https://ton-blockchain.github.io/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines) these are 32 and 64 bit values.
 
 And also using the `parse_sender_address()` function, which we wrote above, we will take the sender address.	
 
@@ -304,7 +304,7 @@ In accordance with the task with flag 2, we must send a message with a body cont
  
 (slice manager_address, slice memorized_address) = load_data();
  
- The full message structure can be found [here - message layout](https://ton.org/docs/#/smart-contracts/messages?id=message-layout). But usually we don't need to control each field, so we can use the short form from [example](https://ton.org/docs/#/smart-contracts/messages?id=sending-messages):
+ The full message structure can be found [here - message layout](https://ton-blockchain.github.io/docs/#/smart-contracts/messages?id=message-layout). But usually we don't need to control each field, so we can use the short form from [example](https://ton-blockchain.github.io/docs/#/smart-contracts/messages?id=sending-messages):
  
 		 var msg = begin_cell()
 			.store_uint(0x18, 6)
@@ -333,7 +333,7 @@ Sending a message in accordance with the conditions:
 	  
 ##### Exception
 
-Here everyone just uses the usual `throw` from the [Built-in FunC modules](https://ton.org/docs/#/func/builtins?id=throwing-exceptions).
+Here everyone just uses the usual `throw` from the [Built-in FunC modules](https://ton-blockchain.github.io/docs/#/func/builtins?id=throwing-exceptions).
 
 throw(3);
 

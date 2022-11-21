@@ -229,7 +229,7 @@ The actor model is a model of concurrent computation and is at the heart of TON 
 	
 	;; () send_raw_message(cell msg, int mode) - put message msg into sending queue with mode. Note, that message will be sent after a successful execution of the whole transaction
 	
-	;; Detailed descriptions of all standard functions can be found in docs https://ton.org/docs/#/func/stdlib
+	;; Detailed descriptions of all standard functions can be found in docs https://ton-blockchain.github.io/docs/#/func/stdlib
 
 	
   
@@ -239,8 +239,8 @@ The actor model is a model of concurrent computation and is at the heart of TON 
 		I am really into the TON ecosystem, so I wrote lessons on developing smart contracts: https://github.com/romanovichim/TonFunClessons_Eng
 		Also I have a channel where I write about the technical side of TON: https://t.me/ton_learn
 		
-		 TON Documentation: https://ton.org/docs/#/
-		 FunC Documentation: https://ton.org/docs/#/func/overview
+		 TON Documentation: https://ton-blockchain.github.io/docs/#/
+		 FunC Documentation: https://ton-blockchain.github.io/docs/#/func/overview
 		 
 		 TON Smart Contracts examples:  https://github.com/ton-blockchain/ton/tree/master/crypto/smartcont
 		

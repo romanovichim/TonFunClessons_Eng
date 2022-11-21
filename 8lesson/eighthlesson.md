@@ -57,7 +57,7 @@ The test function must take the following arguments:
 - c5 cell - to check outgoing messages
 - gas - the gas that was used
 
-[TVM return codes](https://ton.org/docs/#/smart-contracts/tvm_exit_codes)
+[TVM return codes](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_exit_codes)
 
 ## Test the contract triggering and just put the data for the next tests.
 
@@ -124,7 +124,7 @@ Comments described each value for convenience. Let's also collect the message ce
             .store_slice(message_body)
             .end_cell();
 			
-The message must be sent to the address of the smart contract. For this we will use `addr_none` (i.e. `.store_uint(0, 2)`), because according to [SENDRAWMSG documentation](https://ton.org/docs/#/func/stdlib?id=send_raw_message ) the current address of the smart contract will be automatically substituted for it.
+The message must be sent to the address of the smart contract. For this we will use `addr_none` (i.e. `.store_uint(0, 2)`), because according to [SENDRAWMSG documentation](https://ton-blockchain.github.io/docs/#/func/stdlib?id=send_raw_message ) the current address of the smart contract will be automatically substituted for it.
 
 Further, everything is standard for the data function:
 
@@ -236,7 +236,7 @@ The code:
 We check the return code, the function will throw an exception if the return code is not zero.
 0 - standard return code from the successful execution of a smart contract.
 
-Let me remind you that the `tuple` variable is the (stack) values ​​that we pass from the data function. We will parse it using [data type primitives](https://ton.org/docs/#/func/stdlib?id=other-tuple-primitives) `tuple` - `first` and `second`.
+Let me remind you that the `tuple` variable is the (stack) values ​​that we pass from the data function. We will parse it using [data type primitives](https://ton-blockchain.github.io/docs/#/func/stdlib?id=other-tuple-primitives) `tuple` - `first` and `second`.
 
     var valid_until = first(stack);
     throw_if(102, valid_until != 1000);

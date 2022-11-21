@@ -33,7 +33,7 @@ Here a logical question arises - how to understand what arguments a function sho
 
 According to the documentation of the [TON virtual machine - TVM](https://ton-blockchain.github.io/docs/tvm.pdf), when an event occurs on an account in one of the TON chains, it triggers a transaction.
 
-Each transaction consists of up to 5 phases(stages). Read more [here](https://ton.org/docs/#/smart-contracts/tvm_overview?id=transactions-and-phases).
+Each transaction consists of up to 5 phases(stages). Read more [here](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_overview?id=transactions-and-phases).
 
 We are interested in **Compute phase**. And to be more specific, what is "on the stack" during initialization. For normal message-triggered transactions, the initial state of the stack looks like this:
 
@@ -75,7 +75,7 @@ In order for us to take the address, we need to convert the cell into a slice us
 
 	var cs = in_msg_full.begin_parse();
 
-Now we need to "subtract" the resulting slice to the address. Using the `load_uint` function from the [FunC standard library](https://ton.org/docs/#/func/stdlib) it loads an unsigned n-bit integer from the slice, "subtract" the flags.
+Now we need to "subtract" the resulting slice to the address. Using the `load_uint` function from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib) it loads an unsigned n-bit integer from the slice, "subtract" the flags.
 
 	var flags = cs~load_uint(4);
 
@@ -181,7 +181,7 @@ So it remains for us to fill the body of the conditional operator in accordance 
 
 ##### Message structure
 
-The full message structure can be found [here - message layout](https://ton.org/docs/#/smart-contracts/messages?id=message-layout). But usually we don't need to control each field, so we can use the short form from [example](https://ton.org/docs/#/smart-contracts/messages?id=sending-messages):
+The full message structure can be found [here - message layout](https://ton-blockchain.github.io/docs/#/smart-contracts/messages?id=message-layout). But usually we don't need to control each field, so we can use the short form from [example](https://ton-blockchain.github.io/docs/#/smart-contracts/messages?id=sending-messages):
 
 
 	 var msg = begin_cell()
@@ -193,13 +193,13 @@ The full message structure can be found [here - message layout](https://ton.org/
 	  .end_cell();
 
 
-As you can see, functions from the [FunC standard library](https://ton.org/docs/#/func/stdlib) are used to construct the message. Namely, the "wrapper" functions of the Builder primitives (partially built cells, as you may remember from the first lesson). Consider:
+As you can see, functions from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib) are used to construct the message. Namely, the "wrapper" functions of the Builder primitives (partially built cells, as you may remember from the first lesson). Consider:
 
  `begin_cell()` - will create a Builder for the future cell
  `end_cell()` - will create a Cell (cell)
  `store_uint` - store uint in Builder
  `store_slice` - store the slice in the Builder
- `store_coins` - here the documentation means `store_grams` - used to store TonCoins. More details [here](https://ton.org/docs/#/func/stdlib?id=store_grams).
+ `store_coins` - here the documentation means `store_grams` - used to store TonCoins. More details [here](https://ton-blockchain.github.io/docs/#/func/stdlib?id=store_grams).
   
  And also additionally consider `store_ref`, which will be needed to send the address.
  
@@ -235,9 +235,9 @@ It remains only to send our message.
 
 ##### Message sending mode
 
-To send messages, use `send_raw_message` from the [standard library](https://ton.org/docs/#/func/stdlib?id=send_raw_message).
+To send messages, use `send_raw_message` from the [standard library](https://ton-blockchain.github.io/docs/#/func/stdlib?id=send_raw_message).
 
-We have already collected the msg variable, it remains to figure out `mode`. Each mode is described in [documentation](https://ton.org/docs/#/func/stdlib?id=send_raw_message). Let's look at an example to make it clearer.
+We have already collected the msg variable, it remains to figure out `mode`. Each mode is described in [documentation](https://ton-blockchain.github.io/docs/#/func/stdlib?id=send_raw_message). Let's look at an example to make it clearer.
 
 Let there be 100 coins on the balance of the smart contract and we receive an internal message with 60 coins and send a message with 10, the total fee is 3.
 
