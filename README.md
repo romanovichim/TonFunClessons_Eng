@@ -1,4 +1,4 @@
-# Lessons on developing smart contracts on FunC for The Open Network(TON
+# Lessons on developing smart contracts on FunC for The Open Network(TON)
 
 Lessons on developing smart contracts on FunC for The Open Network(TON). The lessons are located in the appropriate folders in .md format, and a code is attached to each lesson. Our community - [here](https://t.me/ton_learn). The lessons are first done in Russian [here](https://github.com/romanovichim/TonFunClessons_ru/), and then I gradually translate them into English, if you want to help - the donation addresses are below.
 
