@@ -27,7 +27,8 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 | 16 | We issue our own tokens: ICO | Jettons ICO, Jetton wallet balance| [LINK](./16lesson/ICO.md) | ✅  |
 || **Contract Security series**   |||||
 | 17 | Hacking a simple contract | Vulnerability due to compiler optimization of the code in the absence of impure  | [LINK](./18lesson/hack_eng.md) | ✅  |
-
+|| **Requests to the TON blockchain**   |||||
+| 18 | tonapi | Запрашиваем информацию об аккаунтах, аукционах доменов, NFT и Jetton  | [LINK](./19lesson/tonapi.md) | ✅  |
 
 ## Questions and discussion of lessons (Chat in two languages - Russian and English)
 
