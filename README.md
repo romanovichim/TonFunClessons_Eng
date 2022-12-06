@@ -28,7 +28,7 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 || **Contract Security series**   |||||
 | 17 | Hacking a simple contract | Vulnerability due to compiler optimization of the code in the absence of impure  | [LINK](./18lesson/hack_eng.md) | ✅  |
 || **Requests to the TON blockchain**   |||||
-| 18 | tonapi | Запрашиваем информацию об аккаунтах, аукционах доменов, NFT и Jetton  | [LINK](./19lesson/tonapi.md) | ✅  |
+| 18 | tonapi.io | Requesting information about accounts, domain auctions, NFTs and Jettons  | [LINK](./19lesson/tonapi_eng.md) | ✅  |
 
 ## Questions and discussion of lessons (Chat in two languages - Russian and English)
 
