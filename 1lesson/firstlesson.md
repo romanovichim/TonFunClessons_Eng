@@ -222,7 +222,7 @@ Any function in FunC matches the following pattern:
 Let's write a get_total() function that returns an Integer and has a method_id specification (more on that later)
  
     int get_total() method_id {
-  	;; здесь будет код
+        ;; here will be the code
 	}
 
 ##### Method_id
@@ -294,7 +294,7 @@ To do this, create a `try.fif` file in the fift folder and write the following c
     "Asm.fif" include
 	
 	<b
-		11 32 u, // number
+		10 32 u, // number
 	b>
 	
 
