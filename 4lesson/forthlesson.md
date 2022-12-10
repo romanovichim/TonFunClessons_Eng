@@ -66,8 +66,6 @@ Let's write the first test `test_example_data()` and analyze its code.
 
 Let's start with the data function:
 
-Начнем с функции данных:
-
 	[int, tuple, cell, tuple, int] test_example_data() method_id(0) {
 		int function_selector = 0;
 
