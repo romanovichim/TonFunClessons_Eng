@@ -125,7 +125,7 @@ Let's convert nextItemIndex to a string, subtract the cell with content, and con
 	
 Run the script with `ts-node`. You should get the following:
 
-![collection](./img/1.png)
+![collection](./img/1.PNG)
 
 ## Get the address of the Collection element by index
 
@@ -182,7 +182,7 @@ It remains to make a request and convert the address using `readAddress()`:
 
 Run the script with `ts-node`. You should get the following:
 
-![address](./img/2.png)
+![address](./img/2.PNG)
 
 ## Conclusion
 
