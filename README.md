@@ -30,6 +30,8 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 || **Requests to the TON blockchain**   |||||
 | 18 | tonapi.io | Requesting information about accounts, domain auctions, NFTs and Jettons  | [LINK](./19lesson/tonapi_eng.md) | ✅  |
 | 19 | ton.js | Fetch data from smart contract using JS(ton.js)  | [LINK](./20lesson/tonjs_eng.md) | ✅  |
+|| **Dapp series**   |||||
+| 20 | Auth with tonkeeper | We build an application with authorization through TonConnect  | [LINK](./21lesson/tonkeeper_eng.md) | ✅  |
 
 ## Questions and discussion of lessons (Chat in two languages - Russian and English)
 
