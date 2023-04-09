@@ -56,7 +56,7 @@ The master contract is required by the standard to implement two Get methods:
 	- `admin_address` - (MsgAddressInt) - address of the smart contract that manages Jetton (contract master)
 	- `jetton_content` - cell - data according to [token standard](https://github.com/ton-blockchain/TIPs/issues/64)
 	- `jetton_wallet_code` - cell - wallet code for this token
-	 - get_wallet_address(slice owner_address) - Returns the Jetton wallet address for this owner address.
+- get_wallet_address(slice owner_address) - Returns the Jetton wallet address for this owner address.
  
 According to the standard, the wallet contract must implement:
 - internal message handlers:
