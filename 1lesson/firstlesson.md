@@ -1,329 +1,512 @@
-# Lesson 1: Simple FunC Smart Contract
+# Lesson 1 Simple Smart Contract
 ## Introduction
 
-In this tutorial, we will write your first smart contract on The Open Network testnet in FunC language and deploy* it to the testnet using [toncli](https://github.com/disintar/toncli), and test it with the message in Fift language.
+In this lesson, we will write your first smart contract in the test network of The Open Network in FUNC language, deploy* it to the test network using [Blueprint](https://github.com/ton-community/blueprint), and also test it using a message with the help of the Javascript library [ton](https://github.com/ton-core/ton).
 
-> *Deploy is the process of transferring to the network (in this case, a smart contract to the blockchain)
-
+  > *Deploy - the process of transferring to the network (in this case, the smart contract to the blockchain)
+  
 ## Requirements
 
-To complete this tutorial, you need to install the [toncli](https://github.com/disintar/toncli/blob/master/INSTALLATION.md) command line interface.
+To complete this lesson, it is enough to install [Node.js](https://nodejs.org). It is preferable to install one of the latest versions, for example, version 18.
 
-## Smart contract
+## Smart Contract
 
-The smart contract that we will create should have the following functionality:
-- store in its data an integer *total* - a 64-bit unsigned number;
-- when receiving an internal incoming message, the contract must take an unsigned 32-bit integer from the message body, add it to *total* and store it in the contract data;
-- The smart contract must provide a *get total* method that allows you to return the value of *total*
-- If the body of the incoming message is less than 32 bits, then the contract must throw an exception
+The smart contract that we will make should have the following functionality:
+- Store an integer *total* in its data - a 64-bit unsigned number;
+- Upon receiving an internal incoming message, the contract should take a 32-bit unsigned integer from the body of the message, add it to *total*, and save it in the contract data;
+- The smart contract should provide a *get total* method allowing to return the value of *total*
+- If the body of the incoming message is less than 32 bits, then the contract should throw an exception
 
-## Create a project with toncli
+## Let's Create a Project Using Blueprint
 
-Run the following commands in the console:
+In the console, execute the following command:
 
-     toncli start wallet
-     cd wallet
+```bash
+npm create ton@latest
+```
 
-Toncli has created a simple wallet project, you can see 4 folders in it:
-- build;
-- func;
-- fift;
-- test;
+Next, follow the instructions. You will need to enter the project name, smart contract name, and optionally a stub for a simple contract. For our lesson, we will call the project `my-counter`, the smart contract `Counter` and we will choose to start with an empty contract in **FunC** language, which we will talk about a bit later.
 
-At this stage, we are interested in the func and fift folders, in which we will write code in FunС and Fift, respectively.
+```bash
+? Project name my-counter
+? First created contract name (PascalCase) Counter
+? Choose the project template An empty contract (FunC)
+```
 
-##### What is FunC and Fift
+Blueprint has created a simple project. Let's move to its directory:
+```bash
+cd my-counter
+```
 
-The FunC high-level language is used to program smart contracts on TON. FunC programs are compiled into Fift assembler code, which generates the corresponding bytecode for the TON Virtual Machine (TVM) (More about TVM [here](https://ton-blockchain.github.io/docs/tvm.pdf)). Further, this bytecode (actually a tree of cells, like any other data in the TON Blockchain) can be used to create a smart contract on the blockchain or can be run on a local instance of TVM (TON Virtual Machine).
+There you can see 4 folders:
+- contracts;
+- wrappers;
+- scripts;
+- tests;
 
-More information about FunC can be found [here](https://ton-blockchain.github.io/docs/#/smart-contracts/)
+At this stage, we are interested in the contracts and wrappers folders, where we will be writing code in FunС and a wrapper for it in TypeScript respectively.
 
-##### Let's prepare a file for our code
+##### What is FunC?
 
-Go to func folder:
+The high-level FunC language is used for programming smart contracts on TON. FunC programs are compiled into Fift assembly code, which generates the corresponding bytecode for the TON Virtual Machine (TVM) (Learn more about TVM [here](https://ton-blockchain.github.io/docs/tvm.pdf)). This bytecode (actually a cell tree, like any other data in the TON Blockchain) can then be used to create a smart contract in the blockchain or can be run on a local instance of TVM (TON Virtual Machine).
 
-    cd func
+You can learn more about FunC [here](https://ton-blockchain.github.io/docs/#/smart-contracts/)
 
-And open the code.func file, on your screen you will see the wallet smart contract, delete all the code and we are ready to start writing our first smart contract.
+##### Let's Prepare a File for Our Code
 
-## External methods
+Go to the contracts folder:
 
-Smart contracts on the TON network have two reserved methods that can be accessed.
+```bash
+cd contracts
+```
 
-First, `recv_external()` this function is executed when a request to the contract comes from the outside world, that is, not from TON, for example, when we form a message ourselves and send it via lite-client (About installing [lite-client](https://ton-blockchain.github.io/docs/#/compile?id=lite-client)).
-Second, `recv_internal()` this function is executed when inside TON itself, for example, when any contract refers to ours.
+And open the counter.func file, on your screen you will see a smart contract with just one empty function. Now we are ready to start writing our first smart contract.
+## External Methods
+
+Smart contracts in the TON network have two reserved methods to which one can refer.
+
+The first, `recv_external()` this function is executed when a request to the contract comes from the outside world, i.e. not from TON, for example, when we form a message ourselves and send it through the lite-client (About installing [lite-client](https://ton-blockchain.github.io/docs/#/compile?id=lite-client)).
+The second, `recv_internal()` this function is executed within TON itself, for example, when some contract refers to ours.
  
- > Light client (English lite-client) is a software that connects to full nodes to interact with the blockchain. They help users access and interact with the blockchain without the need to synchronize the entire blockchain.
+> A lite-client (lightweight client) is software that connects to full nodes for interacting with the blockchain. They help users to access the blockchain and interact with it without the need to synchronize the entire blockchain.
+
+`recv_internal()` suits our requirements.
+
+In the `counter.fc` file, there is already a declared function without code:
+
+```func
+() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+    ;; code will be here
+}
+```
  
-`recv_internal()` fits our conditions.
-
-In the `code.fc` file we write:
-
-     () recv_internal(slice in_msg_body) impure {
-     ;; here will be the code
-     }
+>  ;;  double semicolon is a single-line comment syntax
  
-  > FunC has single-line comments, which start with `;;` (double `;`).
-  
-We pass the in_msg_body slice to the function and use the impure keyword
+The function accepts numbers with the contract balance, the sum of the incoming message, a cell with the original message, and a slice in_msg_body, in which only the body of the received message is stored. We also use the keyword impure.
 
-`impure` is a keyword that indicates that the function changes the smart contract data.
+`impure` is a keyword that indicates that the function modifies the data of the smart contract.
 
-For example, we must specify the `impure` specifier if the function can modify the contract store, send messages, or throw an exception when some data is invalid and the function is intended to validate that data.
+For example, we must specify the `impure` specifier if the function can change the storage of contracts, send messages, or generate an exception when some data is invalid and the function is intended to check this data.
 
-Important: If impure is not specified and the result of a function call is not used, then the FunC compiler may remove that function call.
+Important: If impure is not specified and the result of the function call is not used, then the FunC compiler can remove this function call.
 
-But in order to understand what a slice is, let's talk about the types in the smart contracts of the TON network
+To understand what a slice is, let's discuss types in TON network smart contracts.
 
 ##### Cell, slice, builder, integer types in FunC
 
 In our simple smart contract, we will use only four types:
 
-- Cell - TVM cell consisting of 1023 bits of data and up to 4 references to other cells
-- Slice - a partial representation of the TVM cell used to parse data from the cell
-- Builder - partially built cell containing up to 1023 bits of data and up to four links; can be used to create new cells
-- Integer - signed 257-bit integer
+- Cell - A TVM cell, consisting of 1023 bits of data and up to 4 references to other cells
+- Slice - A partial representation of a TVM cell, used for parsing data from a cell
+- Builder - A partially built cell, containing up to 1023 bits of data and up to four links; can be used to create new cells
+- Integer - A signed 257-bit integer
 
 More about types in FunC:
-[briefly here](https://ton-blockchain.github.io/docs/#/smart-contracts/) ,
-[detailed description here in section 2.1](https://ton-blockchain.github.io/docs/fiftbase.pdf)
+[briefly here](https://ton-blockchain.github.io/docs/#/smart-contracts/)
+[in detail here in section 2.1](https://ton-blockchain.github.io/docs/fiftbase.pdf)
 
-In simple terms, cell is a sealed cell, slice is when the cell can be read, and builder is when you assemble the cell.
+In simple terms, a cell is a sealed cell, a slice is when a cell can be read, and a builder is when you assemble a cell.
 
-## Convert the resulting slice to Integer
+## Convert the Received Slice to Integer
 
-To convert the resulting slice to Integer, add the following code:
-`int n = in_msg_body~load_uint(32);`
+To convert the received slice to Integer we add the following code:
+`int n = in_msg_body~load_uint(32);` 
 
 The `recv_internal()` function now looks like this:
 
-     () recv_internal(slice in_msg_body) impure {
-		int n = in_msg_body~load_uint(32);
-     }
+```func
+() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+    int n = in_msg_body~load_uint(32);
+}
+```
 
-`load_uint` function is from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib) it loads an unsigned n-bit integer from a slice.
+`load_uint` is a function from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib). It loads an n-bit unsigned integer from a slice.
+## Persistent Data of a Smart Contract
 
-## Persistent smart contract data
+To add the received variable to `total` and save the value in the smart contract, let's look at how the functionality for storing persistent data/storage in TON is implemented.
 
-To add the resulting variable to `total` and store the value in the smart contract, let's look at how the persistent data/storage functionality is implemented in TON.
+> Note: Don't confuse with TON Storage, the storage in the previous sentence is a convenient analogy.
 
->Note: Do not confuse with TON Storage, the storage in the previous sentence is a convenient analogy.
+The TVM virtual machine is stack-based, so a good practice for storing data in a contract would be to use a specific register, rather than storing this data "on top" of the stack.
 
-The TVM virtual machine is stack-based, so it is good practice to store data in a contract using a specific register, rather than storing the data "on top" of the stack.
+The c4 register, of type Cell, is allocated for storing persistent data.
 
-To store permanent data, register c4 is assigned, the data type is Cell.
+You can learn more about the registers [here](https://ton-blockchain.github.io/docs/tvm.pdf) in section 1.3
 
-More details about the registers can be found [c4](https://ton-blockchain.github.io/docs/tvm.pdf) in paragraph 1.3
+##### Let's Take Data from c4
 
-##### Take data from c4
+To "retrieve" data from c4 we will need two functions from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib).
 
-In order to "get" data from c4, we need two functions from the FunC standard library.
+Specifically:
+`get_data` - takes a cell from the c4 register.
+`begin_parse` - converts the cell to a slice.
 
-Namely:
-`get_data` - Gets a cell from the c4 register.
-`begin_parse` - converts a cell into a slice
+We'll pass this value to the slice ds:
 
-Pass this value to slice ds
+`slice ds = get_data().begin_parse();` 
 
-`slice ds = get_data().begin_parse();`
+And also, we'll convert this slice into a 64-bit Integer for summation in accordance with our task. (With the help of the already familiar `load_uint` function)
 
-And also we will transform this slice into Integer 64-bit for summation in accordance with our task. (With the help of the `load_uint` function already familiar to us)
-
-`int total = ds~load_uint(64);`
+`int total = ds~load_uint(64);` 
 
 Now our function will look like this:
 
-    () recv_internal(slice in_msg_body) impure {
-		int n = in_msg_body~load_uint(32);
+```func
+() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+    int n = in_msg_body~load_uint(32);
 
-		slice ds = get_data().begin_parse();
-		int total = ds~load_uint(64);
-    }
+    slice ds = get_data().begin_parse();
+    int total = ds~load_uint(64);
+}
+```
 
-##### Sum up
+##### Summation
 
-For summation, we will use the binary summation operation `+` and the assignment `=`
+For summing, we will use the binary operation of summing `+`  and assignment `=` 
 
-    () recv_internal(slice in_msg_body) impure {
-		int n = in_msg_body~load_uint(32);
+```func
+() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+    int n = in_msg_body~load_uint(32);
 
-		slice ds = get_data().begin_parse();
-		int total = ds~load_uint(64);
+    slice ds = get_data().begin_parse();
+    int total = ds~load_uint(64);
 
-		total += n;
-    }
+    total += n;
+}
+```
 
-##### Save the value
+##### Saving the Value
 
-In order to keep a constant value, we need to do four things:
+In order to save the persistent value, we need to perform four actions:
 
-- create a Builder for the future cell
-- write a value to it
-- from Builder create Cell (cell)
+- Create a Builder for the future cell
+- Write the value into it
+- Create a Cell from the Builder
 - Write the resulting cell to the register
 
-We will do this again using the functions of the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib)
+We will do this again using functions from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib)
 
-`set_data(begin_cell().store_uint(total, 64).end_cell());`
+`set_data(begin_cell().store_uint(total, 64).end_cell());` 
 
-`begin_cell()` - creates a Builder for the future cell
-`store_uint()` - writes the value of total
-`end_cell()`- create Cell (cell)
-`set_data()` - writes the cell to register c4
+`begin_cell()` - will create a Builder for the future cell
+`store_uint()`- will write the total value
+`end_cell()`- will create a Cell
+`set_data()` - will write the cell to the c4 register
 
-Outcome:
+Result:
 
-    () recv_internal(slice in_msg_body) impure {
-		int n = in_msg_body~load_uint(32);
+```func
+() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+    int n = in_msg_body~load_uint(32);
 
-		slice ds = get_data().begin_parse();
-		int total = ds~load_uint(64);
+    slice ds = get_data().begin_parse();
+    int total = ds~load_uint(64);
 
-		total += n;
+    total += n;
 
-		set_data(begin_cell().store_uint(total, 64).end_cell());
-    }
-	
-## Throw exceptions
+    set_data(begin_cell().store_uint(total, 64).end_cell());
+}
+```
+## Exception Generation
 
 All that's left to do in our internal function is to add an exception call if the received variable is not 32-bit.
 
-For this we will use [built-in](https://ton-blockchain.github.io/docs/#/func/builtins) exceptions.
+For this, we will use [built-in](https://ton-blockchain.github.io/docs/#/func/builtins) exceptions.
 
-Exceptions can be thrown by the conditional primitives `throw_if` and `throw_unless` and the unconditional `throw` .
+Exceptions can be invoked by conditional primitives `throw_if` and `throw_unless` and unconditional `throw`.
 
-Let's use `throw_if` and pass any error code. In order to take the bitness we use `slice_bits()`.
+We will use `throw_if` and pass any error code. To get the bitness, we use `slice_bits()`.
 
-throw_if(35,in_msg_body.slice_bits() < 32);
+```func
+throw_if(35, in_msg_body.slice_bits() < 32);
+```
 
-By the way, in the TON TVM virtual machine, there are standard exception codes, we will really need them in tests. You can view it [here](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_exit_codes).
+By the way, in the TON TVM virtual machine, there are standard exception codes, which will be very useful in tests. You can check them out [here](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_exit_codes).
 
-Insert at the beginning of the function:
+Let's insert this at the beginning of the function:
 
-    () recv_internal(slice in_msg_body) impure {
-		throw_if(35,in_msg_body.slice_bits() < 32);
+```func
+() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+    throw_if(35, in_msg_body.slice_bits() < 32);
 
-		int n = in_msg_body~load_uint(32);
+    int n = in_msg_body~load_uint(32);
 
-		slice ds = get_data().begin_parse();
-		int total = ds~load_uint(64);
+    slice ds = get_data().begin_parse();
+    int total = ds~load_uint(64);
 
-		total += n;
+    total += n;
 
-		set_data(begin_cell().store_uint(total, 64).end_cell());
-    }
-	
-## Write a Get function
+    set_data(begin_cell().store_uint(total, 64).end_cell());
+}
+```
 
-Any function in FunC matches the following pattern:
+## Writing the Get Function
+
+Any function in FunC corresponds to the following pattern:
 
 `[<forall declarator>] <return_type><function_name(<comma_separated_function_args>) <specifiers>`
 
-Let's write a get_total() function that returns an Integer and has a method_id specification (more on that later)
+Let's write the get_total() function that returns an Integer and has a method_id specification (more on this later)
  
-    int get_total() method_id {
-  	;; здесь будет код
-	}
+```func
+int get_total() method_id {
+    ;; code will be here
+}
+```
 
 ##### Method_id
 
-The method_id specification allows you to call a GET function by name from lite-client or ton-explorer.
-Roughly speaking, all functions in that volume have a numerical identifier, get methods are numbered by crc16 hashes of their names.
+The method_id specification allows calling the GET function by name from lite-client or ton-explorer.
+Roughly speaking, all functions in TON have a numerical identifier, get methods are numbered according to the crc16 hashes of their names.
 
-##### Get data from c4
+##### Taking Data from c4
 
-In order for the function to return the total stored in the contract, we need to take the data from the register, which we have already done:
+So that the function returns total stored in the contract, we need to get data from the register, which we have already done:
 
-    int get_total() method_id {
-  		slice ds = get_data().begin_parse();
- 	 	int total = ds~load_uint(64);
-		
-  		return total;
-	}
-	
-## All code of our smart contract
-
-    () recv_internal(slice in_msg_body) impure {
-		throw_if(35,in_msg_body.slice_bits() < 32);
-
-		int n = in_msg_body~load_uint(32);
-
-		slice ds = get_data().begin_parse();
-		int total = ds~load_uint(64);
-
-		total += n;
-
-		set_data(begin_cell().store_uint(total, 64).end_cell());
-    }
-	 
-    int get_total() method_id {
-  		slice ds = get_data().begin_parse();
- 	 	int total = ds~load_uint(64);
-		
-  		return total;
-	}
-	
-## Deploy the contract to the testnet
-
-For deployment to the test network, we will use the command line interface [toncli](https://github.com/disintar/toncli/)
-
-`toncli deploy -n testnet`
-
-##### What to do if it says that there is not enough TON?
-
-You need to get them from the test faucet, the bot for this is @testgiver_ton_bot
-You can see the wallet address directly in the console, after the deploy command, toncli will display it to the right of the INFO line: Found existing deploy-wallet
-
-To check if TON came to your wallet on the test network, you can use this explorer: https://testnet.tonscan.org/
-
-> Important: This is only a testnet
-
-## Testing the contract
-
-##### Call recv_internal()
-
-To call recv_internal(), you need to send a message within the TON network.
-With [toncli send](https://github.com/disintar/toncli/blob/master/docs/advanced/send_fift_internal.md)
-
-Let's write a small Fift script that will send a 32-bit message to our contract.
-
-##### Message script
-
-To do this, create a `try.fif` file in the fift folder and write the following code in it:
  
-    "Asm.fif" include
-	
-	<b
-		11 32 u, // number
-	b>
-	
+```func
+int get_total() method_id {
+    slice ds = get_data().begin_parse();
+    int total = ds~load_uint(64);
 
-`"Asm.fif" include` - needed to compile message into bytecode
+    return total;
+}
+````	
 
-Now consider the message:
+## The Entire Code of Our Smart Contract
 
-`<b b>` - create Builder cells, more details in paragraph [5.2](https://ton-blockchain.github.io/docs/fiftbase.pdf)
+```func
+#include "imports/stdlib.fc";
 
-`10 32 u` - put 32-bit unsigned integer 10
+() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+    throw_if(35,in_msg_body.slice_bits() < 32);
 
-` // number` - single line comment
+    int n = in_msg_body~load_uint(32);
 
-##### Deploy the resulting message
+    slice ds = get_data().begin_parse();
+    int total = ds~load_uint(64);
 
-On the command line:
+    total += n;
 
-`toncli send -n testnet -a 0.03 --address "address of your contract" --body ./fift/try.fif`
+    set_data(begin_cell().store_uint(total, 64).end_cell());
+}
 
-Now let's test the GET function:
+int get_total() method_id {
+    slice ds = get_data().begin_parse();
+    int total = ds~load_uint(64);
 
-`toncli get get_total`
+    return total;
+}
+```
+## Writing a Typescript Contract Wrapper
 
-You should get the following:
+We want to be able to interact with our smart contract. For this, we will write a so-called wrapper in Typescript (a typed version of Javascript).
 
-![toncli get send](./img/tonclisendget.png)
+Go to the wrappers directory of the project and open the Counter.ts file. Much of the wrapper is already present by default. Now we just need to supplement the part where contract data for deployment is set and add two functions for interaction: sending numbers to the contract and calling the get method get_total().
 
-## Congratulations you made it to the end
+### Setting up data for deployment
+
+These lines are responsible for what we want to set in the contract data (c4 cell):
+
+```ts
+export type CounterConfig = {};
+
+export function counterConfigToCell(config: CounterConfig): Cell {
+    return beginCell().endCell();
+}
+```
+
+`CounterConfig` is an object, into which we can add values if needed, with which the contract will be initialized.
+`counterConfigToCell` is a function that transforms this very object into a cell that is ready to be written into contract data for deployment.
+
+In our case, only one 64-bit number should be in the contract data. We won't need CounterConfig, but we need to update the function.
+
+The function returns only one cell, into which we write data for contract deployment. Let's add a 0 of 64-bit length to it:
+
+```ts
+return beginCell().storeUint(0, 64).endCell();
+```
+
+Now when creating a contract, the number 0 will immediately be in its data.
+
+### Method for sending messages with numbers
+
+Further down in the same file, the Counter class is initialized, where we can modify old and add new methods for interacting with the contract. By default, there are already methods for initializing the contract either from a config or from the address of an already deployed contract, as well as a ready method for deployment.
+
+Let's add a method with which we can send a message to the contract to increase the total number.
+
+> All wrapper methods that send messages should have a `send` prefix at the beginning.
+> All wrapper methods that call get methods should have a `get` prefix at the beginning.
+
+For convenience, we can copy the sendDeploy method, rename it to sendNumber, and then only change what we need.
+
+```ts
+async sendNumber(provider: ContractProvider, via: Sender, value: bigint) {
+    await provider.internal(via, {
+        value,
+        sendMode: SendMode.PAY_GAS_SEPARATELY,
+        body: beginCell().endCell(),
+    });
+}
+```
+
+This method accepts provider and via objects, which determine where and from whom the message needs to be sent, respectively. Also, a number value is passed, which indicates how many Toncoin we want to attach to the sent message.
+
+In the method body, the provider.internal() function is called, which sends a message to our contract. It takes the via object that we got earlier, as well as the parameters of the sent message. It's these parameters that we need to change now.
+
+As we remember, our smart contract expects only one 32-bit number from the received message. Let's add an argument for our method and change the body parameter:
+
+```ts
+async sendNumber(provider: ContractProvider, via: Sender, value: bigint, number: bigint) {
+    await provider.internal(via, {
+        value,
+        sendMode: SendMode.PAY_GAS_SEPARATELY,
+        body: beginCell().storeUint(number, 32).endCell(),
+    });
+}
+```
+
+It is always better to use the bigint type for numbers in smart contract wrappers, as it supports very large numbers and is more accurate than number.### Method for calling get_total
+
+Let's add a method that will call get_total of our contract:
+
+```ts
+async getTotal(provider: ContractProvider) {
+    // code will go here
+}
+```
+
+It should no longer accept via and value parameters, as no messages are sent to the contract when calling get methods.
+
+Let's add a call to get_total. To do this, use the `provider.get` function, which takes two parameters: the name of the get method and the arguments to pass to it. In our case, the name is "get_total", and the list of arguments is empty.
+
+```ts
+const result = (await provider.get('get_total', [])).stack;
+```
+
+Now let's return the number obtained as a result from our `getTotal` function:
+
+```ts
+return result.readBigNumber();
+```
+
+### Full Wrapper Code
+
+```ts
+import { Address, beginCell, Cell, Contract, contractAddress, ContractProvider, Sender, SendMode } from 'ton-core';
+
+export type CounterConfig = {};
+
+export function counterConfigToCell(config: CounterConfig): Cell {
+    return beginCell().storeUint(0, 64).endCell();
+}
+
+export class Counter implements Contract {
+    constructor(readonly address: Address, readonly init?: { code: Cell; data: Cell }) {}
+
+    static createFromAddress(address: Address) {
+        return new Counter(address);
+    }
+
+    static createFromConfig(config: CounterConfig, code: Cell, workchain = 0) {
+        const data = counterConfigToCell(config);
+        const init = { code, data };
+        return new Counter(contractAddress(workchain, init), init);
+    }
+
+    async sendDeploy(provider: ContractProvider, via: Sender, value: bigint) {
+        await provider.internal(via, {
+            value,
+            sendMode: SendMode.PAY_GAS_SEPARATELY,
+            body: beginCell().endCell(),
+        });
+    }
+
+    async sendNumber(provider: ContractProvider, via: Sender, value: bigint, number: bigint) {
+        await provider.internal(via, {
+            value,
+            sendMode: SendMode.PAY_GAS_SEPARATELY,
+            body: beginCell().storeUint(number, 32).endCell(),
+        });
+    }
+
+    async getTotal(provider: ContractProvider) {
+        const result = (await provider.get('get_total', [])).stack;
+        return result.readBigNumber();
+    }
+}
+```
+
+## Deploy the contract to the test network
+
+For deployment to the test network, we will use the [Blueprint](https://github.com/ton-community/blueprint/) command-line interface, which was installed automatically when creating the project.
+
+`npx blueprint run`
+
+Then, follow the instructions. Select the test network - testnet. Then, a wallet authorization method is required, from which the deployment will be made. You can connect Tonkeeper or Tonhub, if you choose the first item TON Connect.
+A QR code will appear in the console, which needs to be scanned from the application of your wallet on your phone. If this method does not suit you, you can use one of the other proposed methods.
+
+After successfully connecting the wallet, you will probably need to confirm the sending of the transaction from the application. If you have done everything correctly, you will see a message in the console that the contract has been successfully deployed.
+##### What if it says that there is not enough TON?
+
+You need to get them from the test faucet, the bot for this is [@testgiver_ton_bot](https://t.me/testgiver_ton_bot).
+
+To check whether TON has arrived in your wallet in the test network, you can use this explorer: https://testnet.tonscan.org/
+
+> Important: We are only talking about the test network
+
+## Checking the Contract
+
+##### Calling recv_internal()
+
+To call recv_internal() it is necessary to send a message within the TON network. For this, we created the `sendNumber` method in the wrapper. To use this method and send a message from the wallet, we will write a small Typescript script that will send a message to our contract using the wrapper.
+
+##### Message Script
+
+In the scripts folder, create a `sendNumber.ts` file and write the following code in it (most of which can be copied from the deployCounter.ts file in the same folder):
+
+```ts
+import { toNano } from 'ton-core';
+import { Counter } from '../wrappers/Counter';
+import { compile, NetworkProvider } from '@ton-community/blueprint';
+
+export async function run(provider: NetworkProvider) {
+    const counter = provider.open(Counter.createFromConfig({}, await compile('Counter')));
+
+    // code will go here
+}
+```
+
+This code declares a single function `run` where we can interact with our smart contract. For this, a `counter` object of the wrapper class, which we wrote above in this lesson, is created. Now let's add a call to the `sendNumber` method to the function:
+
+```ts
+await counter.sendNumber(provider.sender(), toNano('0.01'), 123n);
+```
+
+To run the script, again execute the command `npx blueprint run` in the console, but this time, select the required script - that is, `sendNumber`. Most likely, the wallet will already be connected from the time of deployment, so there is no need to go through authorization again.
+
+If you see the inscription "**Sent transaction**" in the console, then our message to the contract has been sent. Now let's check if the number in the contract data has been updated using the `getTotal` method.
+
+#### Get-method Script
+
+Create another file in the scripts directory, for example `getTotal.ts`, and again copy the same code into it, but this time use our getTotal() method from the wrapper.
+
+```ts
+import { toNano } from 'ton-core';
+import { Counter } from '../wrappers/Counter';
+import { compile, NetworkProvider } from '@ton-community/blueprint';
+
+export async function run(provider: NetworkProvider) {
+    const counter = provider.open(Counter.createFromConfig({}, await compile('Counter')));
+
+    console.log('Total:', await counter.getTotal());
+}
+```
+
+Similarly, run the script using the command `npx blueprint run`, and after execution, you should see the inscription "**Total: 123n**" in the console.
+
+## Congratulations, you have reached the end
 
 ##### Exercise
 
-As you may have noticed, we have not tested the exception, modify the message so that the smart contract throws an exception.
+As you may have noticed, we didn't test the operation of exceptions, modify the message in the wrapper so that the smart contract calls an exception.
