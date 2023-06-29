@@ -5,7 +5,7 @@ In this lesson, we will write tests for the smart contract created in the first 
 
 ## Requirements
 
-To go through this lesson, it is enough to install [Node.js](https://nodejs.org) (preferably version 18 or higher) and complete the [first lesson](https://github.com/romanovichim/TonFunClessons_ru/blob/main/1lesson/firstlesson.md).
+To go through this lesson, it is enough to install [Node.js](https://nodejs.org) (preferably version 18 or higher) and complete the [first lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/1lesson/firstlesson.md).
 
 ## Tests for the first smart contract
 
