@@ -81,10 +81,10 @@ Also using conditional operators we build logic around `op` .
 		int query_id = in_msg_body~load_uint(64);
 		
 		if (op == 1) {
-		;; здесь будем добавлять новые значения
+		;; here we will add new values
     	}
 		if (op == 2) {
-		;; здесь удалять
+		;; delete here
     	}
 	 }
 
@@ -95,10 +95,10 @@ According to the task, all other internal messages should throw an error, so let
 		int query_id = in_msg_body~load_uint(64);
 		
 		if (op == 1) {
-		;; здесь будем добавлять новые значения
+		;; here we will add new values
     	}
 		if (op == 2) {
-		;; здесь удалять
+		;; delete here
     	}
 		throw (1001);
 	 }
@@ -137,10 +137,10 @@ The overall skeleton of the contract is as follows:
 		slice ds = data.begin_parse();
 		cell dic = ds.slice_bits() == 0 ? new_dict() : data;
 		if (op == 1) {
-		;; здесь будем добавлять новые значения
+		;; here we will add new values
     	}
 		if (op == 2) {
-		;; здесь удалять
+		;; delete here
     	}
 		throw (1001);
 	 }
@@ -236,7 +236,7 @@ Now, using the conditional operator, we will check the condition `valid_until` <
 			if (f) {
 				int valid_until = cs~load_uint(64);
 				if (valid_until < now()) {
-						;; здесь будем удалять
+						;; here we will delete
 				}
 			}
 		} until (~ f);
