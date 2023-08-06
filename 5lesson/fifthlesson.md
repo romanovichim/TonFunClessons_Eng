@@ -1,392 +1,466 @@
-# Lesson 5 Remembering the Address and identifying the operation
+# Lesson 5 Remembering the Address and Identifying the Operation
+
 ## Introduction
 
-In this lesson, we will write a smart contract that can perform different operations depending on the flag in the test network of The Open Network in the FUNC language, deploy it to the test network using [toncli](https://github.com/disintar/toncli), and we will test it in the next lesson.
+In this lesson, we will write a smart contract that can perform different operations depending on the flag in the TON blockchain using the FunC language, and we will test it in the next lesson.
 
 ## Requirements
 
-To complete this tutorial, you need to install the [toncli](https://github.com/disintar/toncli/blob/master/INSTALLATION.md) command line interface .
+To complete this lesson, you only need to install [Node.js](https://nodejs.org). It is recommended to install one of the latest versions, such as 18.
 
-And also be able to create / deploy a project using toncli, you can learn this in [the first lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/1lesson/firstlesson.md).
+You should also be able to create/deploy a project using Blueprint. You can learn how to do this in the [first lesson](https://github.com/romanovichim/TonFunClessons_ru/blob/main/1lesson/firstlesson.md).
 
-## Op - to identify the operation
+## Op - Identifying the Operation
 
-Before considering what kind of smart contract we will do in this lesson, I suggest that you study [recommendations](https://ton-blockchain.github.io/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines) about the smart contract message body(`message body;`).
+Before we consider what kind of smart contract we will create in this lesson, I suggest studying the [recommendations](https://docs.ton.org/develop/smart-contracts/guidelines/internal-messages) on the body of a smart contract message.
 
-In order for us to create a semblance of a client-server architecture on smart contracts described in the recommendations, it is proposed to start each message (strictly speaking, the message body) with some `op` flag, which will identify what operation the smart contract should perform.
+In order to create a client-server-like architecture on smart contracts, it is recommended to start each message (strictly speaking, the message body) with a 32-bit flag `op`, which will identify the operation that the smart contract should perform. The contract itself, based on the value of this flag, should perform the necessary operation and, if necessary, send a response message, which will also include some `op`.
 
-In this tutorial, we will make a smart contract that performs different actions depending on the `op`.
+In this lesson, we will create a smart contract that performs various actions depending on the `op`.
 
-## Smart contract
+## Smart Contract
 
-The smart contract will remember the address set by the manager and communicate it to anyone who requests it, in particular the following functionality**:
-- when the contract receives a message from the Manager with `op` equal to 1
-  followed by some `query_id` followed by `MsgAddress`, it should store the resulting address in storage.
-- when a contract receives an internal message from any address with `op` equal to 2 followed by `query_id`, it must reply to the sender with a message with a body containing:
-  - `op` is equal to 3
-  - same `query_id`
-  - Manager's address
-  - The address that has been remembered since the last manager request (an empty address `addr_none` if there was no manager request yet)
-  - The TON value attached to the message minus the processing fee.
-- when the smart contract receives any other message, it must throw an exception.
+The task of the smart contract will be to remember the address set by the manager and report it to anyone who requests it, in particular the following functionality:
 
-** I decided to take ideas for smart contracts from the [FunC contest1](https://github.com/ton-blockchain/func-contest1) tasks, as they are very well suited for getting acquainted with the development of smart contracts for TON.
+-   When the contract receives a message from the Manager with `op` equal to 1 followed by some `query_id`, followed by `MsgAddress`, it should save the received address in storage.
+-   When the contract receives an internal message from any address with `op` equal to 2 followed by `query_id`, it should respond to the sender with a message body containing:
+    -   `op` equal to 3
+    -   the same `query_id`
+    -   Manager's address
+    -   The address that was remembered since the last manager request (empty address `addr_none` if there has not been a manager request yet)
+    -   The TON value attached to the message minus the processing fee.
+-   When the smart contract receives any other message, it should throw an exception.
 
-## Smart contract structure
+**Note**: I decided to take ideas for smart contracts from the [FunC contest1](https://github.com/ton-blockchain/func-contest1) tasks, as they are very well suited for getting acquainted with TON smart contract development.
 
-##### External method
+## Smart Contract Structure
 
-In order for our proxy to receive messages, we will use the external method `recv_internal()`
+##### External Method
 
-    () recv_internal()  {
+To allow our proxy to receive messages, we will use the external method `recv_internal()`, as in previous lessons.
 
-    }
+```func
+() recv_internal(int balance, int msg_value, cell in_msg_full, slice in_msg_body)  {
 
-##### External method arguments
+}
+```
 
-According to the documentation of the [TON virtual machine - TVM](https://ton-blockchain.github.io/docs/tvm.pdf), when an event occurs on an account in one of the TON chains, it triggers a transaction.
+##### Inside the Method
 
-Each transaction consists of up to 5 stages. Read more [here](https://ton-blockchain.github.io/docs/#/smart-contracts/tvm_overview?id=transactions-and-phases).
+Inside the method, we will take `op`, `query_id`, and the sender's address `sender_address` from the function arguments, and then build the logic around `op` using conditional statements.
 
-We are interested in **Compute phase**. And to be more specific, what is "on the stack" during initialization. For normal message-triggered transactions, the initial state of the stack looks like this:
+```func
+() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
+ ;; take op, query_id, and the sender's address sender_address
 
-5 elements:
-- Smart contract balance (in nanoTons)
-- Incoming message balance (in nanotones)
-- Cell with incoming message
-- Incoming message body, slice type
-- Function selector (for recv_internal it is 0)
+  if (op == 1) {
+    ;; here we will save the address received from the manager
+  } elseif (op == 2) {
+      ;; send a message
+  } else {
+      ;; here will be an exception
+  }
+}
+```
 
-As a result, we get the following code:
+## Helper Functions
 
-    () recv_internal(int balance, int msg_value, cell in_msg_full, slice in_msg_body)  {
+Let's think about what functionality we can extract into functions.
 
-    }
-	
-##### Inside a method
+-   Comparing addresses to check if the request with op equal to 1 came from the Manager.
+-   Loading and saving the manager's address and the address we store in the contract's persistent data.
+-   Parsing the sender's address from the incoming message.
 
-Inside the method, we will take `op` , `query_id`, and the sender address `sender_address` from the function arguments, and then, using conditional operators, we will build logic around `op`.
+##### Comparing Addresses
 
-	() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
-	 ;; take op , query_id, and sender address sender_address
+FunC supports defining functions in assembly (referring to Fift). This is done as follows - we define a function as a low-level TVM primitive. For the comparison function, it will look like this:
 
-	  if (op == 1) {
-		;; here we will save the address received from the manager
-	  } else {
-		if (op == 2) {
-		  ;; sending a message
-		} else {
-		   ;; there will be an exception
-		}
-	  }
-	}
-	
-## Secondary functions
+```func
+int equal_slices (slice a, slice b) asm "SDEQ";
+```
 
-Let's think about what functionality can be carried out in a function?
+As you can see, the `asm` keyword is used.
 
-- comparison of addresses, so that when op is equal to 1, check that the request came from the Manager.
-- unloading and loading the address of the manager and the address that we store in the contract in register c4.
-- parse the sender's address from the incoming message.
+You can see the list of possible primitives in the [documentation](https://docs.ton.org/learn/tvm-instructions/instructions).
 
-##### Address comparison
+##### Loading Addresses from Persistent Data
 
-FunC supports function definition in assembler (meaning Fift). This happens as follows - we define the function as a low-level TVM primitive. For the comparison function it would look like this:
+We will store addresses in slices, but based on the task, we will need to store two addresses: the Manager's address, for verification, and the address that the manager will send for storage. Therefore, we will return the slices in a tuple.
+
+To "retrieve" the persistent data, we will need two functions from the [FunC standard library](https://docs.ton.org/develop/func/stdlib/).
+
+Namely:
+`get_data` - retrieves a cell from the persistent data.
+`begin_parse` - converts the cell into a slice.
+
+Let's pass this value to the variable `ds`:
+
+```func
+var ds = get_data().begin_parse()
+```
+
+Load the manager's address from the message using `load_msg_addr()` - which loads the only prefix from the slice that is a valid MsgAddress. We have two of them, so we "subtract" twice.
+
+```func
+return (ds~load_msg_addr(), ds~load_msg_addr());
+```
+
+In the end, we get the following function:
+
+```func
+(slice, slice) load_data () inline {
+  var ds = get_data().begin_parse();
+  return (ds~load_msg_addr(), ds~load_msg_addr());
+}
+```
+
+##### Inline
+
+In previous lessons, we have already used the `inline` specifier, which essentially inserts the code at each call site of the function. In this lesson, let's consider why this is necessary from a practical point of view.
+
+As we know from the [documentation](https://docs.ton.org/develop/smart-contracts/fees), the transaction fee consists of:
+
+-   storage_fees - the fee for space in the blockchain.
+-   in_fwd_fees - the fee for importing messages (this is the case when processing `external` messages).
+-   computation_fees - the fee for executing TVM instructions.
+-   action_fees - the fee associated with processing a list of actions (e.g., sending messages).
+-   out_fwd_fees - the fee for importing outgoing messages.
+
+More details [here](https://docs.ton.org/develop/smart-contracts/fees).
+The `inline` specifier allows you to save **computation_fee**.
+
+By default, when you have a FunC function, it gets its own identifier stored in a separate id->function dictionary, and when you call it somewhere in the program, the function is looked up in the dictionary and then jumped to.
+
+The `inline` specifier, on the other hand, puts the body of the function directly into the parent function's code.
+
+Therefore, if a function is used only once or twice, it is often much cheaper to declare this function as `inline`, i.e., inline it, as a reference jump is much cheaper than a dictionary lookup and jump.
+
+##### Saving Addresses to Persistent Data
+
+Of course, in addition to unloading, we also need loading. Let's create a function that saves the manager's address and the address that the manager will send:
+
+```func
+() save_data (slice manager_address, slice memorized_address) impure inline {
+
+}
+```
+
+Note that the function has the [specifier](https://docs.ton.org/develop/func/functions#specifiers) `impure`. We must specify the `impure` specifier if the function can modify the contract's storage. Otherwise, the FunC compiler may remove this function call.
+
+To "save" the persistent data, we will need functions from the [FunC standard library](https://docs.ton.org/develop/func/stdlib/).
+
+Namely:
+
+`begin_cell()` - creates a Builder for the future cell.
+`store_slice()` - stores a Slice in the Builder.
+`end_cell()` - creates a Cell.
+
+`set_data()` - writes the cell to the persistent data.
+
+Assemble the cell:
+
+```func
+begin_cell().store_slice(manager_address).store_slice(memorized_address).end_cell()
+```
+
+Load it into the contract's persistent data:
+
+```func
+set_data(begin_cell().store_slice(manager_address).store_slice(memorized_address).end_cell());
+```
+
+In the end, we get the following function:
+
+```func
+() save_data (slice manager_address, slice memorized_address) impure inline {
+    set_data(begin_cell().store_slice(manager_address).store_slice(memorized_address).end_cell());
+}
+```
+
+##### Parsing the Sender's Address from the Incoming Message
+
+Let's declare a function that allows us to extract the sender's address from the message cell. The function will return a slice, as we will take the address using `load_msg_addr()`, which loads the only prefix from the slice that is a valid MsgAddress and returns it as a slice.
+
+```func
+slice parse_sender_address (cell in_msg_full) inline {
+  return sender_address;
+}
+```
+
+Now, using the already familiar `begin_parse`, let's convert the cell into a slice.
+
+```func
+slice parse_sender_address (cell in_msg_full) inline {
+  var cs = in_msg_full.begin_parse();
+  return sender_address;
+}
+```
+
+Start "reading" the cell using `load_uint`, a function from the [FunC standard library](https://docs.ton.org/develop/func/stdlib/) that loads an n-bit unsigned integer from the slice.
+
+In this lesson, we will not go into detail about the flags, but you can read more about them in the [documentation](https://docs.ton.org/develop/smart-contracts/messages#message-layout).
+And finally, take the address.
+
+In the end, we get the following function:
+
+```func
+slice parse_sender_address (cell in_msg_full) inline {
+  var cs = in_msg_full.begin_parse();
+  var flags = cs~load_uint(4);
+  slice sender_address = cs~load_msg_addr();
+  return sender_address;
+}
+```
+
+## Intermediate Result
+
+At this point, we have the ready-made helper functions and the body of the main function of this smart contract `recv_internal()`.
+
+```func
+#include "imports/stdlib.fc";
 
 int equal_slices (slice a, slice b) asm "SDEQ";
 
-As you can see, the `asm` keyword is used
+(slice, slice) load_data () inline {
+  var ds = get_data().begin_parse();
+  return (ds~load_msg_addr(), ds~load_msg_addr());
+}
 
-You can see the list of possible primitives from page 77 in [TVM](https://ton-blockchain.github.io/docs/tvm.pdf).
+() save_data (slice manager_address, slice memorized_address) impure inline {
+  set_data(begin_cell().store_slice(manager_address).store_slice(memorized_address).end_cell());
+}
 
-##### Unload addresses from register c4
+slice parse_sender_address (cell in_msg_full) inline {
+  var cs = in_msg_full.begin_parse();
+  var flags = cs~load_uint(4);
+  slice sender_address = cs~load_msg_addr();
+  return sender_address;
+}
 
-We will store addresses in slices, but based on the task, we have to store two addresses, the Manager's address, for verification, and the address that the Manager will send for storage. Therefore, the slices will be returned in a tuple.
+() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
+  int op = in_msg_body~load_int(32);
+  int query_id = in_msg_body~load_uint(64);
+  var sender_address = parse_sender_address(in_msg_full);
 
-In order to "get" data from c4, we need two functions from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib) .
+  if (op == 1) {
+    (slice manager_address, slice memorized_address) = load_data();
+    throw_if(1001, ~ equal_slices(manager_address, sender_address));
+    slice new_memorized_address = in_msg_body~load_msg_addr();
+    save_data(manager_address, new_memorized_address);
+  } elseif (op == 2) {
+    (slice manager_address, slice memorized_address) = load_data();
+    var msg = begin_cell()
+        .store_uint(0x10, 6)
+        .store_slice(sender_address)
+        .store_grams(0)
+        .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
+        .store_uint(3, 32)
+        .store_uint(query_id, 64)
+        .store_slice(manager_address)
+        .store_slice(memorized_address)
+      .end_cell();
+    send_raw_message(msg, 64);
+  } else {
+    throw(3);
+  }
+}
+```
 
-Namely:
-`get_data` - Gets a cell from the c4 register.
-`begin_parse` - converts a cell into a slice
+Now we just need to fill in `recv_internal()`.
 
-Let's pass this value to the ds variable:
+## Filling in the External Method
 
-`var ds = get_data().begin_parse()`
+##### Taking op, query_id, and the sender's address
 
-Load the address from the message with `load_msg_addr()` - which loads from the slice the only prefix that is a valid MsgAddress. We have two of them, so 'subtract' two times.
+We read op and query_id from the message body accordingly. According to the [recommendations](https://docs.ton.org/develop/smart-contracts/guidelines/internal-messages), these are 32-bit and 64-bit values.
 
-`return (ds~load_msg_addr(), ds~load_msg_addr());`
+Also, using the function `parse_sender_address()` that we wrote earlier, we take the sender's address.
 
-As a result, we get the following function:
+```func
+() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
+int op = in_msg_body~load_int(32);
+int query_id = in_msg_body~load_uint(64);
+var sender_address = parse_sender_address(in_msg_full);
 
-	(slice, slice) load_data () inline {
-	  var ds = get_data().begin_parse();
-	  return (ds~load_msg_addr(), ds~load_msg_addr());
-	}
-	
-#####Inline
-
-In previous lessons, we have already used the `inline` specifier, which actually substitutes the code at each place where the function is called. In this lesson, we will consider why this is necessary from a practical point of view.
-
-As we know from [documentation](https://ton-blockchain.github.io/docs/#/smart-contracts/fees) the transaction fee consists of:
-
- - storage_fees - commission for a place in the blockchain.
- - in_fwd_fees - commission for importing messages (this is the case when we process `external` messages).
- - computation_fees - fees for executing TVM instructions.
- - action_fees - commission associated with processing the list of actions (for example, sending messages).
- - out_fwd_fees - fee for importing outgoing messages.
- 
- More details [here](https://ton-blockchain.github.io/docs/tvm.pdf).
- The `inline` specifier itself saves **computation_fee**.
- 
-By default, when you have a funC function, it gets its own identifier stored in a separate id->function dictionary, and when you call it somewhere in the program, it looks up the function in the dictionary and then jumps to it.
-
-The `inline` specifier puts the body of the function directly into the code of the parent function.
-
-So if a function is only used once or twice, it's often much cheaper to declare the function `inline`, as going to a link is much cheaper than looking up and going through a dictionary.
-
-##### Load addresses into register c4
-
-Of course, in addition to unloading, you need a download. Let's make a function that saves the address of the manager and the address that the manager will send:
-
-	() save_data (slice manager_address, slice memorized_address) impure inline {
-		 
-	}
-
-Note that the function has [specifier](https://ton-blockchain.github.io/docs/#/func/functions?id=specifiers) `impure`. And we must specify the `impure` specifier if the function can modify the contract store. Otherwise, the FunC compiler may remove this function call.
-
-In order to "save" data from c4, we need functions from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib) .
-
-Namely:
-
-`begin_cell()` - will create a Builder for the future cell
-`store_slice()` - store Slice(slice) in Builder
-`end_cell()` - create a Cell (cell)
-
-`set_data()` - writes the cell to register c4
-
-Assembling the cell:
-
-	begin_cell().store_slice(manager_address).store_slice(memorized_address).end_cell()
-Load it into c4:
-
-	set_data(begin_cell().store_slice(manager_address).store_slice(memorized_address).end_cell());
-As a result, we get the following function:
-
-	() save_data (slice manager_address, slice memorized_address) impure inline {
-		  set_data(begin_cell().store_slice(manager_address).store_slice(memorized_address).end_cell());
-	}
-
-##### Parse the sender's address from the incoming message
-
-Let's declare a function with which we can get the sender's address from the message cell. The function will return a slice, since we will take the address itself using `load_msg_addr()` - which loads the only prefix from the slice that is a valid MsgAddress and returns it to the slice.
-
-	slice parse_sender_address (cell in_msg_full) inline {
-	
-	  return sender_address;
-	}
-
-Now, using the `begin_parse` already familiar to us, we will convert the cell into a slice.
-
-	slice parse_sender_address (cell in_msg_full) inline {
-	  var cs = in_msg_full.begin_parse();
-
-	  return sender_address;
-	}
-
-We start "reading out" the cell with `load_uint`, a function from the [FunC standard library](https://ton-blockchain.github.io/docs/#/func/stdlib) that loads an unsigned n-bit integer from a slice.
-
-In this lesson, we will not dwell on the flags in detail, but you can read more in paragraph [3.1.7](https://ton-blockchain.github.io/docs/tblkch.pdf).
-And finally, we take the address.
-
-As a result, we get the following function:
-
-	slice parse_sender_address (cell in_msg_full) inline {
-	  var cs = in_msg_full.begin_parse();
-	  var flags = cs~load_uint(4);
-	  slice sender_address = cs~load_msg_addr();
-	  return sender_address;
-	}
-
-## Subtotal
-
-At the moment we have ready auxiliary functions and the body of the main function of this smart contract `recv_internal()`.
-
-	int equal_slices (slice a, slice b) asm "SDEQ";
-
-	(slice, slice) load_data () inline {
-	  var ds = get_data().begin_parse();
-	  return (ds~load_msg_addr(), ds~load_msg_addr());
-	}
-
-	() save_data (slice manager_address, slice memorized_address) impure inline {
-	  set_data(begin_cell().store_slice(manager_address).store_slice(memorized_address).end_cell());
-	}
-
-	slice parse_sender_address (cell in_msg_full) inline {
-	  var cs = in_msg_full.begin_parse();
-	  var flags = cs~load_uint(4);
-	  slice sender_address = cs~load_msg_addr();
-	  return sender_address;
-	}
-
-		() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
-		 ;; возьмем  op , query_id, и адрес отправителя sender_address
-
-		  if (op == 1) {
-			;; здесь будем сохранять адрес полученный от менеджера
-		  } else {
-			if (op == 2) {
-			  ;; отправка сообщения
-			} else {
-			   ;; здесь будет исключение
-			}
-		  }
-		}
-		
-It remains only to fill `recv_internal()`.
-
-##Filling the external method
-
-##### Take op , query_id, and sender_address
-
-Subtract op , query_id from the body of the message, respectively. According to [recommendations](https://ton-blockchain.github.io/docs/#/howto/smart-contract-guidelines?id=smart-contract-guidelines) these are 32 and 64 bit values.
-
-And also using the `parse_sender_address()` function, which we wrote above, we will take the sender address.	
-
-		() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
-		int op = in_msg_body~load_int(32);
-		int query_id = in_msg_body~load_uint(64);
-		var sender_address = parse_sender_address(in_msg_full);
-		   
-		  if (op == 1) {
-			;; здесь будем сохранять адрес полученный от менеджера
-		  } else {
-			if (op == 2) {
-			  ;; отправка сообщения
-			} else {
-			   ;; здесь будет исключение
-			}
-		  }
-		}
+  if (op == 1) {
+    ;; here we will save the address received from the manager
+  } elseif (op == 2) {
+    ;; send a message
+  } else {
+    ;; here will be an exception
+  }
+}
+```
 
 ##### Flag op == 1
 
-In accordance with the task with flag 1, we must receive the manager's addresses and the saved address, check that the sender's address is equal to the manager's address (only the manager can change the address) and save the new address that is stored in the message body.
+According to the task, when the flag is 1, we should receive the manager's address and the saved address, check if the sender's address is equal to the manager's address (only the manager can change the address), and save the new address that is stored in the message body.
 
-Load the manager address `manager_address` and the saved address `memorized_address)` from c4 using the `load_data()` function written earlier.
+Load the manager's address `manager_address` and the saved address `memorized_address` from the persistent data using the `load_data()` function we wrote earlier.
 
-	(slice manager_address, slice memorized_address) = load_data();
+```func
+(slice manager_address, slice memorized_address) = load_data();
+```
 
-Using the `equal_slices` function and the unary `~` operator, which is bitwise not, checks for address equality, throwing an exception if the addresses are not equal.
+Using the `equal_slices` function and the unary operator `~`, which is a bitwise NOT, check the equality of the addresses, throwing an exception if the addresses are not equal.
 
-    (slice manager_address, slice memorized_address) = load_data();
-    throw_if(1001, ~ equal_slices(manager_address, sender_address));
+```func
+throw_if(1001, ~ equal_slices(manager_address, sender_address));
+```
 
+Take the address using `load_msg_addr()` and save the addresses using the `save_data()` function we wrote earlier.
 
-Take the address using the already familiar `load_msg_addr()` and save the addresses using the `save_data()` function written earlier
+```func
+slice new_memorized_address = in_msg_body~load_msg_addr();
+save_data(manager_address, new_memorized_address);
+```
 
-	(slice manager_address, slice memorized_address) = load_data();
-    throw_if(1001, ~ equal_slices(manager_address, sender_address));
-	slice new_memorized_address = in_msg_body~load_msg_addr();
-    save_data(manager_address, new_memorized_address);
-	
 ##### Flag op == 2
 
-In accordance with the task with flag 2, we must send a message with a body containing:
-  - `op` is equal to 3
-  - same `query_id`
-  - Manager's address
-  - The address that has been remembered since the last manager request (an empty address `addr_none` if there was no manager request yet)
-  - The TON value attached to the message minus the processing fee.
-  
- Before sending a message, let's load the addresses stored in the contract.
- 
+According to the task, when the flag is 2, we should send a message with a body containing:
+
+-   `op` equal to 3
+-   the same `query_id`
+-   Manager's address
+-   The address that was remembered since the last manager request (empty address `addr_none` if there has not been a manager request yet)
+-   The TON value attached to the message minus the processing fee.
+
+Before sending the message, load the addresses stored in the contract.
+
+```func
 (slice manager_address, slice memorized_address) = load_data();
- 
- The full message structure can be found [here - message layout](https://ton-blockchain.github.io/docs/#/smart-contracts/messages?id=message-layout). But usually we don't need to control each field, so we can use the short form from [example](https://ton-blockchain.github.io/docs/#/smart-contracts/messages?id=sending-messages):
- 
-		 var msg = begin_cell()
-			.store_uint(0x18, 6)
-			.store_slice(addr)
-			.store_coins(amount)
-			.store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
-			.store_slice(message_body)
-		  .end_cell();
+```
 
-A complete analysis of messages in TON is in the [third lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/3lesson/thirdlesson.md).
+You can familiarize yourself with the complete message structure [here - message layout](https://docs.ton.org/develop/smart-contracts/messages#message-layout). But usually, we don't need to control each field, so we can use the short form from the [example](https://docs.ton.org/develop/smart-contracts/messages):
 
-Sending a message in accordance with the conditions:
+```func
+var msg = begin_cell()
+    .store_uint(0x10, 6)
+    .store_slice(sender_address)
+    .store_grams(0)
+    .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
+    .store_uint(3, 32)
+    .store_uint(query_id, 64)
+    .store_slice(manager_address)
+    .store_slice(memorized_address)
+  .end_cell();
+```
 
-	(slice manager_address, slice memorized_address) = load_data();
-      var msg = begin_cell()
-              .store_uint(0x10, 6)
-              .store_slice(sender_address)
-              .store_grams(0)
-              .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
-              .store_uint(3, 32)
-              .store_uint(query_id, 64)
-              .store_slice(manager_address)
-              .store_slice(memorized_address)
-            .end_cell();
-      send_raw_message(msg, 64);
-	  
+Send the message according to the conditions:
+
+```func
+send_raw_message(msg, 64);
+```
+
 ##### Exception
 
-Here everyone just uses the usual `throw` from the [Built-in FunC modules](https://ton-blockchain.github.io/docs/#/func/builtins?id=throwing-exceptions).
+Here it is simple, we use the regular `throw` from the [built-in FunC modules](https://docs.ton.org/develop/func/builtins#throwing-exceptions).
 
+```func
 throw(3);
+```
 
-##Full smart contract code
+## Complete Smart Contract Code
 
-	int equal_slices (slice a, slice b) asm "SDEQ";
+```func
+#include "imports/stdlib.fc";
 
-	(slice, slice) load_data () inline {
-	  var ds = get_data().begin_parse();
-	  return (ds~load_msg_addr(), ds~load_msg_addr());
-	}
+int equal_slices (slice a, slice b) asm "SDEQ";
 
-	() save_data (slice manager_address, slice memorized_address) impure inline {
-	  set_data(begin_cell().store_slice(manager_address).store_slice(memorized_address).end_cell());
-	}
+(slice, slice) load_data () inline {
+  var ds = get_data().begin_parse();
+  return (ds~load_msg_addr(), ds~load_msg_addr());
+}
 
-	slice parse_sender_address (cell in_msg_full) inline {
-	  var cs = in_msg_full.begin_parse();
-	  var flags = cs~load_uint(4);
-	  slice sender_address = cs~load_msg_addr();
-	  return sender_address;
-	}
+() save_data (slice manager_address, slice memorized_address) impure inline {
+  set_data(begin_cell().store_slice(manager_address).store_slice(memorized_address).end_cell());
+}
 
-	() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
-	  int op = in_msg_body~load_int(32);
-	  int query_id = in_msg_body~load_uint(64);
-	  var sender_address = parse_sender_address(in_msg_full);
+slice parse_sender_address (cell in_msg_full) inline {
+  var cs = in_msg_full.begin_parse();
+  var flags = cs~load_uint(4);
+  slice sender_address = cs~load_msg_addr();
+  return sender_address;
+}
 
-	  if (op == 1) {
-		(slice manager_address, slice memorized_address) = load_data();
-		throw_if(1001, ~ equal_slices(manager_address, sender_address));
-		slice new_memorized_address = in_msg_body~load_msg_addr();
-		save_data(manager_address, new_memorized_address);
-	  } else {
-		if (op == 2) {
-		  (slice manager_address, slice memorized_address) = load_data();
-		  var msg = begin_cell()
-				  .store_uint(0x10, 6)
-				  .store_slice(sender_address)
-				  .store_grams(0)
-				  .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
-				  .store_uint(3, 32)
-				  .store_uint(query_id, 64)
-				  .store_slice(manager_address)
-				  .store_slice(memorized_address)
-				.end_cell();
-		  send_raw_message(msg, 64);
-		} else {
-		  throw(3); 
-		}
-	  }
-	}
-	
+() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
+  int op = in_msg_body~load_int(32);
+  int query_id = in_msg_body~load_uint(64);
+  var sender_address = parse_sender_address(in_msg_full);
+
+  if (op == 1) {
+    (slice manager_address, slice memorized_address) = load_data();
+    throw_if(1001, ~ equal_slices(manager_address, sender_address));
+    slice new_memorized_address = in_msg_body~load_msg_addr();
+    save_data(manager_address, new_memorized_address);
+  } elseif (op == 2) {
+    (slice manager_address, slice memorized_address) = load_data();
+    var msg = begin_cell()
+        .store_uint(0x10, 6)
+        .store_slice(sender_address)
+        .store_grams(0)
+        .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
+        .store_uint(3, 32)
+        .store_uint(query_id, 64)
+        .store_slice(manager_address)
+        .store_slice(memorized_address)
+      .end_cell();
+    send_raw_message(msg, 64);
+  } else {
+    throw(3);
+  }
+}
+```
+
+## TypeScript Wrapper
+
+To interact with our smart contract conveniently, let's write a TypeScript wrapper. The base for it is already provided by Blueprint.
+
+### Contract Data Config
+
+Open the file `wrappers/AddressSaver.ts` (the file name may be different depending on how you created the project).
+Let's start with changes to the data config. Our contract contains two values in its data: the manager's address and the saved address. Let the saved address be empty by default (an empty address can be written as two zeros, i.e., uint2 with a value of 0). Add these values to the config:
+
+```ts
+export type AddressSaverConfig = {
+    manager: Address;
+};
+
+export function addressSaverConfigToCell(config: AddressSaverConfig): Cell {
+    return beginCell().storeAddress(config.manager).storeUint(0, 2).endCell();
+}
+```
+
+Now let's move on to the `AddressSaver` class to add methods for calling the operations we need.
+
+### Method for Calling op = 1
+
+When calling the operation with code 1, we should put op=1, query_id, and the new address that we want to save in the contract in the message body. Let's name the method `sendChangeAddress` (I remind you that methods that send messages to the contract must have the `send` prefix).
+
+```ts
+async sendChangeAddress(provider: ContractProvider, via: Sender, value: bigint, queryId: bigint, newAddress: Address) {
+    await provider.internal(via, {
+        value,
+        sendMode: SendMode.PAY_GAS_SEPARATELY,
+        body: beginCell().storeUint(1, 32).storeUint(queryId, 64).storeAddress(newAddress).endCell(),
+    });
+}
+```
+
+### Method for Calling op = 2
+
+This operation does not require any additional data except op=2 and query_id. Let's name the method `sendRequestAddress`.
+
+```ts
+async sendRequestAddress(provider: ContractProvider, via: Sender, value: bigint, queryId: bigint) {
+    await provider.internal(via, {
+        value,
+        sendMode: SendMode.PAY_GAS_SEPARATELY,
+        body: beginCell().storeUint(2, 32).storeUint(queryId, 64).endCell(),
+    });
+}
+```
+
 ## Conclusion
 
-Tests, we will write in the next lesson. Plus, I wanted to say a special thank you to those who donate TON to support the project, it is very motivating and helps to release lessons faster.
+We will write tests in the next lesson. I also wanted to say a special thank you to those who donate TON to support the project, it is very motivating and helps to release lessons faster.

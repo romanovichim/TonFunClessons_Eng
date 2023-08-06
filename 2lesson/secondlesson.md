@@ -1,30 +1,32 @@
-# Lesson 2: FunC Tests for the Smart Contract
+# Lesson 2: Testing FunC for a Smart Contract
+
 ## Introduction
 
-In this lesson, we will write tests for the smart contract created in the first lesson in the test network of The Open Network using FUNC language and execute them using [Blueprint](https://github.com/ton-community/blueprint).
+In this lesson, we will write tests for the smart contract created in the first lesson on the TON blockchain and run them using [Blueprint](https://github.com/ton-community/blueprint).
 
 ## Requirements
 
-To go through this lesson, it is enough to install [Node.js](https://nodejs.org) (preferably version 18 or higher) and complete the [first lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/1lesson/firstlesson.md).
+To complete this lesson, you only need to install [Node.js](https://nodejs.org) (preferably version 18 or higher) and complete the [first lesson](https://github.com/romanovichim/TonFunClessons_ru/blob/main/1lesson/firstlesson.md).
 
-## Tests for the first smart contract
+## Tests for the First Smart Contract
 
 For our first smart contract, we will write the following tests:
 
-- We will call recv_internal() with different numbers and check the get_total method.
-- We will check for an error call when the number does not meet the bit condition.
+-   Call `recv_internal()` with different numbers and check the `get_total` method.
+-   Check for an error when the number does not meet the bitness condition.
 
-## Structure of tests in Blueprint
+## Test Structure in Blueprint
 
-For testing smart contracts in Blueprint projects, the [Sandbox](https://github.com/ton-community/sandbox) library is used. It is installed by default in all projects created through Blueprint.
+The [Sandbox](https://github.com/ton-community/sandbox) library is used for testing smart contracts in Blueprint projects. It is installed by default in all projects created through Blueprint.
 
-The tests themselves are located in the `tests/` folder. A separate file is created for each smart contract of the project (there can be several). In our case, there should only be one file `Counter.spec.ts` in this folder. It already contains everything necessary for testing our smart contract, and even the first test is written, which checks that the contract is successfully deployed. All that remains is to add new tests.
+The tests are located in the `tests/` folder. For each smart contract in the project (there can be multiple), a separate file is created. In our case, there should be only one file named `Counter.spec.ts` in this folder. It already contains everything needed to test our smart contract, including the first test that checks if the contract is deployed successfully. We just need to add new tests.
 
-### Important point
+### Important Note
 
-If you run the tests with the command `npx blueprint test` in the current position, you will see an error in the only test called "should deploy". In most cases, this test should be successful immediately. But our contract simply calls an error because there is no 32-bit number in the message received during deployment (in the first lesson, we specifically added a call to such an error in the absence of a number).
+If you run the tests using the `npx blueprint test` command in the current directory, you will see an error in the only test called "should deploy". In most cases, this test should pass immediately. However, our contract simply throws an error because the deployed message does not contain a 32-bit number (we intentionally added this error in the first lesson when there was no number).
 
-To fix this and ignore the error during deployment - find the piece of code that checks the success of the deployment. From it, you need to remove the check for `success`. It should look like this:
+To fix this and ignore the error during deployment, find the code fragment that checks the success of deployment. Remove the `success` check from it. It should look like this:
+
 ```ts
 expect(deployResult.transactions).toHaveTransaction({
     from: deployer.address,
@@ -33,7 +35,8 @@ expect(deployResult.transactions).toHaveTransaction({
 });
 ```
 
-Now, if you execute the command `npx blueprint test` in the terminal, you will see the following:
+Now, if you run the `npx blueprint test` command in the terminal, you will see the following:
+
 ```
  PASS  tests/Counter.spec.ts
   Counter
@@ -47,13 +50,13 @@ Ran all test suites.
 ✨  Done in 2.47s.
 ```
 
-This means the test has been successful.
+This means that the test passed successfully.
 
-## Testing the recv_internal() and get_total() calls
+## Testing the `recv_internal()` and `get_total()` Calls
 
-Let's write the first test and break down its code.
+Let's write the first test and go through its code.
 
-After the standard test `it('should deploy', ...)` we will write a new one:
+After the standard test `it('should deploy', ...)`, write the following:
 
 ```ts
 it('should update the number', async () => {
@@ -61,9 +64,9 @@ it('should update the number', async () => {
 });
 ```
 
-The line "should update the number" can be anything. It's just an explanation for us about what the essence of the test is.
+The string "should update the number" can be anything. It is just an explanation for ourselves of what the test is about.
 
-Now let's write the test code itself:
+Now let's write the test code:
 
 ```ts
 it('should update the number', async () => {
@@ -80,17 +83,18 @@ it('should update the number', async () => {
 });
 ```
 
-### Let's break it down
+### Explanation
 
-`const caller = await blockchain.treasury('caller');` - here we create a new Treasury, which already has a million coins on Sandbox for all the necessary checks. From it, we will be able to send messages to the contract. Essentially, this is just a wallet with a balance for tests.
+`const caller = await blockchain.treasury('caller');` - here we create a new Treasury, which already has a million coins for all necessary checks in the Sandbox. We can use it to send messages to the contract. Essentially, it is just a wallet with a balance for testing.
 
-`await counter.sendNumber(caller.getSender(), toNano('0.01'), 10n);` - we send a message with the number `10` using the method from the wrapper we wrote in the first lesson. As the sender, we use the `caller` we created earlier.
+`await counter.sendNumber(caller.getSender(), toNano('0.01'), 10n);` - we send a message with the number `10` using the wrapper method we wrote in the first lesson. We use `caller` as the sender, which was created above.
 
-`expect(await counter.getTotal()).toEqual(10n);` - we check (with the expect function) that the result of the getTotal() get-method will be equal to `10`. If not, the test will be marked as failed, and we will see in the terminal exactly where the check did not pass. If everything is good and the result matches, the code will just continue to execute.
+`expect(await counter.getTotal()).toEqual(10n);` - we check (using the `expect` function) that the result of the `getTotal()` method will be equal to `10`. If it is not the case, the test will be marked as failed, and we will see in the terminal where the check failed. If everything is fine and the result matches, the code will continue to execute.
 
-In the following lines, we simply send numbers to the same contract and compare the result of getTotal(). After sending `5`, our sum should already be `15`, and if we send `1000` more, it will be `1015`. If the FunC contract code is written correctly, the test should be marked as passed.
+In the next lines, we simply send numbers to the same contract and compare the result with `getTotal()`. After sending `5`, our sum should be `15`, and if we send `1000`, it should be `1015`. If the FunC code of the contract is written correctly, the test should pass.
 
-We run the tests with the command `npx blueprint test`, and if you did everything without errors, the following result will be obtained:
+Run the tests using the `npx blueprint test` command, and if you have done everything correctly, you will get the following result:
+
 ```
  PASS  tests/Counter.spec.ts
   Counter
@@ -98,11 +102,11 @@ We run the tests with the command `npx blueprint test`, and if you did everythin
     ✓ should update the number (79 ms)
 ```
 
-The check mark means that our new test has been successfully passed.
+The checkmark means that our new test passed successfully.
 
 ## Testing the Exception
 
-Let's write another test and break down its code.
+Let's write another test and go through its code.
 
 ```ts
 it('should throw error when number is not 32 bits', async () => {
@@ -118,17 +122,18 @@ it('should throw error when number is not 32 bits', async () => {
 });
 ```
 
-### Let's break it down
+### Explanation
 
-`const caller = await blockchain.treasury('caller');` - here we create a new Treasury, which already has a million coins on Sandbox for all the necessary checks. From it, we will be able to send messages to the contract. Essentially, this is just a wallet with a balance for tests.
+`const caller = await blockchain.treasury('caller');` - here we create a new Treasury, which already has a million coins for all necessary checks in the Sandbox. We can use it to send messages to the contract. Essentially, it is just a wallet with a balance for testing.
 
-`const result = await counter.sendDeploy(caller.get
+`const result = await counter.sendDeploy(caller.getSender(), toNano('0.01'));` - we send an empty message without a number (this was used for deployment, so for simplicity, we use the ready-made `sendDeploy` function).
 
-Sender(), toNano('0.01'));` - we send an empty message without a number (this is the kind that was used for deployment, so for simplicity we use the ready-made sendDeploy function).
+`expect(result.transactions).toHaveTransaction({ ... })` - we check (using the `expect` function) that among the transactions processed as a result of calling the contract, there will be a transaction with error `35`.
 
-`expect(result.transactions).toHaveTransaction({ ... })` - we check (with the expect function) that among the transactions that were processed as a result of the contract call, there will be a transaction with error `35`.
+> The error code `35` is what we specified in the smart contract in the `throw_if` function.
 
-We run the tests with the command `npx blueprint test`, and if you did everything without errors, the following result will be obtained:
+Run the tests using the `npx blueprint test` command, and if you have done everything correctly, you will get the following result:
+
 ```
  PASS  tests/Counter.spec.ts
   Counter
@@ -137,10 +142,10 @@ We run the tests with the command `npx blueprint test`, and if you did everythin
     ✓ should throw error when number is not 32 bits (53 ms)
 ```
 
-The check mark means that our new test has been successfully passed.
+The checkmark means that our new test passed successfully.
 
-### That's all!
+### That's it!
 
 You have completed the second lesson and successfully implemented tests for the smart contract.
 
-P.S. If there are any questions, I suggest you ask [here](https://t.me/ton_learn)
+P.S. If you have any questions, feel free to ask [here](https://t.me/ton_learn).
