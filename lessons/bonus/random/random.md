@@ -1,6 +1,6 @@
-# Smart Contract Lottery Draw
+# Smart Contract Lottery/Raffle
 
-In this tutorial, we will analyze the lottery draw smart contract. A smart contract is good because:
+In this tutorial, we will analyze the lottery/raffle smart contract. A smart contract is good because:
 - Properly used by random. Learn more about the technical part of randomness in TON [here](https://docs.ton.org/develop/smart-contracts/guidelines/random-number-generation)
 - there are important contract balance management mechanics that can be applied in your smart contracts
 - convenient grouping and structure of the project, the pattern of which is worth adopting.

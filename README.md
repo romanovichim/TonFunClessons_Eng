@@ -35,9 +35,9 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 | Lesson | Considered concepts | Link | 
 | ------------- | ------------- | ------------- | 
 | ton.js | Getting data from a smart contract using JS(ton.js)  | [LINK](./lessons/requests/20lesson/tonjs_eng.md) | 
-| ADNL Protocol Intro | Connection to ADNL, getAccountState, getMasterchaininfo  |  | 
-| ADNL Run GetMethod | Get method call, NFT sales analytics logic  |  | 
-| Collect account txes using ADNL | Logical time, recent account transactions  |  | 
+| ADNL Protocol Intro | Connection to ADNL, getAccountState, getMasterchaininfo  | [LINK](./lessons/requests/ADNL/adnlintro.md) | 
+| ADNL Run GetMethod | Get method call, NFT sales analytics logic  | [LINK](./lessons/requests/ADNL/adnlgetsale.md) | 
+| Collect account txes using ADNL | Logical time, recent account transactions  | [LINK](./lessons/requests/ADNL/adnltxes.md) | 
 
 # Authorization and sending transactions from UI in 5 minutes with TON Connect React UI
 
