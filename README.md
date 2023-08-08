@@ -58,7 +58,7 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 
 | Lesson | Considered concepts | Link | 
 | ------------- | ------------- | ------------- | 
-| Random in TON| Raffle Smart Contract, global variables and c4, admin functions for contract balance  |  | 
+| Random in TON| Raffle Smart Contract, global variables and c4, admin functions for contract balance  | [LINK](./lessons/bonus/random/random.md) | 
 |  NFT Sale | Sale logic based on smart contracts,how to "burn" contract | [LINK](./lessons/bonus/17lesson/nftsale_eng.md) |
 | Hacking a simple contract | Vulnerability due to compiler optimization of the code in the absence of impure   | [LINK](./lessons/bonus/18lesson/hack_eng.md) | 
 
