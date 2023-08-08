@@ -43,8 +43,8 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 
 | Lesson | Considered concepts | Link | 
 | ------------- | ------------- | ------------- | 
-| TON Connect auth button| a simple site with authorization through TonConnect, the concept of separation into wallets and Web3 applications |  | 
-| TON Connect send transaction | contract wrapper usage, send transaction, call get-method from ui  |  | 
+| TON Connect auth button| a simple site with authorization through TonConnect, the concept of separation into wallets and Web3 applications |  [LINK](./lessons/tonconnect/button.md) | 
+| TON Connect send transaction | contract wrapper usage, send transaction, call get-method from ui  | [LINK](./lessons/tonconnect/sendtx.md) | 
 
 # Golang Scripts - convenient scripts for working with TON
 
