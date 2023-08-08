@@ -25,8 +25,8 @@ Lessons on developing smart contracts on FunC for The Open Network(TON). The les
 | Simple smart contract in ton-community/sandbox | create a ton-community/sandbox project, write and compile a contract| [LINK](./lessons/pipeline/simplesmartcontract.md) | 
 | Writing tests in ton-community/sandbox | jest framework tests  | [LINK](./lessons/pipeline/simpletest.md) | 
 | Deploying a smart contract using a QR code | pipeline for deploying a smart contract to the test network | [LINK](./lessons/pipeline/simpledeploy.md) | 
-| Chatbot smart contract | analyzing the smart contract for future message tests |   | 
-| Writing onchain tests on the testnet | message test logic, onchain tests  |   | 
+| Chatbot smart contract | analyzing the smart contract for future message tests | [LINK](./lessons/pipeline/chatbot.md)  | 
+| Writing onchain tests on the testnet | message test logic, onchain tests  | [LINK](./lessons/pipeline/chatbottest.md)  | 
 
 > Author of lessons publishes new tutorials, writes about interesting blockchain companies [here](https://t.me/ton_learn)
 
