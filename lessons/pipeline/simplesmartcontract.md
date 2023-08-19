@@ -239,4 +239,4 @@ We start compilation using the  `yarn compile` command and get a file c `main.co
 	
 ## Conclusion
 
-The next step is to write tests for this smart contract, thanks for your attention.
+The next step is to write [tests](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/lessons/pipeline/simpletest.md) for this smart contract, thanks for your attention.

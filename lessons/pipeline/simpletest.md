@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In the first part, we created a project and wrote a simple smart contract, it's time for tests.
+In the [first part](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/lessons/pipeline/simplesmartcontract.md), we created a project and wrote a simple smart contract, it's time for tests.
 
 ## Let's start working on tests
 
