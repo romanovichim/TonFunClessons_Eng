@@ -18,20 +18,21 @@ Let's start by creating a simple smart contract and compiling it.
 
 Make a folder for your project and go into it.
 
-	// Windows example
-	mkdir test_folder
-	cd test_folder
-	
+```bash
+// Windows example
+mkdir test_folder
+cd test_folder
+```
 In this tutorial, we will use the `yarn` package manager
-
+```bash
 	yarn init
-	
+```
 Let's initialize the `yarn` and just click on the questions in the console, as this is a test case. After that we should get the package.json file in the folder.
 
 Now let's add the typescript and the necessary libraries. Install them as dev dependencies:
-
-	yarn add typescript ts-node @types/node @swc/core --dev
-	
+```bash
+yarn add typescript ts-node @types/node @swc/core --dev
+```
 Create a `tsconfig.json` file. We need the file for the project compilation configuration. Let's add to it: 
 
 	{
@@ -52,14 +53,16 @@ Create a `tsconfig.json` file. We need the file for the project compilation conf
 	}
 
 In this tutorial, we will not dwell on what each line of configurations means, because this tutorial is about smart contracts. Now let's install the libraries necessary to work with TON:
-
-	yarn add ton-core ton-crypto @ton-community/func-js  --dev
-	
+```bash
+yarn add ton-core ton-crypto @ton-community/func-js  --dev
+```
 Now let's create a smart contract on FunC. Create `contracts` folder and `main.fc` file with minimal code:
 
-	() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
+```func
+() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
 
-	} 
+} 
+```
 
  `recv_internal ` is called when a smart contract receives an inbound internal message. There are some variables at the stack when [TVM initiates](https://docs.ton.org/learn/tvm-instructions/tvm-overview#initialization-of-tvm), by setting arguments in recv_internal we give smart-contract code awareness about some of them. T
 
@@ -90,6 +93,7 @@ Now let's move on to writing the compilation script in the `compile.ts` file. He
 
 Finally we get to the compilation file, the first thing we do is compile our code using the function `compileFunc`:
 
+```ts
 	import * as fs from "fs";
 	import { readFileSync } from "fs";
 	import process from "process";
@@ -110,46 +114,49 @@ Finally we get to the compilation file, the first thing we do is compile our cod
 
 	}
 	compileScript();
-	
+```	
 The resulting hexBoС will be written to the folder:
+```ts
+import * as fs from "fs";
+import { readFileSync } from "fs";
+import process from "process";
+import { Cell } from "ton-core";
+import { compileFunc } from "@ton-community/func-js";
 
-	import * as fs from "fs";
-	import { readFileSync } from "fs";
-	import process from "process";
-	import { Cell } from "ton-core";
-	import { compileFunc } from "@ton-community/func-js";
+async function compileScript() {
 
-	async function compileScript() {
+	const compileResult = await compileFunc({
+		targets: ["./contracts/main.fc"], 
+		sources: (path) => readFileSync(path).toString("utf8"),
+	});
 
-		const compileResult = await compileFunc({
-			targets: ["./contracts/main.fc"], 
-			sources: (path) => readFileSync(path).toString("utf8"),
-		});
-
-		if (compileResult.status ==="error") {
-			console.log("Error happend");
-			process.exit(1);
-		}
-
-		const hexBoC = 'build/main.compiled.json';
-
-		fs.writeFileSync(
-			hexBoC,
-			JSON.stringify({
-				hex: Cell.fromBoc(Buffer.from(compileResult.codeBoc,"base64"))[0]
-					.toBoc()
-					.toString("hex"),
-			})
-
-		);
-
+	if (compileResult.status ==="error") {
+		console.log("Error happend");
+		process.exit(1);
 	}
 
-	compileScript();
-	
+	const hexBoC = 'build/main.compiled.json';
+
+	fs.writeFileSync(
+		hexBoC,
+		JSON.stringify({
+			hex: Cell.fromBoc(Buffer.from(compileResult.codeBoc,"base64"))[0]
+				.toBoc()
+				.toString("hex"),
+		})
+
+	);
+
+}
+
+compileScript();
+```
+
 For convenience, you can dilute the code with `console.log()` so that it is clear what worked and what did not when compiling, for example, you can add it to the end:
 
-	console.log("Compiled, hexBoC:"+hexBoC);
+```ts
+console.log("Compiled, hexBoC:"+hexBoC);
+```
 
 Which will output the resulting hexBoC.
 
@@ -158,81 +165,84 @@ Which will output the resulting hexBoC.
 To create contracts, we need the standard FunC function library. Create a folder `imports`  inside folder `contracts` and add [this](https://github.com/ton-blockchain/ton/blob/master/crypto/smartcont/stdlib.fc) file there.  
 
 Now go to the `main.fc` file and import the library, now the file looks like this:
+```func
+#include "imports/stdlib.fc";
 
-	#include "imports/stdlib.fc";
+() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
 
-	() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
-
-	} 
-
+} 
+```
 Let's go over briefly on the contract, detailed analyzes and lessons on FunC starts [here](https://github.com/romanovichim/TonFunClessons_Eng/). 
 
 The smart contract that we will write will store the sender address of the internal message and also store the number one in the smart contract. It will also implement the Get method, which, when called, will return the address of the last sender of the message to the contract and one.
 
 An internal message comes to our function, we will first get the service flags from there, and then the sender's address, which we will save:
+```func
+#include "imports/stdlib.fc";
 
-	#include "imports/stdlib.fc";
+() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
+	slice cs = in_msg.begin_parse();
+	int flags = cs~load_uint(4);
+	slice sender_address = cs~load_msg_addr();
 
-	() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
-		slice cs = in_msg.begin_parse();
-		int flags = cs~load_uint(4);
-		slice sender_address = cs~load_msg_addr();
-
-	} 
-
+} 
+```
 Let's save the address and one in the contract, i.e. write the data to register `c4`. 
+```func
+#include "imports/stdlib.fc";
 
-	#include "imports/stdlib.fc";
+() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
+	slice cs = in_msg.begin_parse();
+	int flags = cs~load_uint(4);
+	slice sender_address = cs~load_msg_addr();
 
-	() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
-		slice cs = in_msg.begin_parse();
-		int flags = cs~load_uint(4);
-		slice sender_address = cs~load_msg_addr();
-
-		set_data(begin_cell().store_slice(sender_address).store_uint(1,32).end_cell());
-	} 
-
+	set_data(begin_cell().store_slice(sender_address).store_uint(1,32).end_cell());
+} 
+```
 It's time for the Get method, the method will return an address and a number, so let's start with `(slice,int)`:
 
-	(slice,int) get_sender() method_id {
+```func
+(slice,int) get_sender() method_id {
 
-	}
-
+}
+```
 In the method itself, we get the data from the register and return it to the user
+```func
+#include "imports/stdlib.fc";
 
-	#include "imports/stdlib.fc";
+() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
+	slice cs = in_msg.begin_parse();
+	int flags = cs~load_uint(4);
+	slice sender_address = cs~load_msg_addr();
 
-	() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
-		slice cs = in_msg.begin_parse();
-		int flags = cs~load_uint(4);
-		slice sender_address = cs~load_msg_addr();
+	set_data(begin_cell().store_slice(sender_address).store_uint(1,32).end_cell());
+} 
 
-		set_data(begin_cell().store_slice(sender_address).store_uint(1,32).end_cell());
-	} 
-
-	(slice,int) get_sender() method_id {
-		slice ds = get_data().begin_parse();
-		return (ds~load_msg_addr(),ds~load_uint(32));
-	}
-	
+(slice,int) get_sender() method_id {
+	slice ds = get_data().begin_parse();
+	return (ds~load_msg_addr(),ds~load_uint(32));
+}
+```
 
 Final contract:
 
-	#include "imports/stdlib.fc";
+```func
+#include "imports/stdlib.fc";
 
-	() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
-		slice cs = in_msg.begin_parse();
-		int flags = cs~load_uint(4);
-		slice sender_address = cs~load_msg_addr();
+() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
+	slice cs = in_msg.begin_parse();
+	int flags = cs~load_uint(4);
+	slice sender_address = cs~load_msg_addr();
 
-		set_data(begin_cell().store_slice(sender_address).store_uint(1,32).end_cell());
-	} 
+	set_data(begin_cell().store_slice(sender_address).store_uint(1,32).end_cell());
+} 
 
-	(slice,int) get_sender() method_id {
-		slice ds = get_data().begin_parse();
-		return (ds~load_msg_addr(),ds~load_uint(32));
-	}
-	
+(slice,int) get_sender() method_id {
+	slice ds = get_data().begin_parse();
+	return (ds~load_msg_addr(),ds~load_uint(32));
+}
+```
+
 We start compilation using the  `yarn compile` command and get a file c `main.compiled.json` in the `build` folder:
 
 	{"hex":"b5ee9c72410104010035000114ff00f4a413f4bcf2c80b0102016203020015a1418bda89a1f481a63e610028d03031d0d30331fa403071c858cf16cb1fc9ed5474696b07"}
