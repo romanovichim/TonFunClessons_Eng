@@ -13,76 +13,76 @@ Since the collection smart contract is a standard, we can look at the method sig
 - `owner_address` - address of the owner of the collection, zero address if there is no owner.
 
 In order to make a request, you need the last block, we analyzed how to get it in the previous tutorial:
+```ts
+import { LiteClient, LiteRoundRobinEngine, LiteSingleEngine, LiteEngine } from "ton-lite-client";
+import { Address} from "ton-core";
 
-	import { LiteClient, LiteRoundRobinEngine, LiteSingleEngine, LiteEngine } from "ton-lite-client";
-	import { Address} from "ton-core";
+async function main() {
+	const engines: LiteEngine[] = [];
+	engines.push(new LiteSingleEngine({
+		host: `tcp://${intToIP(server.ip)}:${server.port}`,
+		publicKey: Buffer.from(server.id.key, 'base64'),
+	}));
+	const engine: LiteEngine = new LiteRoundRobinEngine(engines);
+	const client = new LiteClient({ engine });
+	const master = await client.getMasterchainInfo()
 
-	async function main() {
-		const engines: LiteEngine[] = [];
-		engines.push(new LiteSingleEngine({
-			host: `tcp://${intToIP(server.ip)}:${server.port}`,
-			publicKey: Buffer.from(server.id.key, 'base64'),
-		}));
-		const engine: LiteEngine = new LiteRoundRobinEngine(engines);
-		const client = new LiteClient({ engine });
-		const master = await client.getMasterchainInfo()
-
-	}
-	
+}
+```
 Take the address of any collection in TON, for example `EQAo92DYMokxghKcq-CkCGSk_MgXY5Fo1SPW20gkvZl75iCN` and call its Get method using the resulting block:
-
-	let executed = await client.runMethod(Address.parse(addrStr), 'get_collection_data', Buffer.alloc(0), master.last);
-	if (!executed.result) {
-		return
-	}
-	
+```ts
+let executed = await client.runMethod(Address.parse(addrStr), 'get_collection_data', Buffer.alloc(0), master.last);
+if (!executed.result) {
+	return
+}
+```
 Get methods can take parameters, since there are no parameters in the standard `get_collection_data` method, we pass `Buffer.alloc(0)` - an object of zero size.
 
 In response, we will receive a stack that needs to be parsed, it will look like this:
-
+```ts
 	// collection
-	const addrStr="EQAo92DYMokxghKcq-CkCGSk_MgXY5Fo1SPW20gkvZl75iCN";
-	let executed = await client.runMethod(Address.parse(addrStr), 'get_collection_data', Buffer.alloc(0), master.last);
-	if (!executed.result) {
-		return
-	}
-	let resultTuple = parseTuple(Cell.fromBoc(Buffer.from(executed.result, 'base64'))[0])
-	let parsed = new TupleReader(resultTuple);
-	
+const addrStr="EQAo92DYMokxghKcq-CkCGSk_MgXY5Fo1SPW20gkvZl75iCN";
+let executed = await client.runMethod(Address.parse(addrStr), 'get_collection_data', Buffer.alloc(0), master.last);
+if (!executed.result) {
+	return
+}
+let resultTuple = parseTuple(Cell.fromBoc(Buffer.from(executed.result, 'base64'))[0])
+let parsed = new TupleReader(resultTuple);
+```
 Now we can start reading data, such as the index of the next element in the collection:
-
-	let next_item_index = parsed.readBigNumber();
-	
+```ts
+let next_item_index = parsed.readBigNumber();
+```
 As well as the address of the owner and the cell with the content:
-
-	let collection_content = parsed.readCell();
-	let owner_address = parsed.readAddress();
-	
+```ts
+let collection_content = parsed.readCell();
+let owner_address = parsed.readAddress();
+```
 If you output data to the console, you will see the value, address and cell, the cell contains content, the storage of this content is also described by the standard, data storage is described here in the `Content representation` paragraph, the data is here.
 
 The most common data representation is `Offchain snake format`, let's parse it:
+```ts
+import { LiteClient, LiteRoundRobinEngine, LiteSingleEngine, LiteEngine } from "ton-lite-client";
+import { Address, Cell, loadTransaction,parseTuple, TupleReader, beginCell  } from "ton-core";
+import { Buffer } from 'buffer';
 
-	import { LiteClient, LiteRoundRobinEngine, LiteSingleEngine, LiteEngine } from "ton-lite-client";
-	import { Address, Cell, loadTransaction,parseTuple, TupleReader, beginCell  } from "ton-core";
-	import { Buffer } from 'buffer';
+function intToIP(int: number) {
+	var part1 = int & 255;
+	var part2 = ((int >> 8) & 255);
+	var part3 = ((int >> 16) & 255);
+	var part4 = ((int >> 24) & 255);
 
-	function intToIP(int: number) {
-		var part1 = int & 255;
-		var part2 = ((int >> 8) & 255);
-		var part3 = ((int >> 16) & 255);
-		var part4 = ((int >> 24) & 255);
+	return part4 + "." + part3 + "." + part2 + "." + part1;
+}
 
-		return part4 + "." + part3 + "." + part2 + "." + part1;
+let server = {
+	"ip": -2018145068,
+	"port": 13206,
+	"id": {
+		"@type": "pub.ed25519",
+		"key": "K0t3+IWLOXHYMvMcrGZDPs+pn58a17LFbnXoQkKc2xw="
 	}
-
-	let server = {
-		"ip": -2018145068,
-		"port": 13206,
-		"id": {
-			"@type": "pub.ed25519",
-			"key": "K0t3+IWLOXHYMvMcrGZDPs+pn58a17LFbnXoQkKc2xw="
-		}
-	}
+}
 
 		//int 0x46495850,    ;; fix price sale ("FIXP")
 		//int is_complete 
@@ -97,73 +97,73 @@ The most common data representation is `Offchain snake format`, let's parse it:
 		//int royalty_amount
 
 
-	const OFF_CHAIN_CONTENT_PREFIX = 0x01
+const OFF_CHAIN_CONTENT_PREFIX = 0x01
 
-	export function flattenSnakeCell(cell: Cell) {
-	  let c: Cell | null = cell
+export function flattenSnakeCell(cell: Cell) {
+  let c: Cell | null = cell
 
-	  let res = Buffer.alloc(0)
+  let res = Buffer.alloc(0)
 
-	  while (c) {
-		const cs = c.beginParse()
-		if (cs.remainingBits === 0) {
-		  return res
-		}
-		if (cs.remainingBits % 8 !== 0) {
-		  throw Error('Number remaining of bits is not multiply of 8')
-		}
-
-		const data = cs.loadBuffer(cs.remainingBits / 8)
-		res = Buffer.concat([res, data])
-		c = c.refs && c.refs[0]
-	  }
-
+  while (c) {
+	const cs = c.beginParse()
+	if (cs.remainingBits === 0) {
 	  return res
 	}
-
-	export function decodeOffChainContent(content: Cell) {
-	  const data = flattenSnakeCell(content)
-
-	  const prefix = data[0]
-	  if (prefix !== OFF_CHAIN_CONTENT_PREFIX) {
-		throw new Error(`Unknown content prefix: ${prefix.toString(16)}`)
-	  }
-	  return data.slice(1).toString()
+	if (cs.remainingBits % 8 !== 0) {
+	  throw Error('Number remaining of bits is not multiply of 8')
 	}
 
-	async function main() {
-		const engines: LiteEngine[] = [];
-		engines.push(new LiteSingleEngine({
-			host: `tcp://${intToIP(server.ip)}:${server.port}`,
-			publicKey: Buffer.from(server.id.key, 'base64'),
-		}));
-		const engine: LiteEngine = new LiteRoundRobinEngine(engines);
-		const client = new LiteClient({ engine });
-		const master = await client.getMasterchainInfo()
+	const data = cs.loadBuffer(cs.remainingBits / 8)
+	res = Buffer.concat([res, data])
+	c = c.refs && c.refs[0]
+  }
+
+  return res
+}
+
+export function decodeOffChainContent(content: Cell) {
+  const data = flattenSnakeCell(content)
+
+  const prefix = data[0]
+  if (prefix !== OFF_CHAIN_CONTENT_PREFIX) {
+	throw new Error(`Unknown content prefix: ${prefix.toString(16)}`)
+  }
+  return data.slice(1).toString()
+}
+
+async function main() {
+	const engines: LiteEngine[] = [];
+	engines.push(new LiteSingleEngine({
+		host: `tcp://${intToIP(server.ip)}:${server.port}`,
+		publicKey: Buffer.from(server.id.key, 'base64'),
+	}));
+	const engine: LiteEngine = new LiteRoundRobinEngine(engines);
+	const client = new LiteClient({ engine });
+	const master = await client.getMasterchainInfo()
 
 
 		//GET METHOD
 
 		// collection
-		const addrStr="EQAo92DYMokxghKcq-CkCGSk_MgXY5Fo1SPW20gkvZl75iCN";
-		let executed = await client.runMethod(Address.parse(addrStr), 'get_collection_data', Buffer.alloc(0), master.last);
-		if (!executed.result) {
-			return
-		}
-		let resultTuple = parseTuple(Cell.fromBoc(Buffer.from(executed.result, 'base64'))[0])
-		let parsed = new TupleReader(resultTuple);
-		//(int next_item_index, cell collection_content, slice owner_address)
-		//console.log(parsed);
-		let next_item_index = parsed.readBigNumber();
-		let collection_content = parsed.readCell();
-		let owner_address = parsed.readAddress();
-		console.log("Content link: " ,decodeOffChainContent(collection_content));
-		console.log("Owner Address: ", owner_address);
-
+	const addrStr="EQAo92DYMokxghKcq-CkCGSk_MgXY5Fo1SPW20gkvZl75iCN";
+	let executed = await client.runMethod(Address.parse(addrStr), 'get_collection_data', Buffer.alloc(0), master.last);
+	if (!executed.result) {
+		return
 	}
+	let resultTuple = parseTuple(Cell.fromBoc(Buffer.from(executed.result, 'base64'))[0])
+	let parsed = new TupleReader(resultTuple);
+	//(int next_item_index, cell collection_content, slice owner_address)
+	//console.log(parsed);
+	let next_item_index = parsed.readBigNumber();
+	let collection_content = parsed.readCell();
+	let owner_address = parsed.readAddress();
+	console.log("Content link: " ,decodeOffChainContent(collection_content));
+	console.log("Owner Address: ", owner_address);
 
-	main()
-	
+}
+
+main()
+```
 The `decodeOffChainContent()` function checks by prefix that this is off-chain content storage and 'parses' the cell, turning it into the link we need.
 
 ## Sales information - data collection logic
