@@ -8,7 +8,7 @@ In this lesson, we will write a proxy smart contract in the TON blockchain using
 
 To complete this lesson, you only need to install [Node.js](https://nodejs.org). It is recommended to install one of the latest versions, such as 18.
 
-You should also be able to create/deploy a project using Blueprint. You can learn how to do this in the [first lesson](https://github.com/romanovichim/TonFunClessons_ru/blob/main/1lesson/firstlesson.md).
+You should also be able to create/deploy a project using Blueprint. You can learn how to do this in the [first lesson](https://github.com/romanovichim/TonFunClessons_Eng/blob/main/lessons/smartcontract/1lesson/firstlesson.md)
 
 ## Smart Contract
 
