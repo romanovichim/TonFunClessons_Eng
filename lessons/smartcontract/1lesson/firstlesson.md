@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this lesson, we will write your first smart contract on the TON blockchain using the FunC language, deploy it to the test network using [Blueprint](https://github.com/ton-community/blueprint), and try to interact with it using the [ton](https://github.com/ton-core/ton) JavaScript library.
+In this lesson, we will write your first smart contract on the TON blockchain using the FunC language, deploy it to the test network using [Blueprint](https://github.com/ton-community/blueprint), and try to interact with it using the [ton](https://github.com/ton-org/ton) JavaScript library.
 
 > \*Deploy - the process of transferring to the network (in this case, a smart contract to the blockchain)
 
