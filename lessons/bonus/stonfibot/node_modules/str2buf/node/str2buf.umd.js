@@ -1,0 +1,2 @@
+!function(n,r){"object"==typeof exports&&"undefined"!=typeof module?r(exports):"function"==typeof define&&define.amd?define(["exports"],r):r(n.str2buf={})}(this,function(n){function r(n){return new Buffer(n).toString("binary")}function e(n){return new Uint8Array(Buffer.from(n,"binary"))}n.fromUint8Array=r,n.toUint8Array=e,n.fromBuffer=function(n){return r(new Uint8Array(n))},n.toBuffer=function(n){return e(n).buffer}});
+//# sourceMappingURL=str2buf.umd.js.map

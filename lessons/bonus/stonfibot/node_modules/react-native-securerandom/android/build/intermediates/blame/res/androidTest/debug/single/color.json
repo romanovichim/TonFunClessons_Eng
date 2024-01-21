@@ -1,0 +1,38 @@
+[
+    {
+        "merged": "/Users/rob/workspace/rnrandom-test/node_modules/react-native-securerandom/android/build/intermediates/res/merged/androidTest/debug/color/abc_primary_text_material_light.xml",
+        "source": "/Users/rob/.android/build-cache/9d494c7b402b81b419e968100ac102bd869cc4dd/output/res/color/abc_primary_text_material_light.xml"
+    },
+    {
+        "merged": "/Users/rob/workspace/rnrandom-test/node_modules/react-native-securerandom/android/build/intermediates/res/merged/androidTest/debug/color/abc_primary_text_material_dark.xml",
+        "source": "/Users/rob/.android/build-cache/9d494c7b402b81b419e968100ac102bd869cc4dd/output/res/color/abc_primary_text_material_dark.xml"
+    },
+    {
+        "merged": "/Users/rob/workspace/rnrandom-test/node_modules/react-native-securerandom/android/build/intermediates/res/merged/androidTest/debug/color/abc_secondary_text_material_light.xml",
+        "source": "/Users/rob/.android/build-cache/9d494c7b402b81b419e968100ac102bd869cc4dd/output/res/color/abc_secondary_text_material_light.xml"
+    },
+    {
+        "merged": "/Users/rob/workspace/rnrandom-test/node_modules/react-native-securerandom/android/build/intermediates/res/merged/androidTest/debug/color/abc_primary_text_disable_only_material_dark.xml",
+        "source": "/Users/rob/.android/build-cache/9d494c7b402b81b419e968100ac102bd869cc4dd/output/res/color/abc_primary_text_disable_only_material_dark.xml"
+    },
+    {
+        "merged": "/Users/rob/workspace/rnrandom-test/node_modules/react-native-securerandom/android/build/intermediates/res/merged/androidTest/debug/color/abc_primary_text_disable_only_material_light.xml",
+        "source": "/Users/rob/.android/build-cache/9d494c7b402b81b419e968100ac102bd869cc4dd/output/res/color/abc_primary_text_disable_only_material_light.xml"
+    },
+    {
+        "merged": "/Users/rob/workspace/rnrandom-test/node_modules/react-native-securerandom/android/build/intermediates/res/merged/androidTest/debug/color/switch_thumb_material_light.xml",
+        "source": "/Users/rob/.android/build-cache/9d494c7b402b81b419e968100ac102bd869cc4dd/output/res/color/switch_thumb_material_light.xml"
+    },
+    {
+        "merged": "/Users/rob/workspace/rnrandom-test/node_modules/react-native-securerandom/android/build/intermediates/res/merged/androidTest/debug/color/abc_secondary_text_material_dark.xml",
+        "source": "/Users/rob/.android/build-cache/9d494c7b402b81b419e968100ac102bd869cc4dd/output/res/color/abc_secondary_text_material_dark.xml"
+    },
+    {
+        "merged": "/Users/rob/workspace/rnrandom-test/node_modules/react-native-securerandom/android/build/intermediates/res/merged/androidTest/debug/color/switch_thumb_material_dark.xml",
+        "source": "/Users/rob/.android/build-cache/9d494c7b402b81b419e968100ac102bd869cc4dd/output/res/color/switch_thumb_material_dark.xml"
+    },
+    {
+        "merged": "/Users/rob/workspace/rnrandom-test/node_modules/react-native-securerandom/android/build/intermediates/res/merged/androidTest/debug/color/abc_search_url_text.xml",
+        "source": "/Users/rob/.android/build-cache/9d494c7b402b81b419e968100ac102bd869cc4dd/output/res/color/abc_search_url_text.xml"
+    }
+]

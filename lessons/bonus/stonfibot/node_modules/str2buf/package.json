@@ -1,0 +1,39 @@
+{
+  "name": "str2buf",
+  "version": "1.3.0",
+  "description": "isomorphic string <=> buffer in 198 bytes",
+  "main": "node/str2buf.js",
+  "module": "node/str2buf.mjs",
+  "browser": {
+    "./node/str2buf.js": "./dist/str2buf.js",
+    "./node/str2buf.mjs": "./dist/str2buf.mjs"
+  },
+  "scripts": {
+    "build": "microbundle --entry browser.mjs --output dist && microbundle --entry node.mjs --output node",
+    "prepublish": "npm run build",
+    "pretest": "npm run build",
+    "test": "node test",
+    "release": "npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevlened/str2buf.git"
+  },
+  "keywords": [
+    "string",
+    "buffer"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kevlened/str2buf/issues"
+  },
+  "files": [
+    "dist",
+    "fast",
+    "node"
+  ],
+  "homepage": "https://github.com/kevlened/str2buf#readme",
+  "devDependencies": {
+    "microbundle": "^0.2.4"
+  }
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"checkInstallation.d.ts","sourceRoot":"","sources":["../../src/tools/checkInstallation.ts"],"names":[],"mappings":"AAGA,oBAAY,gBAAgB;IAC1B,IAAI,SAAS;IACb,GAAG,QAAQ;IACX,GAAG,QAAQ;CACZ;AAED,QAAA,MAAM,sBAAsB,YAAmB,MAAM,KAAG,QAAQ,OAAO,CAQtE,CAAC;AAEF,QAAA,MAAM,yBAAyB;aAKpB,MAAM;kBACD,MAAM;;MAElB,OAQH,CAAC;AAEF,OAAO,EAAC,sBAAsB,EAAE,yBAAyB,EAAC,CAAC"}

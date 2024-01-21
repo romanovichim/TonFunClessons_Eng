@@ -1,0 +1,33 @@
+{
+  "name": "@react-native-community/cli-hermes",
+  "version": "12.3.0",
+  "license": "MIT",
+  "main": "build/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "types": "build/index.d.ts",
+  "dependencies": {
+    "@react-native-community/cli-platform-android": "12.3.0",
+    "@react-native-community/cli-tools": "12.3.0",
+    "chalk": "^4.1.2",
+    "hermes-profile-transformer": "^0.0.6",
+    "ip": "^1.1.5"
+  },
+  "files": [
+    "build",
+    "!*.d.ts",
+    "!*.map"
+  ],
+  "devDependencies": {
+    "@react-native-community/cli-types": "12.3.0",
+    "@types/ip": "^1.1.0"
+  },
+  "homepage": "https://github.com/react-native-community/cli/tree/main/packages/cli-hermes",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/react-native-community/cli.git",
+    "directory": "packages/cli-hermes"
+  },
+  "gitHead": "ba9438a40b7358d266b578bc2d2430961268690d"
+}

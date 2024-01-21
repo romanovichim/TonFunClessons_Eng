@@ -1,0 +1,45 @@
+{
+  "name": "msrcrypto",
+  "version": "1.5.8",
+  "description": "MSR JavaScript Cryptography Library",
+  "main": "dist/msrcrypto.js",
+  "module": "dist/msrcrypto.mjs",
+  "scripts": {
+    "test": "npm run test:node && npm run test:browser",
+    "test:node": "jest",
+    "test:browser": "karma start karma.conf.js --single-run",
+    "release": "git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevlened/msrCrypto.git"
+  },
+  "files": [
+    "dist",
+    "msrcrypto.js",
+    "msrcrypto.min.js"
+  ],
+  "keywords": [
+    "crypto",
+    "webcrypto",
+    "ES3"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/kevlened/msrCrypto/issues"
+  },
+  "homepage": "https://www.microsoft.com/en-us/download/details.aspx?id=52439",
+  "devDependencies": {
+    "jasmine-core": "^3.4.0",
+    "jest": "^24.9.0",
+    "karma": "^4.3.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-edge-launcher": "^0.4.2",
+    "karma-firefox-launcher": "^1.1.0",
+    "karma-jasmine": "^1.1.2",
+    "karma-safari-launcher": "^1.0.0",
+    "karma-webpack": "^3.0.0",
+    "webcrypto-test-suite": "^0.1.3",
+    "webpack": "^4.16.1"
+  }
+}

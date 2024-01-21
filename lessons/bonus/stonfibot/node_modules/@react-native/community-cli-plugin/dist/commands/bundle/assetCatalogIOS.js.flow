@@ -1,0 +1,29 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict-local
+ * @format
+ * @oncall react_native
+ */
+
+import type { AssetData } from "metro/src/Assets";
+
+declare export function cleanAssetCatalog(catalogDir: string): void;
+
+type ImageSet = {
+  basePath: string,
+  files: { name: string, src: string, scale: number }[],
+};
+
+declare export function getImageSet(
+  catalogDir: string,
+  asset: AssetData,
+  scales: $ReadOnlyArray<number>
+): ImageSet;
+
+declare export function isCatalogAsset(asset: AssetData): boolean;
+
+declare export function writeImageSet(imageSet: ImageSet): void;

@@ -1,0 +1,2 @@
+!function(n,r){"object"==typeof exports&&"undefined"!=typeof module?r(exports):"function"==typeof define&&define.amd?define(["exports"],r):r(n.str2buf={})}(this,function(n){function r(n){for(var r="",t=0,e=n.length;t<e;t++)r+=String.fromCharCode(n[t]);return r}function t(n){for(var r=new Uint8Array(n.length),t=0,e=n.length;t<e;t++)r[t]=n.charCodeAt(t);return r}n.fromUint8Array=r,n.toUint8Array=t,n.fromBuffer=function(n){return r(new Uint8Array(n))},n.toBuffer=function(n){return t(n).buffer}});
+//# sourceMappingURL=str2buf.umd.js.map

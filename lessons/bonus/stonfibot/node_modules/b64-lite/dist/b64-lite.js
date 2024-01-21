@@ -1,0 +1,2 @@
+exports.atob=function(o){return window.atob(o)},exports.btoa=function(o){return window.btoa(o)},exports.toBase64=function(o){if("string"==typeof o)return window.btoa(unescape(encodeURIComponent(o)));for(var t=new Uint8Array(o),n="",e=0;e<t.byteLength;e++)n+=String.fromCharCode(t[e]);return window.btoa(n)},exports.fromBase64=function(o){return decodeURIComponent(escape(window.atob(o)))},exports.toBuffer=function(o){for(var t=window.atob(o),n=new Uint8Array(t.length),e=0;e<t.length;e++)n[e]=t.charCodeAt(e);return n};
+//# sourceMappingURL=b64-lite.js.map

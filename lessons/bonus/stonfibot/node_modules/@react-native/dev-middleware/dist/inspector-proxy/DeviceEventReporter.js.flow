@@ -1,0 +1,65 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict-local
+ * @format
+ */
+
+import type { EventReporter } from "../types/EventReporter";
+import TTLCache from "@isaacs/ttlcache";
+
+type PendingCommand = {
+  method: string,
+  requestOrigin: "proxy" | "debugger",
+  requestTime: number,
+  metadata: RequestMetadata,
+};
+
+type DeviceMetadata = $ReadOnly<{
+  appId: string,
+  deviceId: string,
+  deviceName: string,
+}>;
+
+type RequestMetadata = $ReadOnly<{
+  pageId: string | null,
+  frontendUserAgent: string | null,
+}>;
+
+declare class DeviceEventReporter {
+  _eventReporter: EventReporter;
+  _pendingCommands: TTLCache<number, PendingCommand>;
+  _metadata: DeviceMetadata;
+  constructor(eventReporter: EventReporter, metadata: DeviceMetadata): void;
+  logRequest(
+    req: $ReadOnly<{ id: number, method: string, ... }>,
+    origin: "debugger" | "proxy",
+    metadata: RequestMetadata
+  ): void;
+  logResponse(
+    res: $ReadOnly<{
+      id: number,
+      error?: { message: string, data?: mixed },
+      ...
+    }>,
+    origin: "device" | "proxy",
+    metadata: $ReadOnly<{
+      pageId: string | null,
+      frontendUserAgent: string | null,
+    }>
+  ): void;
+  logConnection(
+    connectedEntity: "debugger",
+    metadata: $ReadOnly<{
+      pageId: string,
+      frontendUserAgent: string | null,
+    }>
+  ): void;
+  logDisconnection(disconnectedEntity: "device" | "debugger"): void;
+  _logExpiredCommand(pendingCommand: PendingCommand): void;
+}
+
+declare export default DeviceEventReporter;

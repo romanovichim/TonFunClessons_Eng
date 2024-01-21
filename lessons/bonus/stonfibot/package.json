@@ -1,0 +1,22 @@
+{
+  "name": "stonfibot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ston-fi/sdk": "^0.4.0",
+    "buffer": "^6.0.3",
+    "cron": "^3.1.6",
+    "ton": "^13.9.0",
+    "ton-core": "^0.53.0",
+    "ton-crypto": "^3.2.0",
+    "tonweb": "^0.0.62",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

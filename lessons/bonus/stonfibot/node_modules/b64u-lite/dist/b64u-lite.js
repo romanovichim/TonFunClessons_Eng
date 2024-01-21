@@ -1,0 +1,2 @@
+var e=require("b64-lite");exports.toBinaryString=function(r){return e.atob(r.replace(/-/g,"+").replace(/_/g,"/"))},exports.fromBinaryString=function(r,t){return e.btoa(r).replace(/\+/g,"-").replace(/\//g,"_").replace(/=/g,t?"=":"")},exports.toBase64Url=function(r,t){return e.toBase64(r).replace(/\+/g,"-").replace(/\//g,"_").replace(/=/g,t?"=":"")},exports.fromBase64Url=function(r){return e.fromBase64(r.replace(/-/g,"+").replace(/_/g,"/"))},exports.toBuffer=function(r){return e.toBuffer(r.replace(/-/g,"+").replace(/_/g,"/"))};
+//# sourceMappingURL=b64u-lite.js.map

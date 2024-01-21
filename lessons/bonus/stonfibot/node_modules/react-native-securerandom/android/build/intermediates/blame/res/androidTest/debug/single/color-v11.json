@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/rob/workspace/rnrandom-test/node_modules/react-native-securerandom/android/build/intermediates/res/merged/androidTest/debug/color-v11/abc_background_cache_hint_selector_material_dark.xml",
+        "source": "/Users/rob/.android/build-cache/9d494c7b402b81b419e968100ac102bd869cc4dd/output/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
+    },
+    {
+        "merged": "/Users/rob/workspace/rnrandom-test/node_modules/react-native-securerandom/android/build/intermediates/res/merged/androidTest/debug/color-v11/abc_background_cache_hint_selector_material_light.xml",
+        "source": "/Users/rob/.android/build-cache/9d494c7b402b81b419e968100ac102bd869cc4dd/output/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
+    }
+]

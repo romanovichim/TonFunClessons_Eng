@@ -1,0 +1,1 @@
+{"version":3,"file":"getNextPort.d.ts","sourceRoot":"","sources":["../src/getNextPort.ts"],"names":[],"mappings":"AAEA,KAAK,MAAM,GAAG;IACZ,KAAK,EAAE,OAAO,CAAC;IACf,QAAQ,EAAE,MAAM,CAAC;CAClB,CAAC;AAEF;;;;GAIG;AAEH,QAAA,MAAM,WAAW,SAAgB,MAAM,QAAQ,MAAM,KAAG,QAAQ,MAAM,CAmBrE,CAAC;AAEF,eAAe,WAAW,CAAC"}

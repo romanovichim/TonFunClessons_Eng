@@ -1,0 +1,26 @@
+{
+  "name": "deprecated-react-native-prop-types",
+  "version": "5.0.0",
+  "description": "Deprecated prop-types from React Native.",
+  "license": "MIT",
+  "repository": "github:facebook/react-native-deprecated-modules",
+  "dependencies": {
+    "@react-native/normalize-colors": "^0.73.0",
+    "invariant": "^2.2.4",
+    "prop-types": "^15.8.1"
+  },
+  "scripts": {
+    "test": "node -e \"Object.values(require('.'))\""
+  },
+  "prettier": {
+    "requirePragma": true,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": false,
+    "jsxBracketSameLine": true,
+    "arrowParens": "avoid"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

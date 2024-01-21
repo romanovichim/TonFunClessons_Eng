@@ -1,0 +1,77 @@
+{
+  "name": "isomorphic-webcrypto",
+  "version": "2.3.8",
+  "description": "webcrypto library for Node, React Native and IE11+",
+  "main": "./src/main.js",
+  "module": "./src/index.mjs",
+  "browser": {
+    "./src/main.js": "./src/main.browser.js",
+    "./src/index.mjs": "./src/browser.mjs"
+  },
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "node build.js",
+    "prepublishOnly": "npm run build",
+    "test": "npm run build && npm run test:node && npm run test:react-native && npm run test:browser",
+    "test:node": "jest ./__tests__/node.js",
+    "test:react-native": "jest ./__tests__/react-native.js --config=jest.react-native.json",
+    "test:browser": "karma start karma.conf.js --single-run",
+    "test:EdgeVM": "npm run test:browser -- --browsers 'EdgeVM'",
+    "test:IE11VM": "npm run test:browser -- --browsers 'IE11VM'",
+    "release": "npm run test && npm run build && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevlened/isomorphic-webcrypto.git"
+  },
+  "files": [
+    "src",
+    "index.d.ts"
+  ],
+  "keywords": [
+    "isomorphic",
+    "webcrypto",
+    "small"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kevlened/isomorphic-webcrypto/issues"
+  },
+  "homepage": "https://github.com/kevlened/isomorphic-webcrypto#readme",
+  "dependencies": {
+    "@peculiar/webcrypto": "^1.0.22",
+    "asmcrypto.js": "^0.22.0",
+    "b64-lite": "^1.3.1",
+    "b64u-lite": "^1.0.1",
+    "msrcrypto": "^1.5.6",
+    "str2buf": "^1.3.0",
+    "webcrypto-shim": "^0.1.4"
+  },
+  "devDependencies": {
+    "ajv": "^6.5.2",
+    "bluebird": "^3.5.1",
+    "jasmine": "^3.4.0",
+    "jasmine-core": "^3.4.0",
+    "jest": "^25.1.0",
+    "karma": "^4.4.1",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-edge-launcher": "^0.4.2",
+    "karma-firefox-launcher": "^1.1.0",
+    "karma-jasmine": "^2.0.1",
+    "karma-safari-launcher": "^1.0.0",
+    "karma-virtualbox-edge-launcher": "^1.1.8",
+    "karma-virtualbox-ie11-launcher": "^1.1.8",
+    "karma-webpack": "^4.0.2",
+    "react": "^16.9.0",
+    "react-native": "^0.61.5",
+    "webcrypto-liner": "^1.0.1",
+    "webcrypto-test-suite": "^0.4.0",
+    "webpack": "^4.42.0"
+  },
+  "optionalDependencies": {
+    "react-native-securerandom": "^0.1.1",
+    "expo-random": "*",
+    "@unimodules/core": "*",
+    "@unimodules/react-native-adapter": "*"
+  }
+}

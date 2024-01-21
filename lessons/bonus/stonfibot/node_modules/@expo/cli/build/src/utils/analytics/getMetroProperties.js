@@ -1,0 +1,28 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.getMetroProperties = getMetroProperties;
+function getMetroProperties(projectRoot, exp, metroConfig = {}) {
+    var ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, ref10, ref11;
+    return {
+        sdkVersion: exp.sdkVersion,
+        metroVersion: require("metro/package.json").version,
+        fileMapCacheManagerFactory: Boolean(metroConfig.unstable_fileMapCacheManagerFactory) || undefined,
+        perfLogger: Boolean(metroConfig.unstable_perfLogger) || undefined,
+        resolverEnableSymlinks: (ref = metroConfig.resolver) == null ? void 0 : ref.unstable_enableSymlinks,
+        resolverConditionNames: (ref1 = metroConfig.resolver) == null ? void 0 : ref1.unstable_conditionNames,
+        resolverConditionsByPlatform: (ref2 = metroConfig.resolver) == null ? void 0 : ref2.unstable_conditionsByPlatform,
+        resolverEnablePackageExports: (ref3 = metroConfig.resolver) == null ? void 0 : ref3.unstable_enablePackageExports,
+        serverImportBundleSupport: (ref4 = metroConfig.server) == null ? void 0 : ref4.experimentalImportBundleSupport,
+        serverServerRoot: Boolean((ref5 = metroConfig.server) == null ? void 0 : ref5.unstable_serverRoot) || undefined,
+        transformerCollectDependenciesPath: (ref6 = metroConfig.transformer) == null ? void 0 : ref6.unstable_collectDependenciesPath,
+        transformerDependencyMapReservedName: (ref7 = metroConfig.transformer) == null ? void 0 : ref7.unstable_dependencyMapReservedName,
+        transformerDisableModuleWrapping: (ref8 = metroConfig.transformer) == null ? void 0 : ref8.unstable_disableModuleWrapping,
+        transformerDisableNormalizePseudoGlobals: (ref9 = metroConfig.transformer) == null ? void 0 : ref9.unstable_disableNormalizePseudoGlobals,
+        transformerCompactOutput: (ref10 = metroConfig.transformer) == null ? void 0 : ref10.unstable_compactOutput,
+        transformerAllowRequireContext: (ref11 = metroConfig.transformer) == null ? void 0 : ref11.unstable_allowRequireContext
+    };
+}
+
+//# sourceMappingURL=getMetroProperties.js.map

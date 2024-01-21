@@ -1,0 +1,1 @@
+{"version":3,"file":"tryLaunchAppOnDevice.d.ts","sourceRoot":"","sources":["../../../src/commands/runAndroid/tryLaunchAppOnDevice.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AAGH,OAAO,EAAC,cAAc,EAAE,KAAK,EAAC,MAAM,GAAG,CAAC;AAGxC,iBAAS,oBAAoB,CAC3B,MAAM,EAAE,MAAM,GAAG,IAAI,EACrB,cAAc,EAAE,cAAc,EAC9B,OAAO,EAAE,MAAM,EACf,IAAI,EAAE,KAAK,QAuCZ;AAED,eAAe,oBAAoB,CAAC"}

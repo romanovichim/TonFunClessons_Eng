@@ -1,0 +1,51 @@
+{
+  "name": "asmcrypto.js",
+  "version": "0.22.0",
+  "description": "Asm.js implementation of WebCrypto API",
+  "homepage": "https://github.com/vibornoff/asmcrypto.js",
+  "main": "asmcrypto.js",
+  "module": "asmcrypto.mjs",
+  "license": "MIT",
+  "author": {
+    "name": "Artem S Vybornov",
+    "email": "vybornov@gmail.com",
+    "web": "https://github.com/vibornoff"
+  },
+  "contributors": [
+    {
+      "name": "Ádám Lippai",
+      "email": "adam@rigo.sk",
+      "web": "https://github.com/alippai"
+    },
+    {
+      "name": "Ximin Luo",
+      "email": "infinity0@pwned.gg",
+      "web": "https://github.com/infinity0"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vibornoff/asmcrypto.js.git"
+  },
+  "devDependencies": {
+    "grunt": "~1.0",
+    "grunt-cli": "~1.2",
+    "grunt-contrib-clean": "~1.1",
+    "grunt-contrib-concat": "~1.0",
+    "grunt-contrib-connect": "~1.0",
+    "grunt-contrib-uglify-es": "git+https://github.com/gruntjs/grunt-contrib-uglify.git#harmony",
+    "grunt-contrib-watch": "~1.0",
+    "grunt-jsdoc": "~2.2",
+    "grunt-rollup": "^9.0.0",
+    "grunt-shell": "^2.1.0",
+    "prettier": "^1.10.2",
+    "qunit-puppeteer": "^1.0.1",
+    "uglify-es": "^3.3.4"
+  },
+  "scripts": {
+    "prepublish": "grunt && grunt esm && grunt all",
+    "test": "grunt test",
+    "prettier": "prettier --single-quote --trailing-comma all --write \"src/**/*.js\" --print-width 120"
+  },
+  "typings": "./asmcrypto.js.d.ts"
+}

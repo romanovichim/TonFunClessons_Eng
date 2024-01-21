@@ -1,0 +1,334 @@
+import { serializeError, deserializeError, createCustomErrorClass, addCustomErrorDeserializer } from "./helpers";
+export { serializeError, deserializeError, createCustomErrorClass, addCustomErrorDeserializer, };
+export declare const AccountNameRequiredError: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const AccountNotSupported: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const AmountRequired: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const BluetoothRequired: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const BtcUnmatchedApp: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const CantOpenDevice: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const CashAddrNotSupported: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const CurrencyNotSupported: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DeviceAppVerifyNotSupported: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DeviceGenuineSocketEarlyClose: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DeviceNotGenuineError: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DeviceOnDashboardExpected: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DeviceOnDashboardUnexpected: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DeviceInOSUExpected: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DeviceHalted: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DeviceNameInvalid: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DeviceSocketFail: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DeviceSocketNoBulkStatus: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DisconnectedDevice: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DisconnectedDeviceDuringOperation: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const EnpointConfigError: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const EthAppPleaseEnableContractData: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const FeeEstimationFailed: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const FirmwareNotRecognized: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const HardResetFail: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const InvalidXRPTag: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const InvalidAddress: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const InvalidAddressBecauseDestinationIsAlsoSource: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const LatestMCUInstalledError: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const UnknownMCU: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const LedgerAPIError: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const LedgerAPIErrorWithMessage: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const LedgerAPINotAvailable: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const ManagerAppAlreadyInstalledError: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const ManagerAppRelyOnBTCError: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const ManagerAppDepInstallRequired: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const ManagerAppDepUninstallRequired: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const ManagerDeviceLockedError: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const ManagerFirmwareNotEnoughSpaceError: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const ManagerNotEnoughSpaceError: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const ManagerUninstallBTCDep: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const NetworkDown: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const NoAddressesFound: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const NotEnoughBalance: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const NotEnoughBalanceToDelegate: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const NotEnoughBalanceInParentAccount: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const NotEnoughSpendableBalance: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const NotEnoughBalanceBecauseDestinationNotCreated: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const NoAccessToCamera: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const NotEnoughGas: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const NotSupportedLegacyAddress: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const GasLessThanEstimate: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const PasswordsDontMatchError: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const PasswordIncorrectError: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const RecommendSubAccountsToEmpty: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const RecommendUndelegation: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const TimeoutTagged: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const UnexpectedBootloader: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const MCUNotGenuineToDashboard: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const RecipientRequired: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const UnavailableTezosOriginatedAccountReceive: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const UnavailableTezosOriginatedAccountSend: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const UpdateFetchFileFail: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const UpdateIncorrectHash: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const UpdateIncorrectSig: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const UpdateYourApp: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const UserRefusedDeviceNameChange: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const UserRefusedAddress: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const UserRefusedFirmwareUpdate: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const UserRefusedAllowManager: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const UserRefusedOnDevice: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const TransportOpenUserCancelled: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const TransportInterfaceNotAvailable: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const TransportRaceCondition: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const TransportWebUSBGestureRequired: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DeviceShouldStayInApp: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const WebsocketConnectionError: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const WebsocketConnectionFailed: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const WrongDeviceForAccount: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const WrongAppForCurrency: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const ETHAddressNonEIP: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const CantScanQRCode: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const FeeNotLoaded: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const FeeRequired: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const FeeTooHigh: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const SyncError: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const PairingFailed: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const GenuineCheckFailed: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const LedgerAPI4xx: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const LedgerAPI5xx: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const FirmwareOrAppUpdateRequired: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const NoDBPathGiven: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DBWrongPassword: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+export declare const DBNotReset: (message?: string, fields?: {
+    [key: string]: any;
+}) => void;
+/**
+ * TransportError is used for any generic transport errors.
+ * e.g. Error thrown when data received by exchanges are incorrect or if exchanged failed to communicate with the device for various reason.
+ */
+export declare function TransportError(message: string, id: string): void;
+export declare namespace TransportError {
+    var prototype: Error;
+}
+export declare const StatusCodes: {
+    PIN_REMAINING_ATTEMPTS: number;
+    INCORRECT_LENGTH: number;
+    MISSING_CRITICAL_PARAMETER: number;
+    COMMAND_INCOMPATIBLE_FILE_STRUCTURE: number;
+    SECURITY_STATUS_NOT_SATISFIED: number;
+    CONDITIONS_OF_USE_NOT_SATISFIED: number;
+    INCORRECT_DATA: number;
+    NOT_ENOUGH_MEMORY_SPACE: number;
+    REFERENCED_DATA_NOT_FOUND: number;
+    FILE_ALREADY_EXISTS: number;
+    INCORRECT_P1_P2: number;
+    INS_NOT_SUPPORTED: number;
+    CLA_NOT_SUPPORTED: number;
+    TECHNICAL_PROBLEM: number;
+    OK: number;
+    MEMORY_PROBLEM: number;
+    NO_EF_SELECTED: number;
+    INVALID_OFFSET: number;
+    FILE_NOT_FOUND: number;
+    INCONSISTENT_FILE: number;
+    ALGORITHM_NOT_SUPPORTED: number;
+    INVALID_KCV: number;
+    CODE_NOT_INITIALIZED: number;
+    ACCESS_CONDITION_NOT_FULFILLED: number;
+    CONTRADICTION_SECRET_CODE_STATUS: number;
+    CONTRADICTION_INVALIDATION: number;
+    CODE_BLOCKED: number;
+    MAX_VALUE_REACHED: number;
+    GP_AUTH_FAILED: number;
+    LICENSING: number;
+    HALTED: number;
+};
+export declare function getAltStatusMessage(code: number): string | undefined | null;
+/**
+ * Error thrown when a device returned a non success status.
+ * the error.statusCode is one of the `StatusCodes` exported by this library.
+ */
+export declare function TransportStatusError(statusCode: number): void;
+export declare namespace TransportStatusError {
+    var prototype: Error;
+}

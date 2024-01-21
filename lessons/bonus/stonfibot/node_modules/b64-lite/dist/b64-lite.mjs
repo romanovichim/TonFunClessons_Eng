@@ -1,0 +1,2 @@
+function n(n){return window.atob(n)}function o(n){return window.btoa(n)}function t(n){if("string"==typeof n)return window.btoa(unescape(encodeURIComponent(n)));for(var o=new Uint8Array(n),t="",e=0;e<o.byteLength;e++)t+=String.fromCharCode(o[e]);return window.btoa(t)}function e(n){return decodeURIComponent(escape(window.atob(n)))}function r(n){for(var o=window.atob(n),t=new Uint8Array(o.length),e=0;e<o.length;e++)t[e]=o.charCodeAt(e);return t}export{n as atob,o as btoa,t as toBase64,e as fromBase64,r as toBuffer};
+//# sourceMappingURL=b64-lite.mjs.map

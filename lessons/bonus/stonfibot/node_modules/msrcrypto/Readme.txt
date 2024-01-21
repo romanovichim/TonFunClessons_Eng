@@ -1,0 +1,185 @@
+﻿This library has been modified from [the original](https://www.microsoft.com/en-us/download/details.aspx?id=52439).
+A list of changes is available in [the commit history](https://github.com/kevlened/msrCrypto/commits/master).
+
+Included Scripts:
+
+	msrcrypto.js 		: Full library
+	msrcrypto.min.js	: Full library in minified form
+	msrcrypto.aes.js	: AES-CBC and SHA-256 only
+   	msrcrypto.aes.min.js	: AES-CBC and SHA-256 only in minified form
+
+
+Changes with version 1.4.1
+
+	Includes bug fixes to the elliptic curve module, to:
+		* avoid erroneous calculations that could theoretically leak private data 
+		* correct the NIST p-521 curve definition
+		* avoid rare failures in ECDSA when using the curves NUMSP512D1 and NUMSP512T1.
+
+Changes with version 1.4
+
+	The API has been updated to support the latest Web Crypto Api spec and be compatible with the
+	implementation on the latest browsers.
+
+	Promises are now supported and the IE11 based events are removed. Crypto calls are now in the 
+	form:
+
+	// NEW STYLE with Promises
+        msrCrypto.subtle.encrypt(<parameters>).then(
+	    function(encryptionResult) {
+
+		... do something here with the result
+
+	    },
+	    function(error) {
+
+		... handle error
+
+	    }
+        );
+
+
+	This will break code that uses the pre-1.4 calling conventions:
+
+	// OLD STYLE with events (before version 1.4)
+	var cryptoOperation =  msrCrypto.subtle.encrypt(<parameters>);
+	
+	cryptoOperation.onComplete = 
+	    function(encryptionResult) {
+
+		... do something here with the result
+
+	    };
+
+	cryptoOperation.onError = 
+	    function(encryptionResult) {
+
+		... handle error
+
+	    };
+
+
+Samples:
+
+	msrCrypto\samples\MsrCryptoHMACSample.html : sample page that performs HMAC signing.
+	msrCrypto\samples\MsrCryptoRsaSample.html  : sample page that performs RSA-OAEP encrypt/decrypt.
+
+
+
+API Documentation:
+
+	Microsoft Edge browser has a native Web Crypto API implementation. The msrCrypto API mirrors
+	that API. A link to the Microsoft Edge API has been included. Code written to run on the Microsoft 
+	Edge API should also run with the msrCrypto API.
+
+
+
+Browser compatibility:
+
+   msrCrypto.js is compatible with IE8 and up; latest versions of Chrome, Safari, Opera
+
+   Known issues:
+   IE8:		'Catch' is a reserved keyword, so using Promises.catch() function will throw and error.
+			To use the catch function use the promise['catch']() form.
+
+   IE8/9:	IE8 & IE9 do not support typed arrays (ArrayBuffer, UInt8Array, etc...). 
+			You must use regular Arrays for inputting data into msrCrypto when using IE8/9. 
+			Results will be returned as regular Arrays as well. 
+			For IE10 and up, results will be returned as an ArrayBuffer.
+
+			IE8 & IE9 do not support web workers. Web workers allow separate threads of
+			execution in JavaScript. msrCrypto will use web workers, when available, to 
+			perform its crypto work. When web workers are not available, msrCrypto will 
+			perform its work synchronously in the main thread.
+
+
+
+Bundling & web workers:
+
+	msrCrypto uses web workers when available. Web workers use separate threads of 
+	execution to perform work in parallel with the main thread. Web workers are instantiated 
+	by calling 'new Worker(pathToJavaScriptFile);' The caller has to provide a valid path at the time
+	of web worker creation. The worker will then be created and run the code from the script.
+	For msrCrypto to create a new web worker, it determines its own path at load time and passes
+	that path to the new Worker() call. For example: new Worker('..\scripts\msrCrypto.js');
+	
+	If you bundle msrCrypto into a larger JavaScript bundle, web workers will most likely fail.
+	msrCrypto will determine its path and call new Worker('..\scripts\bundleOfScript.js').
+	The web worker environment does not have access to the browser DOM and several other
+	generally available global item. Therefore, the other JavaScript in your bundle will 
+	most likely cause an error in the web worker and cause the web worker to quietly fail.
+
+	Do not bundle msrCrypto.js to ensure web workers will function. If you must bundle, you 
+	will need to ensure the bundled code will not cause errors in the restricted web worker 
+	environment.
+
+	If you cannot avoid bundling and cannot create a web worker friendly bundle, you can
+	force msrCrypto to run in synchronous mode. Synchronous mode does not use web workers
+	and performs the crypto operations within the main thread. Depending on the crypto 
+	operations, you may notice severe slowdowns.
+
+	To force synchronous mode set the following property:
+	msrCrypto.subtle.forceSync = true;
+
+	The bundling of the scripts might require the installation of Bundler & Minifier extension:
+	https://marketplace.visualstudio.com/items?itemName=MadsKristensen.BundlerMinifier
+
+
+
+Native Crypto API:
+
+	As of now, Chrome, Firefox, Opera, IE11 and Microsoft Edge provide access to native crypto API 
+	conforming to the W3C web crypto standard.
+
+	msrCrypto does not check for this API nor does it pass crypto calls through to the native
+	API. You should use the native API when available. To check for and use the native API do 
+	the following:
+	var crypto = window.msCrypto | window.crypto | msrCrypto;
+
+	Now use crypto.subtle for your encryption calls.
+
+	IE11's web crypto implementation is a bit different from the newer browsers. The main 
+	difference is that it uses events to return the results of api calls. The other browsers
+	and msrCrypto uses Promises (as described in the W3C web crypto api spec.)
+
+	You will have to ensure your code can handle the IE11 event conventions if you want
+	your code to use the IE11 native web crypto calls.
+
+
+
+Random number generator (PRNG):
+
+	Many of msrCrypto's crypto algorithms require random numbers. Random numbers for cryptography
+	need to be obtained from a cryptographically secure random number generator. This is not 
+	available on older browsers (IE10, IE9, & IE8). 
+
+	msrCrypto has its own secure random number generator written in JavaScript (PRNG). However, the PRNG 
+	needs to be initialized with some bytes of random entropy. It is important that this entropy is 
+	obtained from a secure random source - such as from a crypto api on the server.
+
+	Once the entropy is obtained initialize the PRNG before calling any functions:
+		window.msrCrypto.initPrng(randomArrayOf48Bytes);
+
+
+
+Supported Algorithms:
+
+	msrCrypto supports the following algorithms:
+
+		Encryption/Decryption:
+			RSA-OAEP, RSA-PKCSv1.15, AES-CBC, AES-GCM
+
+		Signature/Verify
+			RSA-PSS, RSA-PKCSv1.15, HMAC, ECDSA
+
+		Hash
+			SHA-1, SHA-224, SHA-256, SHA-384, SHA-512
+
+		Derive Key/Bits
+			Concat-KDF, ECDH 
+
+		Supported ECC curves:
+			P-256, P-384, P-521, BN-254, NUMSP256D1, NUMSP256T1, NUMSP384D1, NUMSP384T1
+
+		KeyWrap
+			AES-GCM

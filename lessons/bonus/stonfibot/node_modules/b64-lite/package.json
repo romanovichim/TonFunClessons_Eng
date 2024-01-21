@@ -1,0 +1,55 @@
+{
+  "name": "b64-lite",
+  "amdName": "b64Lite",
+  "version": "1.4.0",
+  "description": "isomorphic base64 library in 152 bytes",
+  "main": "node/b64-lite.js",
+  "module": "node/b64-lite.mjs",
+  "browser": {
+    "./node/b64-lite.js": "./dist/b64-lite.main.js",
+    "./node/b64-lite.mjs": "./dist/b64-lite.mjs"
+  },
+  "scripts": {
+    "pretest": "npm run build",
+    "test": "npm run test:node && npm run test:browser && npm run test:rn",
+    "test:node": "node test/node.js",
+    "test:browser": "karma start karma.conf.js --single-run",
+    "test:rn": "node test/react-native-sim.js",
+    "build": "microbundle --entry browser.js --output dist && microbundle --entry node.js --output node --compress false && npm run build:react-native && cp b64-lite.main.js dist/",
+    "build:react-native": "cp react-native.js dist/ && cp b64-lite.ios.js dist/ && cp b64-lite.android.js dist/",
+    "release": "npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
+  },
+  "files": [
+    "dist",
+    "node"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevlened/b64-lite.git"
+  },
+  "keywords": [
+    "b64",
+    "isomorphic",
+    "small",
+    "atob",
+    "btoa"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kevlened/b64-lite/issues"
+  },
+  "homepage": "https://github.com/kevlened/b64-lite#readme",
+  "devDependencies": {
+    "jasmine": "^3.4.0",
+    "jasmine-core": "^3.4.0",
+    "karma": "^4.3.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-jasmine": "^2.0.1",
+    "karma-webpack": "^4.0.2",
+    "microbundle": "^0.11.0",
+    "webpack": "^4.40.2"
+  },
+  "dependencies": {
+    "base-64": "^0.1.0"
+  }
+}

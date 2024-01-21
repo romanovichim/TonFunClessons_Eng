@@ -1,0 +1,27 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict-local
+ * @format
+ * @oncall react_native
+ */
+
+/**
+ * Determine whether we can run the dev server.
+ *
+ * Return values:
+ * - `not_running`: The port is unoccupied.
+ * - `matched_server_running`: The port is occupied by another instance of this
+ *   dev server (matching the passed `projectRoot`).
+ * - `port_taken`: The port is occupied by another process.
+ * - `unknown`: An error was encountered; attempt server creation anyway.
+ */
+declare export default function isDevServerRunning(
+  scheme: string,
+  host: string,
+  port: number,
+  projectRoot: string
+): Promise<"not_running" | "matched_server_running" | "port_taken" | "unknown">;

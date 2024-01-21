@@ -1,0 +1,22 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict-local
+ * @format
+ * @oncall react_native
+ */
+
+/** An abstract key stroke interceptor. */
+declare export class KeyPressHandler {
+  _isInterceptingKeyStrokes: $FlowFixMe;
+  _isHandlingKeyPress: $FlowFixMe;
+  _onPress: (key: string) => Promise<void>;
+  constructor(onPress: (key: string) => Promise<void>): void;
+  createInteractionListener(): ({ pause: boolean, ... }) => void;
+  _handleKeypress: $FlowFixMe;
+  startInterceptingKeyStrokes(): void;
+  stopInterceptingKeyStrokes(): void;
+}

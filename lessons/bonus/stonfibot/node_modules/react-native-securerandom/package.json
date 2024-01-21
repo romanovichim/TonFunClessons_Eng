@@ -1,0 +1,30 @@
+{
+  "name": "react-native-securerandom",
+  "version": "0.1.1",
+  "description":"Generate cryptographically-secure random bytes in react native",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rob Hogan <roberthogan@blueyonder.co.uk>",
+  "license": "MIT",
+  "peerDependencies": {
+    "react-native": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rh389/react-native-securerandom.git"
+  },
+  "keywords": [
+    "react-native",
+    "SecRandomCopyBytes",
+    "PRNG",
+    "CSPRNG",
+    "SecureRandom",
+    "crypto"
+  ],
+  "homepage": "https://github.com/rh389/react-native-securerandom#readme",
+  "dependencies": {
+    "base64-js": "*"
+  }
+}

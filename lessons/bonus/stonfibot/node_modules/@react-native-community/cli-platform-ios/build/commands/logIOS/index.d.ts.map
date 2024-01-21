@@ -1,0 +1,1 @@
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../src/commands/logIOS/index.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AAQH,OAAO,EAAC,MAAM,EAAC,MAAM,mCAAmC,CAAC;AAEzD;;GAEG;AAEH,KAAK,IAAI,GAAG;IACV,WAAW,EAAE,OAAO,CAAC;CACtB,CAAC;AAEF,iBAAe,MAAM,CAAC,KAAK,EAAE,KAAK,CAAC,MAAM,CAAC,EAAE,IAAI,EAAE,MAAM,EAAE,IAAI,EAAE,IAAI,iBA6CnE;;;;;;;;;;AAqBD,wBAWE"}

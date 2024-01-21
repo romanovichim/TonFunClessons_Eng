@@ -1,0 +1,33 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @flow strict-local
+ * @format
+ * @oncall react_native
+ */
+
+import type { Config } from "@react-native-community/cli-types";
+import type { ConfigT, YargArguments } from "metro-config";
+
+export type { Config };
+
+export type ConfigLoadingContext = $ReadOnly<{
+  root: Config["root"],
+  reactNativePath: Config["reactNativePath"],
+  platforms: Config["platforms"],
+  ...
+}>;
+
+/**
+ * Load Metro config.
+ *
+ * Allows the CLI to override select values in `metro.config.js` based on
+ * dynamic user options in `ctx`.
+ */
+declare export default function loadMetroConfig(
+  ctx: ConfigLoadingContext,
+  options: YargArguments
+): Promise<ConfigT>;
