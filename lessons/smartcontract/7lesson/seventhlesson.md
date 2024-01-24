@@ -32,6 +32,8 @@ The task of the smart contract will be to add and remove data from the key/value
 
 The contract skeleton is as follows:
 
+```cpp
+
     #include "imports/stdlib.fc";
 
     () recv_internal(int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
@@ -50,6 +52,8 @@ The contract skeleton is as follows:
     	throw (1001);
     }
 
+```
+
 # op = 1
 
 When `op` is equal to one, we add a value to the hashmap. According to the task, we need to:
@@ -63,24 +67,32 @@ When `op` is equal to one, we add a value to the hashmap. According to the task,
 
 Here, everything is the same as before, we use the `load_uint` function from the [FunC standard library](https://docs.ton.org/develop/func/stdlib/) to load an unsigned integer of n bits from the slice.
 
+```cpp
     	if (op == 1) {
     		int key = in_msg_body~load_uint(256);
     	}
+
+
+```
 
 ##### Work with the hashmap
 
 To add data, we will use `dict_set`, which sets the value associated with the key index key of n-bitness in the dict dictionary, in the slice, and returns the resulting dictionary.
 
+```cpp
     if (op == 1) { ;; add new entry
     	int key = in_msg_body~load_uint(256);
     	dic~udict_set(256, key, in_msg_body);
 
     }
 
+```
+
 ##### Save the dictionary
 
 Using the `set_data()` function, we will write the cell with the hashmap to the permanent data.
 
+```cpp
     if (op == 1) { ;; add new entry
     	int key = in_msg_body~load_uint(256);
     	dic~udict_set(256, key, in_msg_body);
@@ -88,9 +100,13 @@ Using the `set_data()` function, we will write the cell with the hashmap to the 
 
     }
 
+```
+
 ##### End the function execution
 
 Here, it's simple, we use the `return` statement. The final code for `op`=1 is as follows:
+
+```cpp
 
     if (op == 1) { ;; add new entry
     	int key = in_msg_body~load_uint(256);
@@ -98,6 +114,9 @@ Here, it's simple, we use the `return` statement. The final code for `op`=1 is a
     	set_data(dic);
     	return ();
     }
+
+
+```
 
 # op = 2
 
@@ -107,17 +126,22 @@ Since we have already read `op` and `query_id`, we will check here that there is
 
 `end_parse()` - Checks if the slice is empty. If not, throws an exception.
 
+```cpp
+
     if (op == 2) {
     	in_msg_body.end_parse();
     }
+```
 
 For our case, we will use the `until` loop.
+```cpp
 
     if (op == 2) {
     	do {
 
     	} until ();
     }
+```
 
 To check the condition `valid_until` < `now()` at each step, we need to obtain a minimum key from our hashmap. For this purpose, the [FunC standard library](https://docs.ton.org/develop/func/stdlib/#dict_set) provides the function `udict_get_next?`.
 
@@ -125,6 +149,7 @@ To check the condition `valid_until` < `now()` at each step, we need to obtain a
 
 Therefore, we set the value from which we will take the minimum key before the loop, and inside the loop, we use the flag indicating success.
 
+```cpp
     if (op == 2) {
     	int key = -1;
     	do {
@@ -133,8 +158,11 @@ Therefore, we set the value from which we will take the minimum key before the l
     	} until (~ f);
     }
 
+```
+
 Now, using a conditional statement, we will check the condition `valid_until` < `now()`. We subtract the value of `valid_until` from the `slice cs`.
 
+```cpp
     if (op == 2) {
     	int key = -1;
     	do {
@@ -148,11 +176,15 @@ Now, using a conditional statement, we will check the condition `valid_until` < 
     	} until (~ f);
     }
 
+```
+
 To delete from the hashmap, we will use `udict_delete?`.
 
 `udict_delete?` - Deletes the index with the key k from the dict dictionary. If the key is present, returns the modified dictionary (hashmap) and a success flag of -1. Otherwise, returns the original dictionary dict and 0.
 
 We get:
+
+```cpp
 
     if (op == 2) {
     	int key = -1;
@@ -168,11 +200,15 @@ We get:
 
     }
 
+```
+
 ##### Save the dictionary
 
 Using `dict_empty?`, we check if the hashmap has become empty after our manipulations in the loop.
 
 If there are values, we save our hashmap to the permanent data. If not, we put an empty cell there using the combination of `begin_cell().end_cell()` functions.
+
+```cpp
 
     if (dic.dict_empty?()) {
     		set_data(begin_cell().end_cell());
@@ -180,9 +216,13 @@ If there are values, we save our hashmap to the permanent data. If not, we put a
     		set_data(dic);
     	}
 
+```
+
 ##### End the function execution
 
 Here, it's simple, we use the `return` statement. The final code for `op`=2 is as follows:
+
+```cpp
 
     if (op == 2) {
     	int key = -1;
@@ -205,6 +245,8 @@ Here, it's simple, we use the `return` statement. The final code for `op`=2 is a
     	return ();
     }
 
+```
+
 ## Get Method
 
 The `get_key` method should return `valid_until` and the data slice for the given key. According to the task, we need to:
@@ -219,6 +261,8 @@ The `get_key` method should return `valid_until` and the data slice for the give
 
 To load the data, we will write a separate function `load_data()`, which checks if there is any data and returns either an empty dictionary `new_dict()` or the permanent data. We will check it using `slice_bits()`, which returns the number of bits of data in the slice.
 
+```cpp
+
     cell load_data() {
     	cell data = get_data();
     	slice ds = data.begin_parse();
@@ -229,12 +273,18 @@ To load the data, we will write a separate function `load_data()`, which checks 
     	}
     }
 
+```
+
 Now, we will call this function in the get method.
+
+```cpp
 
     (int, slice) get_key(int key) method_id {
     	cell dic = load_data();
 
     }
+
+```
 
 ##### Find the data by key
 
@@ -244,16 +294,22 @@ To find the data by key, we will use the `udict_get?` function.
 
 We get:
 
+```cpp
+
     (int, slice) get_key(int key) method_id {
     	cell dic = load_data();
     	(slice payload, int success) = dic.udict_get?(256, key);
 
     }
 
+```
+
 ##### Throw an error if the data does not exist
 
 The `udict_get?` function returns a convenient flag, which we placed in `success`.
 Using `throw_unless`, we will throw an exception.
+
+```cpp
 
     (int, slice) get_key(int key) method_id {
     	cell dic = load_data();
@@ -262,9 +318,13 @@ Using `throw_unless`, we will throw an exception.
 
     }
 
+```
+
 ##### Read `valid_until` and return the data
 
 Here, it's simple, we subtract `valid_until` from the `payload` variable and return both variables.
+
+```cpp
 
     (int, slice) get_key(int key) method_id {
     	cell dic = load_data();
@@ -274,6 +334,8 @@ Here, it's simple, we subtract `valid_until` from the `payload` variable and ret
     	int valid_until = payload~load_uint(64);
     	return (valid_until, payload);
     }
+
+```
 
 ## TypeScript Wrapper
 
