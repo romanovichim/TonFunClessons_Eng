@@ -31,7 +31,7 @@ The task of the smart contract will be to add and remove data from the key/value
 -   Important! We assume that the contract starts with an empty storage.
 
 The contract skeleton is as follows:
-
+```cpp
     #include "imports/stdlib.fc";
 
     () recv_internal(int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
@@ -49,6 +49,7 @@ The contract skeleton is as follows:
     	}
     	throw (1001);
     }
+```
 
 # op = 1
 
@@ -71,16 +72,20 @@ Here, everything is the same as before, we use the `load_uint` function from the
 
 To add data, we will use `dict_set`, which sets the value associated with the key index key of n-bitness in the dict dictionary, in the slice, and returns the resulting dictionary.
 
+```cpp
     if (op == 1) { ;; add new entry
     	int key = in_msg_body~load_uint(256);
     	dic~udict_set(256, key, in_msg_body);
 
     }
-
+```
 ##### Save the dictionary
 
 Using the `set_data()` function, we will write the cell with the hashmap to the permanent data.
 
+
+   ```cpp
+    
     if (op == 1) { ;; add new entry
     	int key = in_msg_body~load_uint(256);
     	dic~udict_set(256, key, in_msg_body);
@@ -88,16 +93,22 @@ Using the `set_data()` function, we will write the cell with the hashmap to the 
 
     }
 
+
+```
+
 ##### End the function execution
 
 Here, it's simple, we use the `return` statement. The final code for `op`=1 is as follows:
 
+```cpp
     if (op == 1) { ;; add new entry
     	int key = in_msg_body~load_uint(256);
     	dic~udict_set(256, key, in_msg_body);
     	set_data(dic);
     	return ();
     }
+
+```
 
 # op = 2
 
