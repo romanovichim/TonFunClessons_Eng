@@ -39,7 +39,7 @@ The task of the smart contract will be to remember the address set by the manage
 
 To allow our proxy to receive messages, we will use the external method `recv_internal()`, as in previous lessons.
 
-```func
+```cpp
 () recv_internal(int balance, int msg_value, cell in_msg_full, slice in_msg_body)  {
 
 }
@@ -49,7 +49,7 @@ To allow our proxy to receive messages, we will use the external method `recv_in
 
 Inside the method, we will take `op`, `query_id`, and the sender's address `sender_address` from the function arguments, and then build the logic around `op` using conditional statements.
 
-```func
+```cpp
 () recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
  ;; take op, query_id, and the sender's address sender_address
 
@@ -75,7 +75,7 @@ Let's think about what functionality we can extract into functions.
 
 FunC supports defining functions in assembly (referring to Fift). This is done as follows - we define a function as a low-level TVM primitive. For the comparison function, it will look like this:
 
-```func
+```cpp
 int equal_slices (slice a, slice b) asm "SDEQ";
 ```
 
@@ -95,19 +95,19 @@ Namely:
 
 Let's pass this value to the variable `ds`:
 
-```func
+```cpp
 var ds = get_data().begin_parse()
 ```
 
 Load the manager's address from the message using `load_msg_addr()` - which loads the only prefix from the slice that is a valid MsgAddress. We have two of them, so we "subtract" twice.
 
-```func
+```cpp
 return (ds~load_msg_addr(), ds~load_msg_addr());
 ```
 
 In the end, we get the following function:
 
-```func
+```cpp
 (slice, slice) load_data () inline {
   var ds = get_data().begin_parse();
   return (ds~load_msg_addr(), ds~load_msg_addr());
@@ -139,7 +139,7 @@ Therefore, if a function is used only once or twice, it is often much cheaper to
 
 Of course, in addition to unloading, we also need loading. Let's create a function that saves the manager's address and the address that the manager will send:
 
-```func
+```cpp
 () save_data (slice manager_address, slice memorized_address) impure inline {
 
 }
@@ -159,19 +159,19 @@ Namely:
 
 Assemble the cell:
 
-```func
+```cpp
 begin_cell().store_slice(manager_address).store_slice(memorized_address).end_cell()
 ```
 
 Load it into the contract's persistent data:
 
-```func
+```cpp
 set_data(begin_cell().store_slice(manager_address).store_slice(memorized_address).end_cell());
 ```
 
 In the end, we get the following function:
 
-```func
+```cpp
 () save_data (slice manager_address, slice memorized_address) impure inline {
     set_data(begin_cell().store_slice(manager_address).store_slice(memorized_address).end_cell());
 }
@@ -181,7 +181,7 @@ In the end, we get the following function:
 
 Let's declare a function that allows us to extract the sender's address from the message cell. The function will return a slice, as we will take the address using `load_msg_addr()`, which loads the only prefix from the slice that is a valid MsgAddress and returns it as a slice.
 
-```func
+```cpp
 slice parse_sender_address (cell in_msg_full) inline {
   return sender_address;
 }
@@ -189,7 +189,7 @@ slice parse_sender_address (cell in_msg_full) inline {
 
 Now, using the already familiar `begin_parse`, let's convert the cell into a slice.
 
-```func
+```cpp
 slice parse_sender_address (cell in_msg_full) inline {
   var cs = in_msg_full.begin_parse();
   return sender_address;
@@ -203,7 +203,7 @@ And finally, take the address.
 
 In the end, we get the following function:
 
-```func
+```cpp
 slice parse_sender_address (cell in_msg_full) inline {
   var cs = in_msg_full.begin_parse();
   var flags = cs~load_uint(4);
@@ -216,7 +216,7 @@ slice parse_sender_address (cell in_msg_full) inline {
 
 At this point, we have the ready-made helper functions and the body of the main function of this smart contract `recv_internal()`.
 
-```func
+```cpp
 #include "imports/stdlib.fc";
 
 int equal_slices (slice a, slice b) asm "SDEQ";
@@ -276,7 +276,7 @@ We read op and query_id from the message body accordingly. According to the [rec
 
 Also, using the function `parse_sender_address()` that we wrote earlier, we take the sender's address.
 
-```func
+```cpp
 () recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
 int op = in_msg_body~load_int(32);
 int query_id = in_msg_body~load_uint(64);
@@ -298,19 +298,19 @@ According to the task, when the flag is 1, we should receive the manager's addre
 
 Load the manager's address `manager_address` and the saved address `memorized_address` from the persistent data using the `load_data()` function we wrote earlier.
 
-```func
+```cpp
 (slice manager_address, slice memorized_address) = load_data();
 ```
 
 Using the `equal_slices` function and the unary operator `~`, which is a bitwise NOT, check the equality of the addresses, throwing an exception if the addresses are not equal.
 
-```func
+```cpp
 throw_if(1001, ~ equal_slices(manager_address, sender_address));
 ```
 
 Take the address using `load_msg_addr()` and save the addresses using the `save_data()` function we wrote earlier.
 
-```func
+```cpp
 slice new_memorized_address = in_msg_body~load_msg_addr();
 save_data(manager_address, new_memorized_address);
 ```
@@ -327,13 +327,13 @@ According to the task, when the flag is 2, we should send a message with a body 
 
 Before sending the message, load the addresses stored in the contract.
 
-```func
+```cpp
 (slice manager_address, slice memorized_address) = load_data();
 ```
 
 You can familiarize yourself with the complete message structure [here - message layout](https://docs.ton.org/develop/smart-contracts/messages#message-layout). But usually, we don't need to control each field, so we can use the short form from the [example](https://docs.ton.org/develop/smart-contracts/messages):
 
-```func
+```cpp
 var msg = begin_cell()
     .store_uint(0x10, 6)
     .store_slice(sender_address)
@@ -348,7 +348,7 @@ var msg = begin_cell()
 
 Send the message according to the conditions:
 
-```func
+```cpp
 send_raw_message(msg, 64);
 ```
 
@@ -356,13 +356,13 @@ send_raw_message(msg, 64);
 
 Here it is simple, we use the regular `throw` from the [built-in FunC modules](https://docs.ton.org/develop/func/builtins#throwing-exceptions).
 
-```func
+```cpp
 throw(3);
 ```
 
 ## Complete Smart Contract Code
 
-```func
+```cpp
 #include "imports/stdlib.fc";
 
 int equal_slices (slice a, slice b) asm "SDEQ";
