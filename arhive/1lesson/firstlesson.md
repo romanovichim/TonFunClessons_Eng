@@ -222,7 +222,7 @@ Any function in FunC matches the following pattern:
 Let's write a get_total() function that returns an Integer and has a method_id specification (more on that later)
  
     int get_total() method_id {
-  	;; здесь будет код
+  	;; we will add code later
 	}
 
 ##### Method_id
