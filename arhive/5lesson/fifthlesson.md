@@ -124,7 +124,7 @@ As a result, we get the following function:
 	  return (ds~load_msg_addr(), ds~load_msg_addr());
 	}
 	
-#####Inline
+##### Inline
 
 In previous lessons, we have already used the `inline` specifier, which actually substitutes the code at each place where the function is called. In this lesson, we will consider why this is necessary from a practical point of view.
 
@@ -230,23 +230,23 @@ At the moment we have ready auxiliary functions and the body of the main functio
 	  return sender_address;
 	}
 
-		() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
-		 ;; возьмем  op , query_id, и адрес отправителя sender_address
+	() recv_internal (int balance, int msg_value, cell in_msg_full, slice in_msg_body) {
+	  ;; get op , query_id, and sender_address
 
-		  if (op == 1) {
-			;; здесь будем сохранять адрес полученный от менеджера
-		  } else {
-			if (op == 2) {
-			  ;; отправка сообщения
-			} else {
-			   ;; здесь будет исключение
-			}
-		  }
+	  if (op == 1) {
+		;; storing the address sent by the manager
+	  } else {
+		if (op == 2) {
+		  ;; sending message
+		} else {
+		  ;; exception
 		}
+	  }
+	}
 		
 It remains only to fill `recv_internal()`.
 
-##Filling the external method
+## Filling the external method
 
 ##### Take op , query_id, and sender_address
 
