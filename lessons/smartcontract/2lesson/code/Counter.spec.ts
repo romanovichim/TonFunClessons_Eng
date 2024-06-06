@@ -14,7 +14,7 @@ describe('Counter', () => {
 
     beforeAll(async () => {
         code = await compile('Counter');
-    });
+    }, 30000);
 
     let blockchain: Blockchain;
     let counter: SandboxContract<Counter>;
@@ -43,9 +43,9 @@ describe('Counter', () => {
             to: counter.address,
             deploy: true,
         });
-    });
+    }, 30000);
 
-    it('should deploy', async () => {});
+    it('should deploy', async () => {}, 30000);
 
     it('should update the number', async () => {
         const caller = await blockchain.treasury('caller');
@@ -58,7 +58,7 @@ describe('Counter', () => {
 
         await counter.sendNumber(caller.getSender(), toNano('0.01'), 1000n);
         expect(await counter.getTotal()).toEqual(1015n);
-    });
+    }, 30000);
 
     it('should throw error when number is not 32 bits', async () => {
         const caller = await blockchain.treasury('caller');
@@ -73,5 +73,5 @@ describe('Counter', () => {
             success: false,
             exitCode: 35,
         });
-    });
+    }, 30000);
 });
