@@ -1,4 +1,4 @@
-# Урок 9 Jettons - TON fungible tokens
+# Lesson 9 Jettons - TON fungible tokens
 
 ## Foreword - why tokens and standards are needed
 
