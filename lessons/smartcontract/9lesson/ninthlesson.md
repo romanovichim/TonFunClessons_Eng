@@ -1124,16 +1124,6 @@ The only significant difference from jetton-minter.fc is the ability to get toke
 
 Also, the optional `op` that were in jetton-minter.fc was removed from this particular contract.
 
-## jetton-minter-ICO.fc
-
-This file is a variation of the master contract, for the situation when you want to conduct an ICO.
-
-> ICO (Initial Coin Offering) - initial placement of coins, a form of attracting investments in the form of selling investors a fixed number of new units of crypto-currencies / tokens.
-
-The only significant difference from jetton-minter.fc is the ability to get tokens for yourself by sending a Tone to a contract.
-
-Also, the optional `op` that were in jetton-minter.fc was removed from this particular contract.
-
 ##### Understanding ICO mechanics in recv_internal()
 
 The balance of the incoming message (in nanoTons) is `msg_value`. From this we will subtract a small number of NanoTons for the minting message and the resulting value will be exchanged for Jetton Standards tokens in some proportion.
